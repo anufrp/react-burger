@@ -4,15 +4,15 @@ import {Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-devel
 
 export default function AppHeader() {
     return(
-        <header className={styles.menu}>
+        <div className={styles.menu}>
             <div className={`${styles.menuPart} p-4`}>
                 <div className={`${styles.item} text text_type_main-default p-4`}>
                     <BurgerIcon type="primary"/>
-                    <p>Конструктор</p>
+                    <span>Конструктор</span>
                 </div>
                 <div className={`${styles.item} text text_type_main-default text_color_inactive p-4`}>
                     <ListIcon type="secondary"/>
-                    <p>Лента заказов</p>
+                    <span>Лента заказов</span>
                 </div>
             </div>
             <div className={`${styles.logo} p-4`}>
@@ -21,10 +21,10 @@ export default function AppHeader() {
             <div className={`${styles.menuPart} p-4`}>
                 <div className={`${styles.item} text text_type_main-default text_color_inactive p-4`}>
                     <ProfileIcon type="secondary"/>
-                    <p>Личный кабинет</p>
+                    <span>Личный кабинет</span>
                 </div>
             </div>
-        </header>
+        </div>
     );
 }
 

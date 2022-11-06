@@ -1,0 +1,11 @@
+.item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.top, .bottom {
+    width: 573px;
+    margin-right: -58px;
+}

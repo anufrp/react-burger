@@ -1,0 +1,15 @@
+.card {
+    position: relative;
+    width:273px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap:8px;
+}
+
+.price {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}

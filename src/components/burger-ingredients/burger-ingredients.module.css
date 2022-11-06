@@ -1,0 +1,31 @@
+.main {
+    height: 100%;
+    /* position: fixed; */
+}
+
+.categories {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.ingredients {
+    width: 604px;
+    height: 680px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.ingredients::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+    background-color: rgb(132, 132, 173)
+}
+
+.ingredients::-webkit-scrollbar-track {
+    background: rgb(47, 47, 55);
+    margin-top: 0px; 
+    margin-bottom: 10px; 
+}
