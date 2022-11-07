@@ -5,7 +5,7 @@ import styles from './ingredient-card.module.css';
 
 export default function IngredientCard({item, onClickFunc}) { 
 
-    let[count, setCount] = useState(0);
+    const[count, setCount] = useState();
 
     useEffect(() => {
         setCount(parseInt(Math.random() * 3))
@@ -14,7 +14,7 @@ export default function IngredientCard({item, onClickFunc}) {
     return (
     <div className={`${styles.card} mb-8`} onClick={()=>onClickFunc(item._id)}>
 
-        {count != 0 && (<Counter count={count} size="default" />)}
+        {count!==0 && (<Counter count={count} size="default" />)}
 
         <img className={'ml-4 mr-4'} alt={item.name} src={item.image}/>
 

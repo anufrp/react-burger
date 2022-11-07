@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
+import {GetData} from "../../utils/get-data";
 import styles from './app.module.css';
 
 const API_URL = 'https://norma.nomoreparties.space/api/ingredients'
@@ -9,20 +10,16 @@ const API_URL = 'https://norma.nomoreparties.space/api/ingredients'
 
 export default function App() {
 
-    let [data , setData ] = useState();
+    const [data , setData ] = useState();
+    const body = document.querySelector("body");
 
-    useEffect( () => {
-        fetch(API_URL)
-                .then(res => {
-                    if (res.ok) {
-                        return res.json()
-                    } 
-                })
-                .then(data => {
-                    setData(data.data);
-                })
-                .catch(error => {console.log('Ошибка при получении данных: ' + error.message)})
-        }, []);
+    useEffect(() => {
+        GetData(API_URL)
+          .then((data) => setData(data))
+          .catch(error => {console.log('Ошибка при получении данных: ' + error.message)});
+
+          body.classList += styles.bodyScroll;
+      }, []);
 
     return (
         <>

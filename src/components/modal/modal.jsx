@@ -10,6 +10,8 @@ const modalDomRoot = document.getElementById("modalRoot");
 
 export default function Modal({title, closeFunc, children}) {
 
+    const body = document.querySelector("body");
+
     const esc = useCallback((event) => {
         if(event.key === "Escape") {
             closeFunc();
@@ -20,8 +22,13 @@ export default function Modal({title, closeFunc, children}) {
         //подписка на Esc
         document.addEventListener("keydown", esc, false);
 
+        const bodyWidth = body.scrollWidth;
+        body.style.overflow = "hidden";
+        body.style.width = bodyWidth + 'px';
+
         return () => {
             document.removeEventListener("keydown", esc, false);
+            body.style.overflow = "auto";
         };
     }, [esc]);
 

@@ -3,12 +3,6 @@
     /* position: fixed; */
 }
 
-.categories {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-}
-
 .ingredients {
     width: 604px;
     height: 680px;

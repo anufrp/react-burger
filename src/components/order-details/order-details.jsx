@@ -4,7 +4,7 @@ import styles from "./order-details.module.css";
 
 export default function OrderDetails() {
 
-    let [number, status, desc] = ['034536', 'Ваш заказ начали готовить', 'Дождитесь готовности на орбитальной станции'];
+    const [number, status, desc] = ['034536', 'Ваш заказ начали готовить', 'Дождитесь готовности на орбитальной станции'];
 
     return (
         <div className={styles.main}>

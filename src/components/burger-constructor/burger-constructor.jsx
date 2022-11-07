@@ -6,17 +6,19 @@ import OrderDetails from "../order-details/order-details";
 import Modal from '../modal/modal';
 import PropTypes from "prop-types";
 
+const BUN = 'bun';
+
 export default function BurgerConstructor({items}) {
 
 
-    let ingredients = items.filter((item) => item.type != 'bun');
+    const ingredients = React.useMemo(() => items.filter((item) => item.type !== BUN), [items]);
 
-    let buns = items.filter((item) => item.type == 'bun');
-    let bunId = parseInt(Math.random()*2);
+    const buns = React.useMemo(() => items.filter((item) => item.type === BUN), [items]);
+    const bunId = parseInt(Math.random()*2);
 
-    let orderSum = items.reduce((sum, item) => sum + item.price, 0);
+    const orderSum = React.useMemo(() => items.reduce((sum, item) => sum + item.price, 0), [items]);;
 
-    let [showModal, setShowModal] = React.useState(false);
+    const [showModal, setShowModal] = React.useState(false);
 
     const openModal = () => {
         setShowModal(true);
@@ -31,7 +33,7 @@ export default function BurgerConstructor({items}) {
                 <OrderItem item={buns[bunId]} type="top" />
                 <div className={`${styles.ingredients} pr-2`}>
                     {ingredients.map ((item) =>
-                        <OrderItem key={item._id} item={item} />
+                        <OrderItem key={item._id} item={item} type="regular" />
                     )}
                 </div>
                 <OrderItem item={buns[bunId]} type="bottom" />

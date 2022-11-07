@@ -1,44 +1,26 @@
 import React from "react";
 import styles from './order-item.module.css';
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {GetConstructorConfig} from "../../utils/get-config";
 import PropTypes from "prop-types";
 
 export default function OrderItem({item, type}) {
+
+    const [constructorConfig, setConstructorConfig] = React.useState();
     
-    switch(type) {          
-        case "top": 
-        return (<div className={`${styles.item} ${styles.top}`}>
-            <ConstructorElement                
-                isLocked={true}
-                text={item.name + ' (верх)'}
-                type='top'
-                price={item.price}
-                thumbnail={item.image}
-            />
-        </div>)  
+    React.useEffect(() => {
+        setConstructorConfig(GetConstructorConfig(item, type));
+    }, [item]);
 
-        case "bottom": 
-        return (<div className={`${styles.item} ${styles.bottom}`}>
-            <ConstructorElement                
-                isLocked={true}
-                text={item.name + ' (низ)'}
-                type='bottom'
-                price={item.price}
-                thumbnail={item.image}
-            />
-        </div>)
+    //console.log(constructorConfig);
 
-        default: 
-        return (<div className={`${styles.item} mt-4 mb-4`}>
-        <DragIcon type='primary'/>
-        <ConstructorElement                
-            isLocked={false}
-            text={item.name}
-            price={item.price}
-            thumbnail={item.image}
-        />
-        </div>)
-    };
+        return constructorConfig && (
+            <div className={constructorConfig.className}>
+                {type === "regular" && (<DragIcon />)}
+                <ConstructorElement {...constructorConfig.props} />
+            </div>
+        )  
+
 };
 
 OrderItem.propTypes = {

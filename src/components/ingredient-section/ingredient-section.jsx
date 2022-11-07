@@ -7,8 +7,8 @@ import Modal from '../modal/modal'
 
 export default function IngredientSection({type, items}) { 
 
-    let [currentIngredient, setCurrentIngredient] = React.useState();
-    let [showModal, setShowModal] = React.useState(false);
+    const [currentIngredient, setCurrentIngredient] = React.useState();
+    const [showModal, setShowModal] = React.useState(false);
 
     const selectIngredient = (id) => {
         setCurrentIngredient(findElement(id));
@@ -29,19 +29,19 @@ export default function IngredientSection({type, items}) {
         <div className={'mb-6'}>
             <span className="text text_type_main-medium">
                 {
-                    type == "bun" && (<>Булки</>)
+                    type === "bun" && (<>Булки</>)
                 }
                 {
-                    type == "sauce" && (<>Соусы</>)
+                    type === "sauce" && (<>Соусы</>)
                 }
                 {
-                    type == "main" && (<>Начинки</>)
+                    type === "main" && (<>Начинки</>)
                 }
             </span>
         </div>
         <div className={styles.cards}>
             {items.map((item) => (
-                item.type == type && (<IngredientCard key={item._id} item={item} onClickFunc={selectIngredient} />)
+                item.type === type && (<IngredientCard key={item._id} item={item} onClickFunc={selectIngredient} />)
             ))}
         </div>
         
