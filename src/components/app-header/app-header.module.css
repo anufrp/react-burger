@@ -1,0 +1,23 @@
+.logo {
+    position: absolute;
+}
+
+.menu {
+    position: fixed;
+    top: 0;
+    width:100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: rgb(28, 28, 33);    
+}
+
+.menuPart {
+    display: flex;
+    height: 54px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

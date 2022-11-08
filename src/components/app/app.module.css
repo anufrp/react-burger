@@ -1,0 +1,9 @@
+.main {
+    margin-top: 90px;
+    display: flex;
+    justify-content: center;
+}
+
+.bodyScroll {
+    width: 1903px !important;
+}
