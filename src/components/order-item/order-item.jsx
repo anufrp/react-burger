@@ -12,14 +12,12 @@ export default function OrderItem({item, type}) {
         setConstructorConfig(GetConstructorConfig(item, type));
     }, [item]);
 
-    //console.log(constructorConfig);
-
-        return constructorConfig && (
-            <div className={constructorConfig.className}>
-                {type === "regular" && (<DragIcon />)}
-                <ConstructorElement {...constructorConfig.props} />
-            </div>
-        )  
+    return constructorConfig && (
+        <div className={constructorConfig.className}>
+            {type === "regular" && (<DragIcon />)}
+            <ConstructorElement {...constructorConfig.props} />
+        </div>
+    )  
 
 };
 

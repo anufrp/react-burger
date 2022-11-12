@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import styles from './ingredient-section.module.css';
-import IngredientCard from '../ingredient-card/ingredient-card'
-import IngredientDetails from '../ingredient-details/ingredient-details'
-import Modal from '../modal/modal'
+import IngredientCard from '../ingredient-card/ingredient-card';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import Modal from '../modal/modal';
+import { IngredientContext } from "../../services/constructorContext";
 
 export default function IngredientSection({type, items}) { 
+    
+    const { constructorItemsState, constructorItemsDispatcher } = useContext(IngredientContext);
 
     const [currentIngredient, setCurrentIngredient] = React.useState();
     const [showModal, setShowModal] = React.useState(false);
 
     const selectIngredient = (id) => {
-        setCurrentIngredient(findElement(id));
+        const currentIngredient = findElement(id);
+        setCurrentIngredient(currentIngredient);
         setShowModal(true);
-        console.log(id);
+        //console.log(id);
+        constructorItemsDispatcher({type: 'add', item: currentIngredient});
     }
 
     const closeModal = () => {
@@ -38,7 +43,7 @@ export default function IngredientSection({type, items}) {
                     type === "main" && (<>Начинки</>)
                 }
             </span>
-        </div>
+        </div>                
         <div className={styles.cards}>
             {items.map((item) => (
                 item.type === type && (<IngredientCard key={item._id} item={item} onClickFunc={selectIngredient} />)

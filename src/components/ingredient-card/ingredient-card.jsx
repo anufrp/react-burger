@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import PropTypes from "prop-types";
 import {CurrencyIcon, Counter} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './ingredient-card.module.css';
@@ -6,7 +6,7 @@ import styles from './ingredient-card.module.css';
 export default function IngredientCard({item, onClickFunc}) { 
 
     const[count, setCount] = useState();
-
+    
     useEffect(() => {
         setCount(parseInt(Math.random() * 3))
     }) 

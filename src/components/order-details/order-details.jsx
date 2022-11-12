@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import orderIsOk from "../../images/orderIsOk.png"
 import styles from "./order-details.module.css";
+import { OrderNumberContext } from "../../services/constructorContext";
 
 export default function OrderDetails() {
 
-    const [number, status, desc] = ['034536', 'Ваш заказ начали готовить', 'Дождитесь готовности на орбитальной станции'];
+    const { orderNumberState } = useContext(OrderNumberContext);
+    const [number, status, desc] = [orderNumberState.number, 'Ваш заказ начали готовить', 'Дождитесь готовности на орбитальной станции'];
 
     return (
         <div className={styles.main}>

@@ -1,0 +1,22 @@
+.base {
+    width: 573px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-position-x: center;
+}
+
+.noTopBun {
+    background-image: url("../../images/no-top-bun.png");
+}
+
+.noIngredients {
+    background-image: url("../../images/no-ingredients.png");
+}
+
+.noBottomBun {
+    background-image: url("../../images/no-bottom-bun.png");
+}

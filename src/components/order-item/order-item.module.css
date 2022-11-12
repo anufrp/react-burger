@@ -1,5 +1,6 @@
 .item {
     width: 100%;
+    min-width: 573px;
     display: flex;
     align-items: center;
     gap: 13px;
