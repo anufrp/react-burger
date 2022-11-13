@@ -10,11 +10,12 @@ import Modal from '../modal/modal';
 import { IngredientContext, OrderSumContext } from "../../services/constructorContext";
 import {createOrder} from "../../utils/create-order";
 import { API_BASE } from "../../services/constants";
+import Loader from "../loader/loader";
 
 const API_URL = API_BASE + 'orders'
 
 const BUN = 'bun';
-const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
+const [SUCCESS, FAILED, EMPTY, LOADING] = ['success', 'failed', 'empty', 'loading'];
 
 const orderSumInitialState = { sum: 0 };
 
@@ -43,7 +44,8 @@ export default function BurgerConstructor() {
     const [modalMode, setModalMode] = useState();
 
     const confirmOrder = () => {
-        const orederIngredients = constructorItemsState.items.map(item => item._id); //ИДы ингредиентов в массив для получения номера заказа 
+        const orederIngredients = constructorItemsState.items.map(item => item._id); //ИДы ингредиентов в массив для получения номера заказа         
+        setModalMode();
 
         if(orederIngredients.length > 0) {
             createOrder(API_URL, orederIngredients)
@@ -66,6 +68,7 @@ export default function BurgerConstructor() {
     }
     const closeModal = () => {
         setShowModal(false);
+        setOrderNumber('');
     }
 
     useEffect(() => {
@@ -100,12 +103,17 @@ export default function BurgerConstructor() {
 
             </div>
 
-            {showModal && (
-                    <Modal closeFunc={closeModal}>
-                        {modalMode === FAILED && (<ErrorMessage />)}
-                        {modalMode === SUCCESS && (<OrderDetails orderNumber={orderNumber} />)}                       
-                        {modalMode === EMPTY && (<EmptyOrderMessage />)}   
-                    </Modal>
+            {
+                showModal && modalMode === undefined && (<Loader />)
+            }
+
+            {            
+                showModal && modalMode !== LOADING && modalMode !== undefined && (
+                        <Modal closeFunc={closeModal}>
+                            {modalMode === FAILED && (<ErrorMessage />)} 
+                            {modalMode === SUCCESS && (<OrderDetails orderNumber={orderNumber} />)}                       
+                            {modalMode === EMPTY && (<EmptyOrderMessage />)}   
+                        </Modal>
             )}
         </div>
     );
