@@ -4,14 +4,17 @@ import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-comp
 import OrderItem from "../order-item/order-item";
 import OrderDetails from "../order-details/order-details";
 import ErrorMessage from "../error-message/error-message";
+import EmptyOrderMessage from "../empty-order-message/empty-order-message";
 import NoItem from "../no-item/no-item";
 import Modal from '../modal/modal';
-import { IngredientContext, OrderNumberContext, OrderSumContext } from "../../services/constructorContext";
-import {CreateOrder} from "../../utils/create-order";
+import { IngredientContext, OrderSumContext } from "../../services/constructorContext";
+import {createOrder} from "../../utils/create-order";
+import { API_BASE } from "../../services/constants";
 
-const API_URL = 'https://norma.nomoreparties.space/api/orders'
+const API_URL = API_BASE + 'orders'
 
 const BUN = 'bun';
+const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
 
 const orderSumInitialState = { sum: 0 };
 
@@ -28,7 +31,7 @@ function orderSumReducer(orderSumState, action) {
 
 export default function BurgerConstructor() {
 
-    const { orderNumberState, orderNumberDispatcher } = useContext(OrderNumberContext);
+    const [orderNumber, setOrderNumber] = useState();
     const { constructorItemsState, constructorItemsDispatcher } = useContext(IngredientContext);
     const [orderSumState, orderSumDispatcher] = useReducer(orderSumReducer, orderSumInitialState, undefined);
 
@@ -37,20 +40,26 @@ export default function BurgerConstructor() {
     const buns = useMemo(() => constructorItemsState.items.filter((item) => item.type === BUN), [constructorItemsState.items]);
 
     const [showModal, setShowModal] = useState(false);
-    const [showError, setShowError] = useState(false);
+    const [modalMode, setModalMode] = useState();
 
     const confirmOrder = () => {
         const orederIngredients = constructorItemsState.items.map(item => item._id); //ИДы ингредиентов в массив для получения номера заказа 
 
-        CreateOrder(API_URL, orederIngredients)
-          .then((res) => {
-                            orderNumberDispatcher({type: 'set', number: res.order.number});
-                            setShowError(false);
-          })
-          .catch(error => {
-                            console.log('Ошибка при получении данных: ' + error.message);
-                            setShowError(true);
-                        });
+        if(orederIngredients.length > 0) {
+            createOrder(API_URL, orederIngredients)
+            .then((res) => {
+                                setOrderNumber(res.order.number);
+                                setModalMode(SUCCESS);
+                                constructorItemsDispatcher({type: 'reset'});
+            })
+            .catch(error => {
+                                console.log('Ошибка при получении данных: ' + error.message);
+                                setModalMode(FAILED);
+                            });
+        }
+        else {            
+            setModalMode(EMPTY);
+        }
         //если все четко, обновить номер заказа в стейт, показать модал с успешностью
         setShowModal(true);
         //если неудача, показать модал с ошибкой
@@ -93,9 +102,9 @@ export default function BurgerConstructor() {
 
             {showModal && (
                     <Modal closeFunc={closeModal}>
-                        <OrderNumberContext.Provider value={{ orderNumberState }}>
-                            {showError ? (<ErrorMessage />) : (<OrderDetails />)}
-                        </OrderNumberContext.Provider>
+                        {modalMode === FAILED && (<ErrorMessage />)}
+                        {modalMode === SUCCESS && (<OrderDetails orderNumber={orderNumber} />)}                       
+                        {modalMode === EMPTY && (<EmptyOrderMessage />)}   
                     </Modal>
             )}
         </div>

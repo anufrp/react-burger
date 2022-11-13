@@ -1,12 +1,11 @@
 import React, {useContext} from "react";
 import orderIsOk from "../../images/orderIsOk.png"
 import styles from "./order-details.module.css";
-import { OrderNumberContext } from "../../services/constructorContext";
+import PropTypes from "prop-types";
 
-export default function OrderDetails() {
+export default function OrderDetails({orderNumber}) {
 
-    const { orderNumberState } = useContext(OrderNumberContext);
-    const [number, status, desc] = [orderNumberState.number, 'Ваш заказ начали готовить', 'Дождитесь готовности на орбитальной станции'];
+    const [number, status, desc] = [orderNumber, 'Ваш заказ начали готовить', 'Дождитесь готовности на орбитальной станции'];
 
     return (
         <div className={styles.main}>
@@ -28,3 +27,7 @@ export default function OrderDetails() {
         </div>
     )
 }
+
+OrderDetails.propTypes = {
+    orderNumber: PropTypes.number.isRequired
+};

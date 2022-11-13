@@ -2,11 +2,13 @@ import React, {useState, useEffect, useReducer} from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import {GetData} from "../../utils/get-data";
+import {getData} from "../../utils/get-data";
 import styles from './app.module.css';
 import { IngredientContext, OrderNumberContext } from "../../services/constructorContext";
+import { API_BASE } from "../../services/constants";
 
-const API_URL = 'https://norma.nomoreparties.space/api/ingredients'
+const API_URL = API_BASE + 'ingredients'
+
 const BUN = 'bun';
 const orderNumberInitialState = { number: '' };
 const constructorItemsInitialState = { items: [] };
@@ -48,8 +50,10 @@ function constructorItemsReducer(constructorItemsState, action) {
         case "add":
             if(action.item.type === BUN) tempIngredients = removeBun(tempIngredients); //если добавляем булку, то удалить предыдущую
             return { items: [...tempIngredients, action.item] };
-        case "remove":
-            return { items: [...constructorItemsState.items, action.item] };
+            case "remove":
+                return { items: [...constructorItemsState.items, action.item] };
+            case "reset":
+                return constructorItemsInitialState;
         default:
             throw new Error(`Wrong type of action: ${action.type}`);
     }    
@@ -59,13 +63,12 @@ export default function App() {
 
     const [data , setData ] = useState();
     const body = document.querySelector("body");
-    const [orderNumberState, orderNumberDispatcher] = useReducer(orderNumberReducer, orderNumberInitialState, undefined);
     const [constructorItemsState, constructorItemsDispatcher] = useReducer(constructorItemsReducer, constructorItemsInitialState, undefined);
 
     useEffect(() => {
-        GetData(API_URL)
+        getData(API_URL)
           .then((data) => {
-                            setData(data);
+                            setData(data.data);
                             //constructorItemsDispatcher({type: 'init', items: data});
           })
           .catch(error => {console.log('Ошибка при получении данных: ' + error.message)});
@@ -79,14 +82,11 @@ export default function App() {
             <div>
                 <div className={`${styles.main}`}>
                     {data &&
-                    (<>
-                        <IngredientContext.Provider value={{ constructorItemsState, constructorItemsDispatcher }}>
-                            <BurgerIngredients items={data} />
-                            <OrderNumberContext.Provider value={{ orderNumberState, orderNumberDispatcher }}>
-                                <BurgerConstructor />
-                            </OrderNumberContext.Provider>          
-                        </IngredientContext.Provider>                        
-                    </>)}
+                    (<IngredientContext.Provider value={{ constructorItemsState, constructorItemsDispatcher }}>
+                        <BurgerIngredients items={data} />
+                        <BurgerConstructor />       
+                    </IngredientContext.Provider>                        
+                    )}
                 </div>
             </div>
         </>

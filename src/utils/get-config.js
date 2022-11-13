@@ -1,6 +1,6 @@
 import styles from '../components/order-item/order-item.module.css';
 
-export function GetConstructorConfig(item, type) {
+export function getConstructorConfig(item, type) {
         
     switch(type) {          
         case "top": 

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './order-item.module.css';
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import {GetConstructorConfig} from "../../utils/get-config";
+import {getConstructorConfig} from "../../utils/get-config";
 import PropTypes from "prop-types";
 
 export default function OrderItem({item, type}) {
@@ -9,7 +9,7 @@ export default function OrderItem({item, type}) {
     const [constructorConfig, setConstructorConfig] = React.useState();
     
     React.useEffect(() => {
-        setConstructorConfig(GetConstructorConfig(item, type));
+        setConstructorConfig(getConstructorConfig(item, type));
     }, [item]);
 
     return constructorConfig && (
