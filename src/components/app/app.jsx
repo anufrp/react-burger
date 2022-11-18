@@ -5,13 +5,45 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import {getData} from "../../utils/get-data";
 import styles from './app.module.css';
 import { IngredientContext, OrderNumberContext } from "../../services/constructorContext";
-import { API_BASE } from "../../services/constants";
+import { activeTabContext } from "../../services/tabsContext";
+import { API_BASE, BUN, SAUCE } from "../../services/constants";
 
 const API_URL = API_BASE + 'ingredients'
 
-const BUN = 'bun';
 const orderNumberInitialState = { number: '' };
 const constructorItemsInitialState = { items: [] };
+const activeTabInitialState = { 
+  activeTab: BUN,
+  tabsNode: null,
+  bunNode: null,
+  sauceNode: null,
+  mainNode: null 
+};
+
+function activeTabReducer(state, action) {
+  switch (action.type) {
+      case "setActive":
+        if (state.activeTab !== action.activeTab)
+          return { ...state, activeTab: action.activeTab };
+        else 
+          return {...state};
+      case "set_tabs_node":
+          return { ...state, tabsNode: action.ref.current };
+      case "set_bun_node":
+          return { ...state, bunNode: action.ref.current };
+      case "set_sauce_node":
+          return { ...state, sauceNode: action.ref.current };
+      case "set_main_node":
+          return { ...state, mainNode: action.ref.current };
+      case "scroll_to":
+          action.tab === BUN ? state.bunNode.scrollIntoView({behavior: "smooth"})
+          : action.tab === SAUCE ? state.sauceNode.scrollIntoView({behavior: "smooth"})
+            : state.mainNode.scrollIntoView({behavior: "smooth"});
+          return {...state};
+      default:
+          throw new Error(`Wrong type of action: ${action.type}`);
+  }
+}
 
 function orderNumberReducer(state, action) {
     switch (action.type) {
@@ -64,6 +96,7 @@ export default function App() {
     const [data , setData ] = useState();
     const body = document.querySelector("body");
     const [constructorItemsState, constructorItemsDispatcher] = useReducer(constructorItemsReducer, constructorItemsInitialState, undefined);
+    const [activeTabState, activeTabDispatcher] = useReducer(activeTabReducer, activeTabInitialState, undefined);
 
     useEffect(() => {
         getData(API_URL)
@@ -83,8 +116,13 @@ export default function App() {
                 <div className={`${styles.main}`}>
                     {data &&
                     (<IngredientContext.Provider value={{ constructorItemsState, constructorItemsDispatcher }}>
-                        <BurgerIngredients items={data} />
+
+                        <activeTabContext.Provider value={{ activeTabState, activeTabDispatcher }}>
+                          <BurgerIngredients items={data} />
+                        </activeTabContext.Provider>
+                        
                         <BurgerConstructor />       
+
                     </IngredientContext.Provider>                        
                     )}
                 </div>

@@ -9,7 +9,7 @@ export default function IngredientCard({item, onClickFunc}) {
     
     useEffect(() => {
         setCount(parseInt(Math.random() * 3))
-    }) 
+    },[item]) 
 
     return (
     <div className={`${styles.card} mb-8`} onClick={()=>onClickFunc(item._id)}>

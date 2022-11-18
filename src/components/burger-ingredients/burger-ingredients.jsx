@@ -1,25 +1,52 @@
-import React, { useContext } from "react";
-import PropTypes from "prop-types";
+import React, { useContext, useEffect, useReducer, useRef } from "react";
+import PropTypes, { func } from "prop-types";
 import styles from './burger-ingredients.module.css';
 import Tabs from '../ingredients-tabs/ingredients-tabs'
 import IngredientSection from '../ingredient-section/ingredient-section'
+import { activeTabContext } from "../../services/tabsContext";
+import { BUN, SAUCE, MAIN } from "../../services/constants";
+
 
 export default function BurgerIngredients({items}) {
+    
+    const { activeTabState, activeTabDispatcher } = useContext(activeTabContext);
+    
+    const ingredientsNode = useRef(null);
+
+    function updateActiveTab(tab) {
+        activeTabDispatcher({type: 'setActive', activeTab: tab});
+    }
+    
+    const getNearestHeader = (e) => {
+        e.stopPropagation();
+
+        const bunDist = Math.abs(activeTabState.tabsNode.getBoundingClientRect().bottom - activeTabState.bunNode.getBoundingClientRect().top);
+        const sauceDist = Math.abs(activeTabState.tabsNode.getBoundingClientRect().bottom - activeTabState.sauceNode.getBoundingClientRect().top);
+        const mainDist = Math.abs(activeTabState.tabsNode.getBoundingClientRect().bottom - activeTabState.mainNode.getBoundingClientRect().top);
+
+        const activeNode = (bunDist < sauceDist & bunDist < mainDist) ? BUN 
+                                : (sauceDist < bunDist & sauceDist < mainDist) ? SAUCE 
+                                    : MAIN;
+
+        if(activeNode !== activeTabState.activeTab)
+            updateActiveTab(activeNode);        
+    }
+
 
     return (
         <div className={`${styles.main} mr-10`}>
             <div className={'mt-10 mb-5'}>
-                <span className="text text_type_main-large">
+                <span className="text text_type_main-large" onClick={()=>{console.log(activeTabState.activeTab)}}>
                     Соберите бургер
                 </span>
-            </div>
-            
+            </div>           
+
             <Tabs />
 
-            <div className={styles.ingredients}>
-                <IngredientSection items={items} type="bun" />
-                <IngredientSection items={items} type="sauce" />
-                <IngredientSection items={items} type="main" />                
+            <div className={styles.ingredients} ref={ingredientsNode} onScroll={getNearestHeader}>
+                <IngredientSection items={items} type={BUN} />
+                <IngredientSection items={items} type={SAUCE} />
+                <IngredientSection items={items} type={MAIN} />                
             </div>        
         </div>
     )
