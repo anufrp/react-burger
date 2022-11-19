@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./error-message.module.css";
 
-export default function ErrorMessage() {
+export default function ErrorMessage(props) {
 
     return (
         <div className={styles.main}>
@@ -12,7 +12,7 @@ export default function ErrorMessage() {
                 Что-то пошло не так
             </span>
             <span className={'text text_type_main-default text_color_inactive mt-2 mb-30'}>
-                Попробуйте оформить заказ еще раз
+                {props.children}
             </span>
         </div>
     )

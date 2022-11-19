@@ -8,7 +8,7 @@ import { IngredientContext, OrderNumberContext } from "../../services/constructo
 import { activeTabContext } from "../../services/tabsContext";
 import { API_BASE, BUN, SAUCE } from "../../services/constants";
 
-const API_URL = API_BASE + 'ingredients'
+const API_URL = API_BASE + 'ingredients';
 
 const orderNumberInitialState = { number: '' };
 const constructorItemsInitialState = { items: [] };
@@ -118,7 +118,7 @@ export default function App() {
                     (<IngredientContext.Provider value={{ constructorItemsState, constructorItemsDispatcher }}>
 
                         <activeTabContext.Provider value={{ activeTabState, activeTabDispatcher }}>
-                          <BurgerIngredients items={data} />
+                          <BurgerIngredients />
                         </activeTabContext.Provider>
                         
                         <BurgerConstructor />       

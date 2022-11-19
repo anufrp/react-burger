@@ -11,6 +11,7 @@ import { IngredientContext, OrderSumContext } from "../../services/constructorCo
 import {createOrder} from "../../utils/create-order";
 import { API_BASE } from "../../services/constants";
 import Loader from "../loader/loader";
+import { useSelector, useDispatch } from 'react-redux';
 
 const API_URL = API_BASE + 'orders'
 
@@ -34,6 +35,14 @@ export default function BurgerConstructor() {
 
     const [orderNumber, setOrderNumber] = useState();
     const { constructorItemsState, constructorItemsDispatcher } = useContext(IngredientContext);
+    
+    const {constructor, bun} = useSelector(store => 
+        ({
+            constructor: store.burger.constructor,
+            bun: store.burger.bun
+        }));
+    const dispatch = useDispatch();
+
     const [orderSumState, orderSumDispatcher] = useReducer(orderSumReducer, orderSumInitialState, undefined);
 
     const ingredients = useMemo(() => constructorItemsState.items.filter((item) => item.type !== BUN), [constructorItemsState.items]);
@@ -110,7 +119,7 @@ export default function BurgerConstructor() {
             {            
                 showModal && modalMode !== LOADING && modalMode !== undefined && (
                         <Modal closeFunc={closeModal}>
-                            {modalMode === FAILED && (<ErrorMessage />)} 
+                            {modalMode === FAILED && (<ErrorMessage>Попробуйте оформить заказ еще раз</ErrorMessage>)} 
                             {modalMode === SUCCESS && (<OrderDetails orderNumber={orderNumber} />)}                       
                             {modalMode === EMPTY && (<EmptyOrderMessage />)}   
                         </Modal>
