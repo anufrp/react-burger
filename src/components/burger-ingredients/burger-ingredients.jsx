@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useReducer, useRef } from "react";
-import PropTypes, { func } from "prop-types";
+import React, { useContext, useEffect, useRef } from "react";
 import styles from './burger-ingredients.module.css';
 import Tabs from '../ingredients-tabs/ingredients-tabs'
 import IngredientSection from '../ingredient-section/ingredient-section'
@@ -59,7 +58,7 @@ export default function BurgerIngredients() {
             }     
 
             {
-                ingredientsFailed && <div className={styles.ingredients}><Modal><ErrorMessage>Попробуйте перезагрузить страницу</ErrorMessage></Modal></div>
+                ingredientsFailed && <div className={styles.ingredients}><Modal closeFunc={() => { window.location.reload() }}><ErrorMessage>Обратитесь к ближайшему сотруднику</ErrorMessage></Modal></div>
             }     
 
             { !ingredientsRequest && ingredients.length > 0 &&

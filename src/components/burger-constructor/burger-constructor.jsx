@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useReducer, useContext, useEffect } from "react";
+import React, { useReducer, useEffect } from "react";
 import styles from './burger-constructor.module.css';
 import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderItem from "../order-item/order-item";
@@ -7,16 +7,17 @@ import ErrorMessage from "../error-message/error-message";
 import EmptyOrderMessage from "../empty-order-message/empty-order-message";
 import NoItem from "../no-item/no-item";
 import Modal from '../modal/modal';
-import { IngredientContext, OrderSumContext } from "../../services/constructorContext";
-import {createOrder} from "../../utils/create-order";
-import { API_BASE } from "../../services/constants";
 import Loader from "../loader/loader";
 import { useSelector, useDispatch } from 'react-redux';
+import { 
+    processingOrder, 
+    RESET_ORDER_MODAL_MODE,
+    CLEAR_CONSTRUCTOR_LIST,
+    CLEAR_ORDER_DETAILS,
+    CLEAR_BUN
+} from "../../services/actions/actions";
 
-const API_URL = API_BASE + 'orders'
-
-const BUN = 'bun';
-const [SUCCESS, FAILED, EMPTY, LOADING] = ['success', 'failed', 'empty', 'loading'];
+const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
 
 const orderSumInitialState = { sum: 0 };
 
@@ -33,69 +34,50 @@ function orderSumReducer(orderSumState, action) {
 
 export default function BurgerConstructor() {
 
-    const [orderNumber, setOrderNumber] = useState();
-    const { constructorItemsState, constructorItemsDispatcher } = useContext(IngredientContext);
-    
-    const {constructor, bun} = useSelector(store => 
-        ({
-            constructor: store.burger.constructor,
-            bun: store.burger.bun
-        }));
     const dispatch = useDispatch();
+    
+    const {constructorItems, bun, orderRequest, orderFailed, orderModalMode, orderDetails} = useSelector(store => 
+        ({
+            constructorItems: store.burger.constructorItems,
+            bun: store.burger.bun,
+            orderRequest: store.burger.orderRequest,
+            orderFailed: store.burger.orderFailed,
+            orderModalMode: store.burger.orderModalMode,
+            orderDetails: store.burger.orderDetails
+        }));
 
     const [orderSumState, orderSumDispatcher] = useReducer(orderSumReducer, orderSumInitialState, undefined);
 
-    const ingredients = useMemo(() => constructorItemsState.items.filter((item) => item.type !== BUN), [constructorItemsState.items]);
-
-    const buns = useMemo(() => constructorItemsState.items.filter((item) => item.type === BUN), [constructorItemsState.items]);
-
-    const [showModal, setShowModal] = useState(false);
-    const [modalMode, setModalMode] = useState();
-
     const confirmOrder = () => {
-        const orederIngredients = constructorItemsState.items.map(item => item._id); //ИДы ингредиентов в массив для получения номера заказа         
-        setModalMode();
 
-        if(orederIngredients.length > 0) {
-            createOrder(API_URL, orederIngredients)
-            .then((res) => {
-                                setOrderNumber(res.order.number);
-                                setModalMode(SUCCESS);
-                                constructorItemsDispatcher({type: 'reset'});
-            })
-            .catch(error => {
-                                console.log('Ошибка при получении данных: ' + error.message);
-                                setModalMode(FAILED);
-                            });
-        }
-        else {            
-            setModalMode(EMPTY);
-        }
-        //если все четко, обновить номер заказа в стейт, показать модал с успешностью
-        setShowModal(true);
-        //если неудача, показать модал с ошибкой
+        dispatch(processingOrder(constructorItems, bun));
+ 
     }
     const closeModal = () => {
-        setShowModal(false);
-        setOrderNumber('');
+        dispatch({type: RESET_ORDER_MODAL_MODE});
+        if(!orderFailed) {
+            dispatch({type: CLEAR_CONSTRUCTOR_LIST});
+            dispatch({type: CLEAR_BUN});
+            dispatch({type: CLEAR_ORDER_DETAILS});
+        }
     }
 
     useEffect(() => {
-        const orderSum = ingredients.reduce((sum, item) => sum + item.price, 0) + buns.reduce((sum, item) => sum + item.price, 0) * 2; //подсчет суммы ингредиентов
+        const orderSum = constructorItems.reduce((sum, item) => sum + item.price, 0) + (bun._id ? bun.price * 2 : 0); //подсчет суммы ингредиентов
         orderSumDispatcher({type: "update", sum: orderSum});
 
-    }, [constructorItemsState.items])
+    }, [constructorItems, bun])
 
     return (
         <div className={`${styles.main} mt-25`}>
             <div className={styles.order}>
-                { buns.length > 0 ? (<OrderItem item={buns[0]} type="top" />) : (<NoItem type="topbun" />) }
-                { ingredients.length > 0 ? (<div className={`${styles.ingredients} pr-2`}>
-                    {ingredients.map ((item) =>
-                        <OrderItem key={item._id} item={item} type="regular" />
+                { bun._id ? (<OrderItem item={bun} type="top" />) : (<NoItem type="topbun" />) }
+                { constructorItems.length > 0 ? (<div className={`${styles.ingredients} pr-2`}>
+                    {constructorItems.map ((item) =>
+                        <OrderItem key={item.uid} item={item} type="regular" />
                     )}
                 </div>) : (<NoItem type="ingredient" />) }
-                { buns.length > 0 ? (<OrderItem item={buns[0]} type="bottom" />) : (<NoItem type="bottombun" />) }
+                { bun._id ? (<OrderItem item={bun} type="bottom" />) : (<NoItem type="bottombun" />) }
             </div>
 
             <div className={`${styles.summary} mr-7`}>
@@ -113,15 +95,15 @@ export default function BurgerConstructor() {
             </div>
 
             {
-                showModal && modalMode === undefined && (<Loader />)
+                orderRequest && (<Loader />)
             }
 
             {            
-                showModal && modalMode !== LOADING && modalMode !== undefined && (
+                !orderRequest && orderModalMode != null && (
                         <Modal closeFunc={closeModal}>
-                            {modalMode === FAILED && (<ErrorMessage>Попробуйте оформить заказ еще раз</ErrorMessage>)} 
-                            {modalMode === SUCCESS && (<OrderDetails orderNumber={orderNumber} />)}                       
-                            {modalMode === EMPTY && (<EmptyOrderMessage />)}   
+                            {orderModalMode === FAILED && (<ErrorMessage>Попробуйте оформить заказ еще раз</ErrorMessage>)} 
+                            {orderModalMode === SUCCESS && (<OrderDetails orderNumber={orderDetails.number} />)}                       
+                            {orderModalMode === EMPTY && (<EmptyOrderMessage />)}   
                         </Modal>
             )}
         </div>

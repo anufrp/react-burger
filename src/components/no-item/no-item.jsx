@@ -1,8 +1,5 @@
 import React from "react";
 import styles from "./no-item.module.css";
-import noTopBun from "../../images/no-top-bun.png"
-import noBottomBun from "../../images/no-bottom-bun.png"
-import noIngredients from "../../images/no-ingredients.png"
 
 export default function NoItem({type}) {
 

@@ -5,23 +5,24 @@ import IngredientCard from '../ingredient-card/ingredient-card';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { BUN, SAUCE, MAIN } from "../../services/constants";
-import { IngredientContext } from "../../services/constructorContext";
 import { activeTabContext } from "../../services/tabsContext";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { TOPUP_CONSTRUCTOR_LIST, SET_BUN, SET_INGREDIENT_DETAILS, CLEAR_INGREDIENT_DETAILS } from "../../services/actions/actions";
+import { v4 as uuidv4 } from 'uuid';
 
-export default function IngredientSection({type, items}) { 
+export default function IngredientSection({type, items}) {     
     
-    const { constructorItemsState, constructorItemsDispatcher } = useContext(IngredientContext);
     const { activeTabState, activeTabDispatcher } = useContext(activeTabContext);
     const headerNode = useRef(null);
     const dispatch = useDispatch();
-    const [currentIngredient, setCurrentIngredient] = React.useState();
+    
     const [showModal, setShowModal] = React.useState(false);
 
     const selectIngredient = (id) => {
-        const currentIngredient = findElement(id);
-        setCurrentIngredient(currentIngredient);
+
+        let currentIngredient = findElement(id);
+        currentIngredient = {...currentIngredient, uid: uuidv4()}
+
         switch (currentIngredient.type){
             case 'bun': 
                 dispatch({type: SET_BUN, item: currentIngredient});
@@ -30,10 +31,10 @@ export default function IngredientSection({type, items}) {
                 dispatch({type: TOPUP_CONSTRUCTOR_LIST, item: currentIngredient});
                 break;
         }
+
         dispatch({type: SET_INGREDIENT_DETAILS, item: currentIngredient});
         setShowModal(true);
-        constructorItemsDispatcher({type: 'add', item: currentIngredient});
-        //dispatch({type: TOPUP_CONSTRUCTOR_LIST, item: currentIngredient});
+
     }
 
     const closeModal = () => {
