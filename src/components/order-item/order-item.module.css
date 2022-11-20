@@ -10,3 +10,7 @@
     width: 573px;
     margin-right: -58px;
 }
+
+.dragIcon {
+    cursor: move;
+}

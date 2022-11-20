@@ -8,15 +8,15 @@ export default function NoItem({type}) {
     switch(type) {
         case "topbun": 
         className = styles.noTopBun;
-            text = "Не выбрана булка";
+            text = "Перетащите булку";
             break;
         case "ingredient": 
         className = styles.noIngredients;
-            text = "Не выбран ингредиент";
+            text = "Перетащите ингредиенты";
             break;
         case "bottombun": 
         className = styles.noBottomBun;
-            text = "Не выбрана булка";
+            text = "Перетащите булку";
             break;
         default: break;
     }

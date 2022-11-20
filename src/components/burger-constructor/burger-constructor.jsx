@@ -1,4 +1,5 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState, useMemo, useRef } from "react";
+import { useDrop } from 'react-dnd'
 import styles from './burger-constructor.module.css';
 import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderItem from "../order-item/order-item";
@@ -7,6 +8,7 @@ import ErrorMessage from "../error-message/error-message";
 import EmptyOrderMessage from "../empty-order-message/empty-order-message";
 import NoItem from "../no-item/no-item";
 import Modal from '../modal/modal';
+import ModalOverlay from "../modal-overlay/modal-overlay";
 import Loader from "../loader/loader";
 import { useSelector, useDispatch } from 'react-redux';
 import { 
@@ -49,6 +51,8 @@ export default function BurgerConstructor() {
 
     const [orderSumState, orderSumDispatcher] = useReducer(orderSumReducer, orderSumInitialState, undefined);
 
+    const [modalOverlayVisible, setModalOverlayVisible] = useState(false);
+
     const confirmOrder = () => {
 
         dispatch(processingOrder(constructorItems, bun));
@@ -64,13 +68,6 @@ export default function BurgerConstructor() {
     }
 
     const moveCard = (dragIndex, hoverIndex) => {
-
-        //setCards((prevState) => {
-        //  let newOrd = [...prevState];
-        //  newOrd.splice(dragIndex, 1);
-        //  newOrd.splice(hoverIndex, 0, prevState[dragIndex]);
-        //  return newOrd;
-        //});
         
         let newOrd = [...constructorItems];
         newOrd.splice(dragIndex, 1);
@@ -79,22 +76,31 @@ export default function BurgerConstructor() {
   
       };
 
+    const [{ canDrop, isOver }, drop] = useDrop(() => ({
+        accept: 'ingredient',
+        drop: () => ({ name: 'Dustbin' }),
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop(),
+        }),
+    }));
+
     useEffect(() => {
         const orderSum = constructorItems.reduce((sum, item) => sum + item.price, 0) + (bun._id ? bun.price * 2 : 0); //подсчет суммы ингредиентов
         orderSumDispatcher({type: "update", sum: orderSum});
 
-    }, [constructorItems, bun])
+    }, [constructorItems, bun]);
 
     return (
         <div className={`${styles.main} mt-25`}>
-            <div className={styles.order}>
-                { bun._id ? (<OrderItem item={bun} type="top" />) : (<NoItem type="topbun" />) }
-                { constructorItems.length > 0 ? (<div className={`${styles.ingredients} pr-2`}>
+            <div ref={drop} className={styles.order}>
+                { bun._id ? (<OrderItem item={bun} type="top" moveCard={()=>{}} />) : (<NoItem type="topbun" />) }
+                { constructorItems.length > 0 ? (<div id={"selectedIngredients"} className={`${styles.ingredients} pr-2`}>
                     {constructorItems.map ((item, index) =>
                         <OrderItem key={item.uid} item={item} index={index} type="regular" moveCard={moveCard}/>
                     )}
                 </div>) : (<NoItem type="ingredient" />) }
-                { bun._id ? (<OrderItem item={bun} type="bottom" />) : (<NoItem type="bottombun" />) }
+                { bun._id ? (<OrderItem item={bun} type="bottom" moveCard={()=>{}} />) : (<NoItem type="bottombun" />) }
             </div>
 
             <div className={`${styles.summary} mr-7`}>
@@ -123,6 +129,9 @@ export default function BurgerConstructor() {
                             {orderModalMode === EMPTY && (<EmptyOrderMessage />)}   
                         </Modal>
             )}
+            {
+                modalOverlayVisible && <ModalOverlay />
+            }
         </div>
     );
 };

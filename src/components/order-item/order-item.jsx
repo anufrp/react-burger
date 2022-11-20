@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {getConstructorConfig} from "../../utils/get-config";
+import styles from "../order-item/order-item.module.css"
 import PropTypes from "prop-types";
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd'
 import { REJECT_CONSTRUCTOR_LIST } from "../../services/actions/actions";
 
-export default function OrderItem({item, type, index, moveCard = ()=>{}}) {
-
+export default function OrderItem({ item, type, index, moveCard }) {
+    
     const [constructorConfig, setConstructorConfig] = useState();
 
     const dispatch = useDispatch();
@@ -15,8 +16,8 @@ export default function OrderItem({item, type, index, moveCard = ()=>{}}) {
     const rejectItem = (item) => {
         dispatch({type: REJECT_CONSTRUCTOR_LIST, item: item});
     }
-
     
+    //все для сортировки
     const ref = useRef(null)
     
     const [{ handlerId }, drop] = useDrop({
@@ -28,41 +29,35 @@ export default function OrderItem({item, type, index, moveCard = ()=>{}}) {
         },
         hover(item, monitor) {
         if (!ref.current) {
-            return
+            return;
         }
-        const dragIndex = item.index
-        const hoverIndex = index
-        // Don't replace items with themselves
+        
+        const dragIndex = item.index;
+        const hoverIndex = index;
+
         if (dragIndex === hoverIndex) {
-            return
+            return;
         }
-        // Determine rectangle on screen
-        const hoverBoundingRect = ref.current?.getBoundingClientRect()
-        // Get vertical middle
+        
+        const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
         const hoverMiddleY =
-            (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-        // Determine mouse position
-        const clientOffset = monitor.getClientOffset()
-        // Get pixels to the top
-        const hoverClientY = clientOffset.y - hoverBoundingRect.top
-        // Only perform the move when the mouse has crossed half of the items height
-        // When dragging downwards, only move when the cursor is below 50%
-        // When dragging upwards, only move when the cursor is above 50%
-        // Dragging downwards
+            (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+        const clientOffset = monitor.getClientOffset();
+
+        const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
         if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-            return
+            return;
         }
-        // Dragging upwards
+        
         if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-            return
+            return;
         }
-        // Time to actually perform the action
-        moveCard(dragIndex, hoverIndex)
-        // Note: we're mutating the monitor item here!
-        // Generally it's better to avoid mutations,
-        // but it's good here for the sake of performance
-        // to avoid expensive index searches.
-        item.index = hoverIndex
+        
+        moveCard(dragIndex, hoverIndex);
+        item.index = hoverIndex;
         },
     })
     const [{ isDragging }, drag] = useDrag({
@@ -74,18 +69,27 @@ export default function OrderItem({item, type, index, moveCard = ()=>{}}) {
         isDragging: monitor.isDragging(),
         }),
     })
-    const opacity = isDragging ? 0 : 1
-    drag(drop(ref))
+    const opacity = isDragging ? 0 : 1;
 
-    const refProp = type === "regular" ? { ref: ref } : {}
+    drag(drop(ref));
+
+    //для булок не добавляем ref, так они не будут доступны для сортировки
+    const refProp = type === "regular" ? { ref: ref } : {};
     
     useEffect(() => {
         setConstructorConfig(getConstructorConfig(item, type));
-    }, [item]);
+    }, [moveCard, item]);
+
+    
+    useEffect(() => {
+        const selectedIngredients = document.querySelector("#selectedIngredients");
+        if(selectedIngredients !== null) 
+            selectedIngredients.scrollTo({ top: 99999, behavior: 'smooth' });
+    },[])
 
     return constructorConfig && (
-        <div style={{ opacity }} {...refProp} className={constructorConfig.className} >
-            {type === "regular" && (<DragIcon />)}
+        <div style={{ opacity }} {...refProp} className={constructorConfig.className} data-handler-id={handlerId} >
+            {type === "regular" && (<div className={styles.dragIcon}><DragIcon /></div>)}
             <ConstructorElement {...constructorConfig.props} handleClose = {() => rejectItem(item)} />
         </div>
     )  

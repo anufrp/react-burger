@@ -23,14 +23,15 @@ export default function IngredientSection({type, items}) {
         let currentIngredient = findElement(id);
         currentIngredient = {...currentIngredient, uid: uuidv4()}
 
-        switch (currentIngredient.type){
-            case 'bun': 
-                dispatch({type: SET_BUN, item: currentIngredient});
-                break;
-            default:
-                dispatch({type: TOPUP_CONSTRUCTOR_LIST, item: currentIngredient});
-                break;
-        }
+        //Добавлять выбранный ингредиент в конструктор по клику
+        // switch (currentIngredient.type){
+        //     case 'bun': 
+        //         dispatch({type: SET_BUN, item: currentIngredient});
+        //         break;
+        //     default:
+        //         dispatch({type: TOPUP_CONSTRUCTOR_LIST, item: currentIngredient});
+        //         break;
+        // }
 
         dispatch({type: SET_INGREDIENT_DETAILS, item: currentIngredient});
         setShowModal(true);
