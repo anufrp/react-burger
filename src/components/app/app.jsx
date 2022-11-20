@@ -1,4 +1,6 @@
 import React, { useEffect, useReducer} from "react";
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
@@ -53,11 +55,13 @@ export default function App() {
             <AppHeader />
             <div>
                 <div className={`${styles.main}`}>
-                  <activeTabContext.Provider value={{ activeTabState, activeTabDispatcher }}>
-                    <BurgerIngredients />
-                  </activeTabContext.Provider>
-                  
-                  <BurgerConstructor /> 
+                  <DndProvider backend={HTML5Backend}>
+                    <activeTabContext.Provider value={{ activeTabState, activeTabDispatcher }}>
+                      <BurgerIngredients />
+                    </activeTabContext.Provider>
+                    
+                    <BurgerConstructor /> 
+                  </DndProvider>
                 </div>
             </div>
         </>

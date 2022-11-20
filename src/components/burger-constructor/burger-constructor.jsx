@@ -16,6 +16,7 @@ import {
     CLEAR_ORDER_DETAILS,
     CLEAR_BUN
 } from "../../services/actions/actions";
+import { UPDATE_CONSTRUCTOR } from "../../services/actions/constructor";
 
 const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
 
@@ -62,6 +63,22 @@ export default function BurgerConstructor() {
         }
     }
 
+    const moveCard = (dragIndex, hoverIndex) => {
+
+        //setCards((prevState) => {
+        //  let newOrd = [...prevState];
+        //  newOrd.splice(dragIndex, 1);
+        //  newOrd.splice(hoverIndex, 0, prevState[dragIndex]);
+        //  return newOrd;
+        //});
+        
+        let newOrd = [...constructorItems];
+        newOrd.splice(dragIndex, 1);
+        newOrd.splice(hoverIndex, 0, constructorItems[dragIndex]);
+        dispatch({type: UPDATE_CONSTRUCTOR, items: newOrd});
+  
+      };
+
     useEffect(() => {
         const orderSum = constructorItems.reduce((sum, item) => sum + item.price, 0) + (bun._id ? bun.price * 2 : 0); //подсчет суммы ингредиентов
         orderSumDispatcher({type: "update", sum: orderSum});
@@ -73,8 +90,8 @@ export default function BurgerConstructor() {
             <div className={styles.order}>
                 { bun._id ? (<OrderItem item={bun} type="top" />) : (<NoItem type="topbun" />) }
                 { constructorItems.length > 0 ? (<div className={`${styles.ingredients} pr-2`}>
-                    {constructorItems.map ((item) =>
-                        <OrderItem key={item.uid} item={item} type="regular" />
+                    {constructorItems.map ((item, index) =>
+                        <OrderItem key={item.uid} item={item} index={index} type="regular" moveCard={moveCard}/>
                     )}
                 </div>) : (<NoItem type="ingredient" />) }
                 { bun._id ? (<OrderItem item={bun} type="bottom" />) : (<NoItem type="bottombun" />) }

@@ -23,6 +23,8 @@ import {
     RESET_ORDER_MODAL_MODE
 } from "../actions/actions"
 
+import { UPDATE_CONSTRUCTOR } from '../actions/constructor';
+
 const initialState = {  
     ingredients: [],
     ingredientsRequest: false,
@@ -91,6 +93,9 @@ const burgerReducer = (state = initialState, action) => {
 
     case RESET_ORDER_MODAL_MODE: 
         return { ...state, orderModalMode: initialState.orderModalMode }
+
+    case UPDATE_CONSTRUCTOR:
+        return { ...state, constructorItems: action.items}
 
     default: {
       return state;
