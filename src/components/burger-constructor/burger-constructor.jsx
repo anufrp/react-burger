@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState, useMemo, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useDrop } from 'react-dnd'
 import styles from './burger-constructor.module.css';
 import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
@@ -8,50 +8,38 @@ import ErrorMessage from "../error-message/error-message";
 import EmptyOrderMessage from "../empty-order-message/empty-order-message";
 import NoItem from "../no-item/no-item";
 import Modal from '../modal/modal';
-import ModalOverlay from "../modal-overlay/modal-overlay";
 import Loader from "../loader/loader";
 import { useSelector, useDispatch } from 'react-redux';
 import { 
     processingOrder, 
     RESET_ORDER_MODAL_MODE,
+    CLEAR_ORDER_DETAILS
+} from "../../services/actions/order-details";
+import { 
+    UPDATE_CONSTRUCTOR, 
     CLEAR_CONSTRUCTOR_LIST,
-    CLEAR_ORDER_DETAILS,
-    CLEAR_BUN
-} from "../../services/actions/actions";
-import { UPDATE_CONSTRUCTOR } from "../../services/actions/constructor";
+    CLEAR_BUN,
+    CLEAR_COST
+ } from "../../services/actions/constructor";
 
 const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
-
-const orderSumInitialState = { sum: 0 };
-
-function orderSumReducer(orderSumState, action) {
-    switch (action.type) {
-      case "update":
-        return { sum: action.sum };
-      case "reset":
-        return orderSumInitialState;
-      default:
-        throw new Error(`Wrong type of action: ${action.type}`);
-    }
-  }
 
 export default function BurgerConstructor() {
 
     const dispatch = useDispatch();
     
-    const {constructorItems, bun, orderRequest, orderFailed, orderModalMode, orderDetails} = useSelector(store => 
+    const [shouldUpdate, setShouldUpdate] = useState(true); //ререндер при добавлении компонентов, иначе не работает сортировка для последнего добавленного ингредиента :с
+    
+    const {constructorItems, bun, orderRequest, orderFailed, orderModalMode, orderDetails, cost} = useSelector(store => 
         ({
-            constructorItems: store.burger.constructorItems,
-            bun: store.burger.bun,
-            orderRequest: store.burger.orderRequest,
-            orderFailed: store.burger.orderFailed,
-            orderModalMode: store.burger.orderModalMode,
-            orderDetails: store.burger.orderDetails
+            constructorItems: store.constructorItems.constructorItems,
+            bun: store.constructorItems.bun,
+            orderRequest: store.orderDetails.orderRequest,
+            orderFailed: store.orderDetails.orderFailed,
+            orderModalMode: store.orderDetails.orderModalMode,
+            orderDetails: store.orderDetails.orderDetails,
+            cost: store.constructorItems.cost
         }));
-
-    const [orderSumState, orderSumDispatcher] = useReducer(orderSumReducer, orderSumInitialState, undefined);
-
-    const [modalOverlayVisible, setModalOverlayVisible] = useState(false);
 
     const confirmOrder = () => {
 
@@ -64,6 +52,7 @@ export default function BurgerConstructor() {
             dispatch({type: CLEAR_CONSTRUCTOR_LIST});
             dispatch({type: CLEAR_BUN});
             dispatch({type: CLEAR_ORDER_DETAILS});
+            dispatch({type: CLEAR_COST});
         }
     }
 
@@ -81,32 +70,36 @@ export default function BurgerConstructor() {
         drop: () => ({ name: 'Dustbin' }),
         collect: (monitor) => ({
             isOver: monitor.isOver(),
-            canDrop: monitor.canDrop(),
+            canDrop: monitor.canDrop()
         }),
     }));
 
     useEffect(() => {
-        const orderSum = constructorItems.reduce((sum, item) => sum + item.price, 0) + (bun._id ? bun.price * 2 : 0); //подсчет суммы ингредиентов
-        orderSumDispatcher({type: "update", sum: orderSum});
-
-    }, [constructorItems, bun]);
+        setShouldUpdate(!shouldUpdate); //изменить состояние для ререндеринга компонента, таким образом у дочерних OrderItem произовйдет ререндеринг и установится Ref
+    },[constructorItems]);
 
     return (
         <div className={`${styles.main} mt-25`}>
             <div ref={drop} className={styles.order}>
+
                 { bun._id ? (<OrderItem item={bun} type="top" moveCard={()=>{}} />) : (<NoItem type="topbun" />) }
-                { constructorItems.length > 0 ? (<div id={"selectedIngredients"} className={`${styles.ingredients} pr-2`}>
-                    {constructorItems.map ((item, index) =>
-                        <OrderItem key={item.uid} item={item} index={index} type="regular" moveCard={moveCard}/>
-                    )}
-                </div>) : (<NoItem type="ingredient" />) }
+
+                { constructorItems.length > 0 ? 
+                    (<div id={"selectedIngredients"} className={`${styles.ingredients} pr-2`}>
+                        {constructorItems.map ((item, index) =>
+                            <OrderItem key={item.uid} item={item} index={index} type="regular" moveCard={moveCard} />
+                        )}
+                    </div>) : 
+                    (<NoItem type="ingredient" />) }
+
                 { bun._id ? (<OrderItem item={bun} type="bottom" moveCard={()=>{}} />) : (<NoItem type="bottombun" />) }
+
             </div>
 
             <div className={`${styles.summary} mr-7`}>
 
                 <div className={`${styles.price} text text_type_digits-medium mr-10`}>
-                    <span> {orderSumState.sum} </span> <CurrencyIcon type="primary" />
+                    <span> {cost} </span> <CurrencyIcon type="primary" />
                 </div>
 
                 <div className='text text_type_main-medium'>
@@ -129,9 +122,6 @@ export default function BurgerConstructor() {
                             {orderModalMode === EMPTY && (<EmptyOrderMessage />)}   
                         </Modal>
             )}
-            {
-                modalOverlayVisible && <ModalOverlay />
-            }
         </div>
     );
 };

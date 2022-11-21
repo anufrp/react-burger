@@ -8,7 +8,7 @@ import Modal from "../modal/modal";
 import { activeTabContext } from "../../services/tabsContext";
 import { BUN, SAUCE, MAIN } from "../../services/constants";
 import { useSelector, useDispatch } from 'react-redux';
-import { getIngredients } from "../../services/actions/actions";
+import { getIngredients } from "../../services/actions/ingredients";
 
 export default function BurgerIngredients() {
     
@@ -16,9 +16,9 @@ export default function BurgerIngredients() {
     const dispatch = useDispatch();
     const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector(store => 
         ({
-            ingredients: store.burger.ingredients, 
-            ingredientsRequest: store.burger.ingredientsRequest,
-            ingredientsFailed: store.burger.ingredientsFailed
+            ingredients: store.ingredients.ingredients, 
+            ingredientsRequest: store.ingredients.ingredientsRequest,
+            ingredientsFailed: store.ingredients.ingredientsFailed
         }));
     const ingredientsNode = useRef(null);
 

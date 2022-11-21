@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./error-message.module.css";
+import PropTypes from "prop-types";
 
 export default function ErrorMessage(props) {
 
@@ -16,4 +17,8 @@ export default function ErrorMessage(props) {
             </span>
         </div>
     )
+}
+
+ErrorMessage.propTypes = {
+    children: PropTypes.node.isRequired
 }

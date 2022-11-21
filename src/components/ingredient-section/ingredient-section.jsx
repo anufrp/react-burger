@@ -7,7 +7,7 @@ import Modal from '../modal/modal';
 import { BUN, SAUCE, MAIN } from "../../services/constants";
 import { activeTabContext } from "../../services/tabsContext";
 import { useDispatch } from 'react-redux';
-import { TOPUP_CONSTRUCTOR_LIST, SET_BUN, SET_INGREDIENT_DETAILS, CLEAR_INGREDIENT_DETAILS } from "../../services/actions/actions";
+import { SET_INGREDIENT_DETAILS, CLEAR_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
 import { v4 as uuidv4 } from 'uuid';
 
 export default function IngredientSection({type, items}) {     
@@ -20,8 +20,8 @@ export default function IngredientSection({type, items}) {
 
     const selectIngredient = (id) => {
 
-        let currentIngredient = findElement(id);
-        currentIngredient = {...currentIngredient, uid: uuidv4()}
+        const currentIngredient = findElement(id);
+        //currentIngredient = {...currentIngredient, uid: uuidv4()}
 
         //Добавлять выбранный ингредиент в конструктор по клику
         // switch (currentIngredient.type){

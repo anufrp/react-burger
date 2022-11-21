@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import {CurrencyIcon, Counter} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './ingredient-card.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { SET_BUN, TOPUP_CONSTRUCTOR_LIST } from "../../services/actions/actions";
+import { SET_BUN, TOPUP_CONSTRUCTOR_LIST } from "../../services/actions/constructor";
+import { SET_COST } from "../../services/actions/constructor";
 import { v4 as uuidv4 } from 'uuid';
 
 export default function IngredientCard({item, onClickFunc}) { 
@@ -15,8 +16,8 @@ export default function IngredientCard({item, onClickFunc}) {
 
     const {constructorItems, bun} = useSelector(store => 
         ({
-            constructorItems: store.burger.constructorItems,
-            bun: store.burger.bun
+            constructorItems: store.constructorItems.constructorItems,
+            bun: store.constructorItems.bun
         }));
 
     const [{ isDragging }, drag] = useDrag(() => ({
@@ -30,9 +31,11 @@ export default function IngredientCard({item, onClickFunc}) {
             switch (item.type){
                 case 'bun': 
                     dispatch({type: SET_BUN, item: {...item, uid: uuidv4()}});
+                    dispatch({type: SET_COST});
                     break;
                 default:
                     dispatch({type: TOPUP_CONSTRUCTOR_LIST, item: {...item, uid: uuidv4()}});
+                    dispatch({type: SET_COST});
 
                     //прокрутить контейнер с выбранными ингредиентами вниз
                     // const selectedIngredients = document.querySelector("#selectedIngredients");

@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import {getConstructorConfig} from "../../utils/get-config";
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { getConstructorConfig } from "../../utils/get-config";
 import styles from "../order-item/order-item.module.css"
 import PropTypes from "prop-types";
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd'
-import { REJECT_CONSTRUCTOR_LIST } from "../../services/actions/actions";
+import { REJECT_CONSTRUCTOR_LIST } from "../../services/actions/constructor";
 
 export default function OrderItem({ item, type, index, moveCard }) {
     
@@ -18,7 +18,7 @@ export default function OrderItem({ item, type, index, moveCard }) {
     }
     
     //все для сортировки
-    const ref = useRef(null)
+    const ref = useRef();  
     
     const [{ handlerId }, drop] = useDrop({
         accept: "card",
@@ -66,26 +66,28 @@ export default function OrderItem({ item, type, index, moveCard }) {
         return { item, index }
         },
         collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
+        isDragging: monitor.isDragging()
         }),
     })
     const opacity = isDragging ? 0 : 1;
 
     drag(drop(ref));
 
+
     //для булок не добавляем ref, так они не будут доступны для сортировки
     const refProp = type === "regular" ? { ref: ref } : {};
     
     useEffect(() => {
         setConstructorConfig(getConstructorConfig(item, type));
-    }, [moveCard, item]);
+    },[item, moveCard]);
 
     
     useEffect(() => {
         const selectedIngredients = document.querySelector("#selectedIngredients");
         if(selectedIngredients !== null) 
             selectedIngredients.scrollTo({ top: 99999, behavior: 'smooth' });
-    },[])
+    },[]);
+
 
     return constructorConfig && (
         <div style={{ opacity }} {...refProp} className={constructorConfig.className} data-handler-id={handlerId} >
@@ -98,5 +100,7 @@ export default function OrderItem({ item, type, index, moveCard }) {
 
 OrderItem.propTypes = {
     item: PropTypes.object.isRequired,
-    type: PropTypes.string
+    type: PropTypes.string.isRequired,
+    index: PropTypes.number,
+    moveCard: PropTypes.func
 };

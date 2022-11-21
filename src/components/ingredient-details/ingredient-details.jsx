@@ -6,7 +6,7 @@ export default function IngredientDetails() {
     
     const { ingredientDetails } = useSelector(store => 
         ({
-            ingredientDetails: store.burger.ingredientDetails
+            ingredientDetails: store.ingredientDetails.ingredientDetails
         }));
 
     return (
