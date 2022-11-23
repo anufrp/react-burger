@@ -1,23 +1,21 @@
-import React, {useState, useEffect} from "react";
+import React, { useEffect, useReducer} from "react";
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import {GetData} from "../../utils/get-data";
 import styles from './app.module.css';
-
-const API_URL = 'https://norma.nomoreparties.space/api/ingredients'
+import { activeTabContext } from "../../services/tabsContext";
+import { activeTabInitialState } from "./app.consts";
+import { activeTabReducer } from "./app.utils";
 
 
 export default function App() {
 
-    const [data , setData ] = useState();
     const body = document.querySelector("body");
+    const [activeTabState, activeTabDispatcher] = useReducer(activeTabReducer, activeTabInitialState, undefined);
 
     useEffect(() => {
-        GetData(API_URL)
-          .then((data) => setData(data))
-          .catch(error => {console.log('Ошибка при получении данных: ' + error.message)});
-
           body.classList += styles.bodyScroll;
       }, []);
 
@@ -26,11 +24,13 @@ export default function App() {
             <AppHeader />
             <div>
                 <div className={`${styles.main}`}>
-                    {data &&
-                    (<>
-                        <BurgerIngredients items={data} />
-                        <BurgerConstructor items={data} />
-                    </>)}
+                  <DndProvider backend={HTML5Backend}>
+                    <activeTabContext.Provider value={{ activeTabState, activeTabDispatcher }}>
+                      <BurgerIngredients />
+                    </activeTabContext.Provider>
+                    
+                    <BurgerConstructor /> 
+                  </DndProvider>
                 </div>
             </div>
         </>

@@ -4,7 +4,7 @@ import {Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-devel
 
 export default function AppHeader() {
     return(
-        <div className={styles.menu}>
+        <header className={styles.menu}>
             <div className={`${styles.menuPart} p-4`}>
                 <div className={`${styles.item} text text_type_main-default p-4`}>
                     <BurgerIcon type="primary"/>
@@ -24,7 +24,7 @@ export default function AppHeader() {
                     <span>Личный кабинет</span>
                 </div>
             </div>
-        </div>
+        </header>
     );
 }
 

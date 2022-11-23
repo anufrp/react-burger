@@ -1,5 +1,6 @@
 .item {
     width: 100%;
+    min-width: 573px;
     display: flex;
     align-items: center;
     gap: 13px;
@@ -8,4 +9,8 @@
 .top, .bottom {
     width: 573px;
     margin-right: -58px;
+}
+
+.dragIcon {
+    cursor: move;
 }

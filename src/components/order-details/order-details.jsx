@@ -1,10 +1,11 @@
 import React from "react";
 import orderIsOk from "../../images/orderIsOk.png"
 import styles from "./order-details.module.css";
+import PropTypes from "prop-types";
 
-export default function OrderDetails() {
+export default function OrderDetails({orderNumber}) {
 
-    const [number, status, desc] = ['034536', 'Ваш заказ начали готовить', 'Дождитесь готовности на орбитальной станции'];
+    const [number, status, desc] = [orderNumber, 'Ваш заказ начали готовить', 'Дождитесь готовности на орбитальной станции'];
 
     return (
         <div className={styles.main}>
@@ -26,3 +27,7 @@ export default function OrderDetails() {
         </div>
     )
 }
+
+OrderDetails.propTypes = {
+    orderNumber: PropTypes.number.isRequired
+};
