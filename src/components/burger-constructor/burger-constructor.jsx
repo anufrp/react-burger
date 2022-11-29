@@ -76,7 +76,7 @@ export default function BurgerConstructor() {
 
     useEffect(() => {
         setShouldUpdate(!shouldUpdate); //изменить состояние для ререндеринга компонента, таким образом у дочерних OrderItem произовйдет ререндеринг и установится Ref
-    },[constructorItems]);
+    },[constructorItems.length]);
 
     return (
         <div className={`${styles.main} mt-25`}>
