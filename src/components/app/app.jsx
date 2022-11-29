@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer} from "react";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import AppHeader from "../app-header/app-header";
@@ -8,6 +9,7 @@ import styles from './app.module.css';
 import { activeTabContext } from "../../services/tabsContext";
 import { activeTabInitialState } from "./app.consts";
 import { activeTabReducer } from "./app.utils";
+import LoginPage from "../../pages/login/login";
 
 
 export default function App() {
@@ -20,9 +22,13 @@ export default function App() {
       }, []);
 
     return (
-        <>
-            <AppHeader />
-            <div>
+      <>
+        <AppHeader />
+
+        <Router>
+          <Switch>
+            <Route path="/" exact={true}>
+              <div>
                 <div className={`${styles.main}`}>
                   <DndProvider backend={HTML5Backend}>
                     <activeTabContext.Provider value={{ activeTabState, activeTabDispatcher }}>
@@ -32,7 +38,14 @@ export default function App() {
                     <BurgerConstructor /> 
                   </DndProvider>
                 </div>
-            </div>
-        </>
+              </div>
+            </Route>
+            <Route path="/login" exact={true}>
+              <LoginPage />
+            </Route>
+          </Switch>
+        </Router>
+
+      </>
     )
 }
