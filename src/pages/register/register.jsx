@@ -1,13 +1,14 @@
 import React, {useState, useRef, useCallback} from 'react';
-import styles from './login.module.css';
+import styles from './register.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory } from 'react-router-dom';
 
-export default function LoginPage() {
+export default function RegisterPage() {
 
     const history = useHistory(); 
 
     const [email, setEmail] = useState('value@burg.er');
+    const [name, setName] = useState('BurgLover');
     const [password, setPassword] = useState(null);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const emailRef = useRef(null);
@@ -21,16 +22,9 @@ export default function LoginPage() {
         e.preventDefault();
     }
 
-    const register = useCallback(
+    const login = useCallback(
         () => {
-            history.replace({ pathname: '/register' });
-        },
-        [history]
-      ); 
-
-    const forgotPassword = useCallback(
-        () => {
-            history.replace({ pathname: '/forgot-password' });
+            history.replace({ pathname: '/login' });
         },
         [history]
     ); 
@@ -40,8 +34,18 @@ export default function LoginPage() {
         <div className={styles.content}>
         <form className={`${styles.form} pb-20`} onSubmit={formSubmit}>
             <p className="text text_type_main-medium pb-6" >
-                Вход
+                Регистрация
             </p>
+            <Input
+                type={'text'}
+                placeholder={'Имя'}
+                onChange={e => setName(e.target.value)}
+                value={name || ""}
+                name={'name'}
+                size={'default'}
+                extraClass="pb-6"
+                required
+            />
             <Input
                 type={'email'}
                 placeholder={'E-mail'}
@@ -67,14 +71,11 @@ export default function LoginPage() {
                 required
             />
             <Button htmlType="submit" type="primary" size="large">
-                Войти
+                Зарегистрироваться
             </Button>
         </form>
         <div className={`${styles.bottomLink} pb-4`}>
-            <div><p className="text text_type_main-default text_color_inactive">Вы — новый пользователь?</p></div><Button htmlType="button" type="secondary" size="medium" onClick={register} extraClass={`${styles.buttonSecondary} pl-2`}>Зарегистрироваться</Button>
-        </div>
-        <div className={styles.bottomLink}>
-            <div><p className="text text_type_main-default text_color_inactive">Забыли пароль?</p></div><Button htmlType="button" type="secondary" size="medium" onClick={forgotPassword} extraClass={`${styles.buttonSecondary} pl-2`}>Восстановить пароль</Button>
+            <div><p className="text text_type_main-default text_color_inactive">Уже зарегистрированы?</p></div><Button htmlType="button" type="secondary" size="medium" onClick={login} extraClass={`${styles.buttonSecondary} pl-2`}>Войти</Button>
         </div>
         </div>
     </div>

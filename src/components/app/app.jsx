@@ -10,6 +10,10 @@ import { activeTabContext } from "../../services/tabsContext";
 import { activeTabInitialState } from "./app.consts";
 import { activeTabReducer } from "./app.utils";
 import LoginPage from "../../pages/login/login";
+import RegisterPage from "../../pages/register/register";
+import ForgotPasswordPage from "../../pages/forgot-password/forgot-password";
+import ResetPasswordPage from "../../pages/reset-password/reset-password";
+import ProfilePage from "../../pages/profile/profile";
 
 
 export default function App() {
@@ -25,7 +29,6 @@ export default function App() {
       <>
         <AppHeader />
 
-        <Router>
           <Switch>
             <Route path="/" exact={true}>
               <div>
@@ -43,8 +46,19 @@ export default function App() {
             <Route path="/login" exact={true}>
               <LoginPage />
             </Route>
+            <Route path="/register" exact={true}>
+              <RegisterPage />
+            </Route>
+            <Route path="/forgot-password" exact={true}>
+              <ForgotPasswordPage />
+            </Route>
+            <Route path="/reset-password" exact={true}>
+              <ResetPasswordPage />
+            </Route>
+            <Route path="/profile" exact={true}>
+              <ProfilePage />
+            </Route>
           </Switch>
-        </Router>
 
       </>
     )

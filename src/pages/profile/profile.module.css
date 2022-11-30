@@ -1,0 +1,67 @@
+.wrapper {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    /* width: fit-content; */
+    width: 100%;
+} 
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    position: fixed;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+}
+
+.menu {
+    position: fixed;
+    left: 20%;
+    top: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.lnk {
+    text-decoration: none;
+}
+
+.activeLnk {
+    color: white;
+}
+
+.hint {
+    color: rgb(64, 64, 83);
+    font-weight: bold;    
+}
+
+.bottomBtns {
+    display: flex;
+    justify-content: end;
+    align-items: center;    
+    gap: 16px;
+    width: 100%;
+}
+
+.buttonSecondary {
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
