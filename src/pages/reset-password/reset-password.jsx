@@ -1,10 +1,23 @@
 import React, {useState, useRef, useCallback} from 'react';
 import styles from './reset-password.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
+import { DROP_RESET_PASSWORD_ERROR } from '../../services/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetPassword } from '../../services/actions/user';
+import Loader from '../../components/loader/loader';
+import Modal from '../../components/modal/modal';
+import ErrorMessage from '../../components/error-message/error-message';
 
 export default function ResetPasswordPage() {
     const history = useHistory(); 
+    const dispatch = useDispatch();   
+    const {passwordReseted, resetPasswordRequest, resetPasswordFailed} = useSelector(store => 
+        ({
+            passwordReseted: store.user.passwordReseted,
+            resetPasswordRequest: store.user.resetPasswordRequest,
+            resetPasswordFailed: store.user.resetPasswordFailed
+        }));
 
     const [code, setCode] = useState(null);
     const [password, setPassword] = useState(null);
@@ -17,6 +30,16 @@ export default function ResetPasswordPage() {
 
     const formSubmit = (e) => {
         e.preventDefault();
+        const request = {
+            "password": password,
+            "token": code
+        };
+
+        dispatch(resetPassword(request));
+    }
+
+    const closeModal = () => {
+        dispatch({type: DROP_RESET_PASSWORD_ERROR});
     }
 
     const login = useCallback(
@@ -25,6 +48,16 @@ export default function ResetPasswordPage() {
         },
         [history]
     ); 
+
+    if (passwordReseted) {
+        return (
+          <Redirect
+            to={{
+              pathname: '/login'
+            }}
+          />
+        );
+      }
     
   return (
     <div className={styles.wrapper}>
@@ -64,6 +97,13 @@ export default function ResetPasswordPage() {
             <div><p className="text text_type_main-default text_color_inactive">Вспомнили пароль?</p></div><Button htmlType="button" type="secondary" size="medium" onClick={login} extraClass={`${styles.buttonSecondary} pl-2`}>Войти</Button>
         </div>
         </div>
+        {
+            resetPasswordRequest && (<Loader />)
+        }
+
+        { 
+            resetPasswordFailed && (<Modal closeFunc={closeModal}><ErrorMessage>Попробуйте позже...</ErrorMessage></Modal>)
+        }
     </div>
   );
 } 

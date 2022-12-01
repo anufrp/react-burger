@@ -1,23 +1,56 @@
 import React, {useState, useRef, useCallback} from 'react';
 import styles from './forgot-password.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
+import { DROP_CHEK_EMAIL_ERROR } from '../../services/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { forgotPassword } from '../../services/actions/user';
+import Loader from '../../components/loader/loader';
+import Modal from '../../components/modal/modal';
+import ErrorMessage from '../../components/error-message/error-message';
 
 export default function ForgotPasswordPage() {
     const history = useHistory(); 
+    const dispatch = useDispatch();   
+    const {forgotEmailCheck, forgotEmailCheckRequest, forgotEmailCheckFailed} = useSelector(store => 
+        ({
+            forgotEmailCheck: store.user.forgotEmailCheck,
+            forgotEmailCheckRequest: store.user.forgotEmailCheckRequest,
+            forgotEmailCheckFailed: store.user.forgotEmailCheckFailed
+        }));
 
     const [email, setEmail] = useState('value@burg.er');
     const emailRef = useRef(null);
 
     const formSubmit = (e) => {
         e.preventDefault();
+        const request = {
+            "email": email
+        };
+
+        dispatch(forgotPassword(request));
     }
+
+    const closeModal = () => {
+        dispatch({type: DROP_CHEK_EMAIL_ERROR});
+    }
+
     const login = useCallback(
         () => {
             history.replace({ pathname: '/login' });
         },
         [history]
     ); 
+    
+    if (forgotEmailCheck) {
+        return (
+          <Redirect
+            to={{
+              pathname: '/reset-password'
+            }}
+          />
+        );
+      }
     
   return (
     <div className={styles.wrapper}>
@@ -45,6 +78,13 @@ export default function ForgotPasswordPage() {
             <div><p className="text text_type_main-default text_color_inactive">Вспомнили пароль?</p></div><Button htmlType="button" type="secondary" size="medium" onClick={login} extraClass={`${styles.buttonSecondary} pl-2`}>Войти</Button>
         </div>
         </div>
+        {
+            forgotEmailCheckRequest && (<Loader />)
+        }
+
+        { 
+            forgotEmailCheckFailed && (<Modal closeFunc={closeModal}><ErrorMessage>Попробуйте позже...</ErrorMessage></Modal>)
+        }
     </div>
   );
 } 

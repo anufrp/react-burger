@@ -1,13 +1,26 @@
 import React, {useState, useRef, useCallback} from 'react';
 import styles from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
+import { DROP_LOGIN_ERROR } from '../../services/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../services/actions/user';
+import Loader from '../../components/loader/loader';
+import Modal from '../../components/modal/modal';
+import ErrorMessage from '../../components/error-message/error-message';
 
 export default function LoginPage() {
 
     const history = useHistory(); 
+    const dispatch = useDispatch();
+    const {user, loginRequest, loginFailed} = useSelector(store => 
+        ({
+            user: store.user.user,
+            loginRequest: store.user.loginRequest,
+            loginFailed: store.user.loginFailed
+        }));
 
-    const [email, setEmail] = useState('value@burg.er');
+    const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const emailRef = useRef(null);
@@ -19,7 +32,18 @@ export default function LoginPage() {
 
     const formSubmit = (e) => {
         e.preventDefault();
+        const request = {
+            "email": email, 
+            "password": password
+        };
+
+        dispatch(loginUser(request));
     }
+
+    const closeModal = () => {
+        dispatch({type: DROP_LOGIN_ERROR});
+    }
+
 
     const register = useCallback(
         () => {
@@ -34,6 +58,16 @@ export default function LoginPage() {
         },
         [history]
     ); 
+
+    if (user.name) {
+        return (
+          <Redirect
+            to={{
+              pathname: '/'
+            }}
+          />
+        );
+      }
     
   return (
     <div className={styles.wrapper}>
@@ -77,6 +111,13 @@ export default function LoginPage() {
             <div><p className="text text_type_main-default text_color_inactive">Забыли пароль?</p></div><Button htmlType="button" type="secondary" size="medium" onClick={forgotPassword} extraClass={`${styles.buttonSecondary} pl-2`}>Восстановить пароль</Button>
         </div>
         </div>
+        {
+            loginRequest && (<Loader />)
+        }
+
+        { 
+            loginFailed && (<Modal closeFunc={closeModal}><ErrorMessage>Попробуйте позже...</ErrorMessage></Modal>)
+        }
     </div>
   );
 } 

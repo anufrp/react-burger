@@ -1,11 +1,25 @@
 import React, {useState, useRef, useCallback} from 'react';
 import styles from './register.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../../services/actions/user';
+import Modal from '../../components/modal/modal';
+import ErrorMessage from '../../components/error-message/error-message';
+import Loader from '../../components/loader/loader';
+import { useSelector } from 'react-redux';
+import { DROP_REGISTER_ERROR } from '../../services/actions/user';
 
 export default function RegisterPage() {
 
     const history = useHistory(); 
+    const dispatch = useDispatch();
+    const {user, registerUserRequest, registerUserFailed} = useSelector(store => 
+        ({
+            user: store.user.user,
+            registerUserRequest: store.user.registerUserRequest,
+            registerUserFailed: store.user.registerUserFailed
+        }));
 
     const [email, setEmail] = useState('value@burg.er');
     const [name, setName] = useState('BurgLover');
@@ -20,6 +34,17 @@ export default function RegisterPage() {
 
     const formSubmit = (e) => {
         e.preventDefault();
+        const newUserData = {
+            "email": email, 
+            "password": password, 
+            "name": name 
+        };
+
+        dispatch(registerUser(newUserData));
+    }
+
+    const closeModal = () => {
+        dispatch({type: DROP_REGISTER_ERROR});
     }
 
     const login = useCallback(
@@ -28,6 +53,16 @@ export default function RegisterPage() {
         },
         [history]
     ); 
+
+    if (user.name) {
+        return (
+          <Redirect
+            to={{
+              pathname: '/'
+            }}
+          />
+        );
+      }
     
   return (
     <div className={styles.wrapper}>
@@ -78,6 +113,13 @@ export default function RegisterPage() {
             <div><p className="text text_type_main-default text_color_inactive">Уже зарегистрированы?</p></div><Button htmlType="button" type="secondary" size="medium" onClick={login} extraClass={`${styles.buttonSecondary} pl-2`}>Войти</Button>
         </div>
         </div>
+        {
+            registerUserRequest && (<Loader />)
+        }
+
+        { 
+            registerUserFailed && (<Modal closeFunc={closeModal}><ErrorMessage>Попробуйте позже...</ErrorMessage></Modal>)
+        }
     </div>
   );
 } 

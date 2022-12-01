@@ -9,6 +9,7 @@
     display: flex;
     justify-content: space-around;
     background-color: rgb(28, 28, 33);    
+    z-index: 9999;
 }
 
 .menuPart {
@@ -20,4 +21,10 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    text-decoration: none;
+}
+
+.active {
+    color: white !important;
+    /* text-decoration: none; */
 }
