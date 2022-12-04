@@ -15,6 +15,7 @@ import ForgotPasswordPage from "../../pages/forgot-password/forgot-password";
 import ResetPasswordPage from "../../pages/reset-password/reset-password";
 import ProfilePage from "../../pages/profile/profile";
 import NotFound from "../../pages/not-found/not-found";
+import Ingredients from "../../pages/ingredients/ingredients";
 import { ProtectedRoute } from "../protected-route";
 import { getCookie } from "../../utils/cookie";
 import { getProfile } from "../../services/actions/user";
@@ -68,6 +69,9 @@ export default function App() {
             <ProtectedRoute path="/profile" >
               <ProfilePage />
             </ProtectedRoute>
+            <Route path="/ingredients/:id" exact={true}>
+              <Ingredients />
+            </Route>
             <Route>
               <NotFound />
             </Route>
