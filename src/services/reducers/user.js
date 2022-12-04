@@ -17,7 +17,22 @@ import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAILED,
-    DROP_LOGIN_ERROR
+    DROP_LOGIN_ERROR,
+
+    LOGOUT_REQUEST,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAILED,
+    DROP_LOGOUT_ERROR,
+
+    GET_PROFILE_REQUEST,
+    GET_PROFILE_SUCCESS,
+    GET_PROFILE_FAILED,
+    DROP_GET_PROFILE_ERROR,
+
+    UPDATE_PROFILE_REQUEST,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_FAILED,
+    DROP_UPDATE_PROFILE_ERROR
 } from "../actions/user"
 
 const initialState = {  
@@ -34,7 +49,16 @@ const initialState = {
     resetPasswordFailed: false,
 
     loginRequest: false,
-    loginFailed: false
+    loginFailed: false,
+
+    logoutRequest: false,
+    logoutFailed: false,
+
+    getProfileRequest: false,
+    getProfileFailed: false,
+
+    updateProfileRequest: false,
+    updateProfileFailed: false
   };
 
 export const userReducer = (state = initialState, action) => {
@@ -89,6 +113,45 @@ export const userReducer = (state = initialState, action) => {
     }
     case DROP_LOGIN_ERROR: {
         return { ...state, loginFailed: false, loginRequest: false };
+    }
+    
+    case LOGOUT_REQUEST: {
+        return {...state, logoutRequest: true};
+    }
+    case LOGOUT_SUCCESS: {
+        return initialState;
+    }
+    case LOGOUT_FAILED: {
+        return { ...state, logoutFailed: true, logoutRequest: false };
+    }
+    case DROP_LOGOUT_ERROR: {
+        return { ...state, logoutFailed: false, logoutRequest: false };
+    }
+    
+    case GET_PROFILE_REQUEST: {
+        return {...state, getProfileRequest: true};
+    }
+    case GET_PROFILE_SUCCESS: {
+        return { ...state, getProfileFailed: false, user: action.data.user, getProfileRequest: false };
+    }
+    case GET_PROFILE_FAILED: {
+        return { ...state, getProfileFailed: true, getProfileRequest: false };
+    }
+    case DROP_GET_PROFILE_ERROR: {
+        return { ...state, getProfileFailed: false, getProfileRequest: false };
+    }
+    
+    case UPDATE_PROFILE_REQUEST: {
+        return {...state, updateProfileRequest: true};
+    }
+    case UPDATE_PROFILE_SUCCESS: {
+        return { ...state, updateProfileFailed: false, user: action.data.user, updateProfileRequest: false };
+    }
+    case UPDATE_PROFILE_FAILED: {
+        return { ...state, updateProfileFailed: true, updateProfileRequest: false };
+    }
+    case DROP_UPDATE_PROFILE_ERROR: {
+        return { ...state, updateProfileFailed: false, updateProfileRequest: false };
     }
 
     default: {

@@ -14,14 +14,24 @@ import RegisterPage from "../../pages/register/register";
 import ForgotPasswordPage from "../../pages/forgot-password/forgot-password";
 import ResetPasswordPage from "../../pages/reset-password/reset-password";
 import ProfilePage from "../../pages/profile/profile";
+import NotFound from "../../pages/not-found/not-found";
+import { ProtectedRoute } from "../protected-route";
+import { getCookie } from "../../utils/cookie";
+import { getProfile } from "../../services/actions/user";
+import { useDispatch } from "react-redux";
 
 
 export default function App() {
 
     const body = document.querySelector("body");
     const [activeTabState, activeTabDispatcher] = useReducer(activeTabReducer, activeTabInitialState, undefined);
+    const accessToken = getCookie('accessToken');
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        if(accessToken !== undefined) {
+          dispatch(getProfile());
+        }     
           body.classList += styles.bodyScroll;
       }, []);
 
@@ -55,8 +65,11 @@ export default function App() {
             <Route path="/reset-password" exact={true}>
               <ResetPasswordPage />
             </Route>
-            <Route path="/profile" exact={true}>
+            <ProtectedRoute path="/profile" >
               <ProfilePage />
+            </ProtectedRoute>
+            <Route>
+              <NotFound />
             </Route>
           </Switch>
 

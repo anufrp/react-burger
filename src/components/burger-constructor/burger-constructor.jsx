@@ -21,12 +21,15 @@ import {
     CLEAR_BUN,
     CLEAR_COST
  } from "../../services/actions/constructor";
+import { getCookie } from "../../utils/cookie";
+import { useHistory } from "react-router-dom";
 
 const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
 
 export default function BurgerConstructor() {
 
     const dispatch = useDispatch();
+    const history = useHistory(); 
     
     const [shouldUpdate, setShouldUpdate] = useState(true); //ререндер при добавлении компонентов, иначе не работает сортировка для последнего добавленного ингредиента :с
     
@@ -43,7 +46,13 @@ export default function BurgerConstructor() {
 
     const confirmOrder = () => {
 
-        dispatch(processingOrder(constructorItems, bun));
+        const accessToken = getCookie('accessToken');
+
+        if(accessToken === undefined) { //если токена авторизации нет в куки - редиректим на логин
+            history.push({ pathname: '/login' });
+        }
+        else
+            dispatch(processingOrder(constructorItems, bun));
  
     }
     const closeModal = () => {

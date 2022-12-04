@@ -8,18 +8,21 @@ import { forgotPassword } from '../../services/actions/user';
 import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
+import { useLocation } from 'react-router-dom';
 
 export default function ForgotPasswordPage() {
     const history = useHistory(); 
+    const location = useLocation();
     const dispatch = useDispatch();   
-    const {forgotEmailCheck, forgotEmailCheckRequest, forgotEmailCheckFailed} = useSelector(store => 
+    const {user, forgotEmailCheck, forgotEmailCheckRequest, forgotEmailCheckFailed} = useSelector(store => 
         ({
+            user: store.user.user,
             forgotEmailCheck: store.user.forgotEmailCheck,
             forgotEmailCheckRequest: store.user.forgotEmailCheckRequest,
             forgotEmailCheckFailed: store.user.forgotEmailCheckFailed
         }));
 
-    const [email, setEmail] = useState('value@burg.er');
+    const [email, setEmail] = useState('');
     const emailRef = useRef(null);
 
     const formSubmit = (e) => {
@@ -37,10 +40,18 @@ export default function ForgotPasswordPage() {
 
     const login = useCallback(
         () => {
-            history.replace({ pathname: '/login' });
+            history.push({ pathname: '/login' });
         },
         [history]
     ); 
+
+    if (user.name) {
+        return (
+          <Redirect
+            to={ location.state?.from || '/' }
+          />
+        );
+    }
     
     if (forgotEmailCheck) {
         return (

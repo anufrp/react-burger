@@ -14,7 +14,9 @@ const initialState = {
     orderRequest: false,
     orderFailed: false,
 
-    orderModalMode: null
+    orderModalMode: null,
+
+    loginRequired: false
   };
 
 export const orderDetailsReducer = (state = initialState, action) => {
@@ -30,13 +32,13 @@ export const orderDetailsReducer = (state = initialState, action) => {
         return { ...state, orderFailed: true, orderRequest: false };
 
     case CLEAR_ORDER_DETAILS: 
-        return { ...state, orderDetails: initialState.orderDetails }
+        return { ...state, orderDetails: initialState.orderDetails };
 
     case SET_ORDER_MODAL_MODE: 
-        return { ...state, orderModalMode: action.mode }
+        return { ...state, orderModalMode: action.mode };
 
     case RESET_ORDER_MODAL_MODE: 
-        return { ...state, orderModalMode: initialState.orderModalMode }
+        return { ...state, orderModalMode: initialState.orderModalMode };
 
     default: {
       return state;

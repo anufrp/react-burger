@@ -1,8 +1,8 @@
 import request from "./make-request";
 
-export function getData(url) {
+export function getData(url, options) {
     
-    return request(url)
+    return request(url, options)
     
     };
 
@@ -24,3 +24,4 @@ export function sendData(url, data) {
     return request(url, options)
     
     };
+

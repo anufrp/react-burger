@@ -12,11 +12,12 @@ import ErrorMessage from '../../components/error-message/error-message';
 export default function ResetPasswordPage() {
     const history = useHistory(); 
     const dispatch = useDispatch();   
-    const {passwordReseted, resetPasswordRequest, resetPasswordFailed} = useSelector(store => 
+    const {passwordReseted, resetPasswordRequest, resetPasswordFailed, forgotEmailCheck} = useSelector(store => 
         ({
             passwordReseted: store.user.passwordReseted,
             resetPasswordRequest: store.user.resetPasswordRequest,
-            resetPasswordFailed: store.user.resetPasswordFailed
+            resetPasswordFailed: store.user.resetPasswordFailed,
+            forgotEmailCheck: store.user.forgotEmailCheck
         }));
 
     const [code, setCode] = useState(null);
@@ -44,10 +45,21 @@ export default function ResetPasswordPage() {
 
     const login = useCallback(
         () => {
-            history.replace({ pathname: '/login' });
+            history.push({ pathname: '/login' });
         },
         [history]
     ); 
+
+    //если не было успешной проверки email, то возвращаем на страниу ввода email
+    if (!forgotEmailCheck) {
+        return (
+          <Redirect
+            to={{
+              pathname: '/forgot-password'
+            }}
+          />
+        );
+      }
 
     if (passwordReseted) {
         return (

@@ -1,4 +1,4 @@
-import React, {useState, useRef, useCallback} from 'react';
+import React, {useState, useRef, useCallback, useEffect} from 'react';
 import styles from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
@@ -8,11 +8,13 @@ import { loginUser } from '../../services/actions/user';
 import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
+import { useLocation } from 'react-router-dom';
 
 export default function LoginPage() {
 
     const history = useHistory(); 
     const dispatch = useDispatch();
+    const location = useLocation();
     const {user, loginRequest, loginFailed} = useSelector(store => 
         ({
             user: store.user.user,
@@ -23,8 +25,6 @@ export default function LoginPage() {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const emailRef = useRef(null);
-    const passwordRef = useRef(null);
 
     const togglePasswordVisible = () => {
         setPasswordVisible(!passwordVisible);
@@ -47,14 +47,14 @@ export default function LoginPage() {
 
     const register = useCallback(
         () => {
-            history.replace({ pathname: '/register' });
+            history.push({ pathname: '/register' });
         },
         [history]
       ); 
 
     const forgotPassword = useCallback(
         () => {
-            history.replace({ pathname: '/forgot-password' });
+            history.push({ pathname: '/forgot-password' });
         },
         [history]
     ); 
@@ -62,12 +62,10 @@ export default function LoginPage() {
     if (user.name) {
         return (
           <Redirect
-            to={{
-              pathname: '/'
-            }}
+            to={ location.state?.from || '/' }
           />
         );
-      }
+    }
     
   return (
     <div className={styles.wrapper}>
@@ -82,7 +80,6 @@ export default function LoginPage() {
                 onChange={e => setEmail(e.target.value)}
                 value={email || ""}
                 name={'email'}
-                ref={emailRef}
                 size={'default'}
                 extraClass="pb-6"
                 required
@@ -94,7 +91,6 @@ export default function LoginPage() {
                 value={password || ""}
                 name={'password'}
                 icon={passwordVisible ? 'HideIcon' : 'ShowIcon'}
-                ref={passwordRef}
                 size={'default'}
                 extraClass="pb-6"
                 onIconClick={togglePasswordVisible}

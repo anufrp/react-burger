@@ -21,8 +21,8 @@ export default function RegisterPage() {
             registerUserFailed: store.user.registerUserFailed
         }));
 
-    const [email, setEmail] = useState('value@burg.er');
-    const [name, setName] = useState('BurgLover');
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState(null);
     const [passwordVisible, setPasswordVisible] = useState(false);
     const emailRef = useRef(null);
@@ -49,7 +49,7 @@ export default function RegisterPage() {
 
     const login = useCallback(
         () => {
-            history.replace({ pathname: '/login' });
+            history.push({ pathname: '/login' });
         },
         [history]
     ); 

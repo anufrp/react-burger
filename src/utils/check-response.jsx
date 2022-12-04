@@ -3,5 +3,5 @@ export function checkResponse(res) {
         return res.json();
     }
     Promise.reject(`Ошибка ${res.status}`);
-    return null
+    return res.json();
 }
