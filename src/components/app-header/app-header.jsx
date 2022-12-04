@@ -14,7 +14,7 @@ export default function AppHeader() {
 
     const isConstructor = !!useRouteMatch({ path: "/", exact: true});
     const isFeed = !!useRouteMatch({ path: "/feed", exact: true});
-    const isProfile = !!useRouteMatch({ path: "/profile", exact: true});
+    const isProfile = !!useRouteMatch({ path: "/profile" });
 
     return(
         <header className={styles.menu}>
