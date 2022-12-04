@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer} from "react";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import AppHeader from "../app-header/app-header";
@@ -20,6 +21,8 @@ import { ProtectedRoute } from "../protected-route";
 import { getCookie } from "../../utils/cookie";
 import { getProfile } from "../../services/actions/user";
 import { useDispatch } from "react-redux";
+import Modal from "../modal/modal";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
 
 export default function App() {
@@ -28,6 +31,15 @@ export default function App() {
     const [activeTabState, activeTabDispatcher] = useReducer(activeTabReducer, activeTabInitialState, undefined);
     const accessToken = getCookie('accessToken');
     const dispatch = useDispatch();
+
+    const location = useLocation();
+    const history = useHistory();
+    const background = location.state && location.state.background;
+  
+    const handleModalClose = () => {
+      // Возвращаемся к предыдущему пути при закрытии модалки
+      history.goBack();
+    };
 
     useEffect(() => {
         if(accessToken !== undefined) {
@@ -40,7 +52,7 @@ export default function App() {
       <>
         <AppHeader />
 
-          <Switch>
+          <Switch location={background || location}>
             <Route path="/" exact={true}>
               <div>
                 <div className={`${styles.main}`}>
@@ -76,6 +88,17 @@ export default function App() {
               <NotFound />
             </Route>
           </Switch>
+
+          {background && (
+        <Route
+          path='/ingredients/:id'
+          children={
+            <Modal closeFunc={handleModalClose}>
+              <IngredientDetails />
+            </Modal>
+          }
+        />
+      )}
 
       </>
     )

@@ -40,8 +40,7 @@ export default function Ingredients() {
         }
 
     },[dispatch, ingredients])
-
-    
+        
     return (
         <div className={styles.wrapper}>
             <div className={styles.content}>

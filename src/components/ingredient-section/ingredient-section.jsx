@@ -9,7 +9,7 @@ import { activeTabContext } from "../../services/tabsContext";
 import { useDispatch } from 'react-redux';
 import { SET_INGREDIENT_DETAILS, CLEAR_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
 import { v4 as uuidv4 } from 'uuid';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 export default function IngredientSection({type, items}) {     
     
@@ -17,6 +17,7 @@ export default function IngredientSection({type, items}) {
     const headerNode = useRef(null);
     const dispatch = useDispatch();
     const history = useHistory(); 
+    const location = useLocation();
     
     const [showModal, setShowModal] = React.useState(false);
 
@@ -34,9 +35,13 @@ export default function IngredientSection({type, items}) {
         //         dispatch({type: TOPUP_CONSTRUCTOR_LIST, item: currentIngredient});
         //         break;
         // }
-        history.replace({ pathname: '/ingredients/' + id });
+        history.push({ 
+            pathname: '/ingredients/' + id,
+            state: { background: location }
+         });
+
         dispatch({type: SET_INGREDIENT_DETAILS, item: currentIngredient});
-        setShowModal(true);
+        //setShowModal(true);
 
     }
 
