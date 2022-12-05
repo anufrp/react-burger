@@ -93,7 +93,7 @@ export default function App() {
         <Route
           path='/ingredients/:id'
           children={
-            <Modal closeFunc={handleModalClose}>
+            <Modal title="Детали ингредиента" closeFunc={handleModalClose}>
               <IngredientDetails />
             </Modal>
           }
