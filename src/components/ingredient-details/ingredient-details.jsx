@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./ingredient-details.module.css";
 import { useSelector, useDispatch } from 'react-redux';
-import { getIngredients } from "../../services/actions/ingredients";
 import { useParams } from 'react-router-dom';
 import { SET_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
 
@@ -21,8 +20,6 @@ export default function IngredientDetails() {
     }
 
     useEffect(() => {
-        if(ingredients.length === 0) dispatch(getIngredients()); //получить ингредиенты, если страница была перезагружена
-
         if(ingredientDetails._id === undefined && ingredients.length > 0) { //получить элемент, если ингредиенты уже получены
             const currentIngredient = findElement(id);
             dispatch({type: SET_INGREDIENT_DETAILS, item: currentIngredient});

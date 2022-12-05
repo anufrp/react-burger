@@ -1,18 +1,14 @@
 import React, { useEffect} from 'react';
 import styles from './ingredients.module.css';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
-import { getIngredients } from '../../services/actions/ingredients';
 import { SET_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
-import App from '../../components/app/app';
 
-export default function Ingredients() {
-    const history = useHistory(); 
-    const location = useLocation();    
+export default function Ingredients() { 
     const dispatch = useDispatch();
     const { id } = useParams();
     const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector(store => 
@@ -22,19 +18,12 @@ export default function Ingredients() {
             ingredientsFailed: store.ingredients.ingredientsFailed
         }));
 
-
-    const closeModal = () => {
-        // dispatch({type: DROP_CHEK_EMAIL_ERROR});
-        dispatch(getIngredients());
-    }
-
     const findElement = (id) => {
         return ingredients.find( item => item._id === id)
     }
 
     useEffect(() => {
-        if(ingredients.length === 0) dispatch(getIngredients());
-        else {
+        if(ingredients.length > 0) {
             const currentIngredient = findElement(id);
             dispatch({type: SET_INGREDIENT_DETAILS, item: currentIngredient});
         }
@@ -51,7 +40,7 @@ export default function Ingredients() {
             }
 
             { 
-                ingredientsFailed && (<Modal closeFunc={closeModal}><ErrorMessage>Попробуйте обновить страницу</ErrorMessage></Modal>)
+                ingredientsFailed && (<Modal closeFunc={() => {}}><ErrorMessage>Попробуйте обновить страницу</ErrorMessage></Modal>)
             }
         </div>
     );

@@ -23,6 +23,7 @@ import { getProfile } from "../../services/actions/user";
 import { useDispatch } from "react-redux";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import { getIngredients } from "../../services/actions/ingredients";
 
 
 export default function App() {
@@ -42,6 +43,7 @@ export default function App() {
     };
 
     useEffect(() => {
+        dispatch(getIngredients());
         if(accessToken !== undefined) {
           dispatch(getProfile());
         }     
