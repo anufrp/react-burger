@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./app-header.module.css"
 import {Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import { NavLink, useRouteMatch } from "react-router-dom"
+import { Link, NavLink, useRouteMatch } from "react-router-dom"
 import { useSelector } from 'react-redux';
 
 
@@ -29,7 +29,7 @@ export default function AppHeader() {
                 </NavLink>
             </div>
             <div className={`${styles.logo} p-4`}>
-                <Logo />
+                <Link to='/'><Logo /></Link>
             </div>     
             <div className={`${styles.menuPart} p-4`}>
                 <NavLink to="/profile" className={`${styles.item} text text_type_main-default text_color_inactive p-4`} activeClassName={`${styles.active}`}>

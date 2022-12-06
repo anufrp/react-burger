@@ -26,7 +26,8 @@ export function processingOrder(constructorItems, bun) {
 
             dispatch({type: SET_ORDER_DETAILS_REQUEST});
 
-            createOrder(API_BASE + 'orders', orderIngredients).then(res => {
+            createOrder(API_BASE + 'orders', orderIngredients)
+            .then(res => {
                 if (res && res.success) {
         
                     dispatch({
@@ -47,7 +48,12 @@ export function processingOrder(constructorItems, bun) {
                     }
 
                 }
-            });
+            })
+            .catch((error) => {
+                console.error("Ошибка при выполнении запроса!", error); 
+                dispatch({type: SET_ORDER_DETAILS_FAILED});
+                dispatch({type: SET_ORDER_MODAL_MODE, mode: FAILED});
+            });;
         }
         else {
             dispatch({type: SET_ORDER_MODAL_MODE, mode: EMPTY});

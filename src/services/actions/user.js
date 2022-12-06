@@ -45,7 +45,8 @@ export function registerUser(newUserData) {
             type: REGISTER_USER_REQUEST
         });
 
-        sendData(API_BASE + 'auth/register', newUserData).then(res => {
+        sendData(API_BASE + 'auth/register', newUserData)
+        .then(res => {
             if (res && res.success) {
 
                 const accessToken = res.accessToken.split('Bearer ')[1];
@@ -61,7 +62,11 @@ export function registerUser(newUserData) {
             else { 
                 dispatch({type: REGISTER_USER_FAILED});
             }
-        });
+        })
+        .catch((error) => {
+            console.error("Ошибка при выполнении запроса!", error); 
+            dispatch({type: REGISTER_USER_FAILED});       
+        });;
     };
 }
 
@@ -73,7 +78,8 @@ export function forgotPassword(request) {
             type: CHEK_EMAIL_REQUEST
         });
 
-        sendData(API_BASE + 'password-reset', request).then(res => {
+        sendData(API_BASE + 'password-reset', request)
+        .then(res => {
             if (res && res.success) {
 
                 dispatch({
@@ -84,7 +90,11 @@ export function forgotPassword(request) {
             else { 
                 dispatch({type: CHEK_EMAIL_FAILED});
             }
-        });
+        })
+        .catch((error) => {
+            console.error("Ошибка при выполнении запроса!", error); 
+            dispatch({type: CHEK_EMAIL_FAILED});       
+        });;
     };
 }
 
@@ -95,7 +105,8 @@ export function resetPassword(request) {
             type: RESET_PASSWORD_REQUEST
         });
 
-        sendData(API_BASE + 'password-reset/reset', request).then(res => {
+        sendData(API_BASE + 'password-reset/reset', request)
+        .then(res => {
             if (res && res.success) {
 
                 dispatch({
@@ -106,7 +117,11 @@ export function resetPassword(request) {
             else { 
                 dispatch({type: RESET_PASSWORD_FAILED});
             }
-        });
+        })
+        .catch((error) => {
+            console.error("Ошибка при выполнении запроса!", error); 
+            dispatch({type: RESET_PASSWORD_FAILED});       
+        });;
     };
 }
 
@@ -117,7 +132,8 @@ export function loginUser(request) {
             type: LOGIN_REQUEST
         });
 
-        sendData(API_BASE + 'auth/login', request).then(res => {
+        sendData(API_BASE + 'auth/login', request)
+        .then(res => {
             if (res && res.success) {
 
                 const accessToken = res.accessToken.split('Bearer ')[1];
@@ -133,7 +149,11 @@ export function loginUser(request) {
             else { 
                 dispatch({type: LOGIN_FAILED});
             }
-        });
+        })
+        .catch((error) => {
+            console.error("Ошибка при выполнении запроса!", error); 
+            dispatch({type: LOGIN_FAILED});       
+        });;
     };
 }
 
@@ -147,7 +167,8 @@ export function logoutUser() {
             type: LOGOUT_REQUEST
         });
 
-        sendData(API_BASE + 'auth/logout', request).then(res => {
+        sendData(API_BASE + 'auth/logout', request)
+        .then(res => {
             if (res && res.success) {
                 
                 deleteCookie("accessToken");
@@ -161,7 +182,11 @@ export function logoutUser() {
             else { 
                 dispatch({type: LOGOUT_FAILED});
             }
-        });
+        })
+        .catch((error) => {
+            console.error("Ошибка при выполнении запроса!", error); 
+            dispatch({type: LOGOUT_FAILED});       
+        });;
     };
 }
 
@@ -180,7 +205,8 @@ export function getProfile() {
             }
         }
 
-        getData(API_BASE + 'auth/user', options).then(res => {
+        getData(API_BASE + 'auth/user', options)
+        .then(res => {
             if (res && res.success) {
                 
                 dispatch({
@@ -196,7 +222,11 @@ export function getProfile() {
                 else
                     dispatch({type: GET_PROFILE_FAILED});
             }
-        });
+        })
+        .catch((error) => {
+            console.error("Ошибка при выполнении запроса!", error); 
+            dispatch({type: GET_PROFILE_FAILED});       
+        })
     };
 }
 
@@ -216,7 +246,8 @@ export function updateProfile(data) {
             }
         }
 
-        getData(API_BASE + 'auth/user', options).then(res => {
+        getData(API_BASE + 'auth/user', options)
+        .then(res => {
             if (res && res.success) {
                 
                 dispatch({
@@ -232,7 +263,11 @@ export function updateProfile(data) {
                 else
                     dispatch({type: UPDATE_PROFILE_FAILED});
             }
-        });
+        })
+        .catch((error) => {
+            console.error("Ошибка при выполнении запроса!", error); 
+            dispatch({type: UPDATE_PROFILE_FAILED});       
+        });;
     };
 }
 
@@ -247,7 +282,8 @@ export function updateToken(callback, REQUEST_ACTION, FAILED_ACTION) {
             "token": getCookie('refreshToken')
         } 
 
-        sendData(API_BASE + 'auth/token', options).then(res => {
+        sendData(API_BASE + 'auth/token', options)
+        .then(res => {
             if (res && res.success) {
 
                 const accessToken = res.accessToken.split('Bearer ')[1];                
@@ -259,7 +295,11 @@ export function updateToken(callback, REQUEST_ACTION, FAILED_ACTION) {
             else { 
                 dispatch({type: FAILED_ACTION});
             }
-        });
+        })
+        .catch((error) => {
+            console.error("Ошибка при выполнении запроса!", error); 
+            dispatch({type: FAILED_ACTION});       
+        });;
     };
 }
 

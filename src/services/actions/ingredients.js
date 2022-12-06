@@ -12,7 +12,8 @@ export function getIngredients() {
         type: SET_INGREDIENTS_REQUEST
       });
 
-      getData(API_BASE + 'ingredients').then(res => {
+      getData(API_BASE + 'ingredients')
+      .then(res => {
         if (res && res.success) {
           dispatch({
               type: SET_INGREDIENTS_SUCCESS,
@@ -22,6 +23,10 @@ export function getIngredients() {
         else { 
           dispatch({type: SET_INGREDIENTS_FAILED});
         }
+      })
+      .catch((error) => {
+          console.error("Ошибка при выполнении запроса!", error); 
+          dispatch({type: SET_INGREDIENTS_FAILED});       
       });
     };
 }
