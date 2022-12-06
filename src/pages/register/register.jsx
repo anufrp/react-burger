@@ -1,7 +1,7 @@
-import React, {useState, useRef, useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from './register.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../services/actions/user';
 import Modal from '../../components/modal/modal';
@@ -15,9 +15,8 @@ export default function RegisterPage() {
 
     const history = useHistory(); 
     const dispatch = useDispatch();
-    const {user, registerUserRequest, registerUserFailed} = useSelector(store => 
+    const {registerUserRequest, registerUserFailed} = useSelector(store => 
         ({
-            user: store.user.user,
             registerUserRequest: store.user.registerUserRequest,
             registerUserFailed: store.user.registerUserFailed
         }));
@@ -46,16 +45,6 @@ export default function RegisterPage() {
         },
         [history]
     ); 
-
-    if (user.name) {
-        return (
-          <Redirect
-            to={{
-              pathname: '/'
-            }}
-          />
-        );
-      }
     
   return (
     <div className={styles.wrapper}>

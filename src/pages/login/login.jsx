@@ -1,4 +1,4 @@
-import React, {useState, useRef, useCallback, useEffect} from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
@@ -8,17 +8,14 @@ import { loginUser } from '../../services/actions/user';
 import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
-import { useLocation } from 'react-router-dom';
 import { useForm } from '../../services/hooks/useForm';
 
 export default function LoginPage() {
 
     const history = useHistory(); 
     const dispatch = useDispatch();
-    const location = useLocation();
-    const {user, loginRequest, loginFailed} = useSelector(store => 
+    const {loginRequest, loginFailed} = useSelector(store => 
         ({
-            user: store.user.user,
             loginRequest: store.user.loginRequest,
             loginFailed: store.user.loginFailed
         }));
@@ -55,14 +52,6 @@ export default function LoginPage() {
         },
         [history]
     ); 
-
-    if (user.name) {
-        return (
-          <Redirect
-            to={ location.state?.from || '/' }
-          />
-        );
-    }
     
   return (
     <div className={styles.wrapper}>

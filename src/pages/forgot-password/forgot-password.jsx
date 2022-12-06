@@ -1,4 +1,4 @@
-import React, {useState, useRef, useCallback} from 'react';
+import React, { useCallback} from 'react';
 import styles from './forgot-password.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
@@ -8,23 +8,19 @@ import { forgotPassword } from '../../services/actions/user';
 import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
-import { useLocation } from 'react-router-dom';
 import { useForm } from '../../services/hooks/useForm';
 
 export default function ForgotPasswordPage() {
     const history = useHistory(); 
-    const location = useLocation();
     const dispatch = useDispatch();   
-    const {user, forgotEmailCheck, forgotEmailCheckRequest, forgotEmailCheckFailed} = useSelector(store => 
+    const {forgotEmailCheck, forgotEmailCheckRequest, forgotEmailCheckFailed} = useSelector(store => 
         ({
-            user: store.user.user,
             forgotEmailCheck: store.user.forgotEmailCheck,
             forgotEmailCheckRequest: store.user.forgotEmailCheckRequest,
             forgotEmailCheckFailed: store.user.forgotEmailCheckFailed
         }));
 
     const {values, handleChange, setValues} = useForm({ email: '' });
-    const emailRef = useRef(null);
 
     const formSubmit = (e) => {
         e.preventDefault();
@@ -45,14 +41,6 @@ export default function ForgotPasswordPage() {
         },
         [history]
     ); 
-
-    if (user.name) {
-        return (
-          <Redirect
-            to={ location.state?.from || '/' }
-          />
-        );
-    }
     
     if (forgotEmailCheck) {
         return (
@@ -77,7 +65,6 @@ export default function ForgotPasswordPage() {
                 onChange={handleChange}
                 value={values.email || ""}
                 name={'email'}
-                ref={emailRef}
                 size={'default'}
                 extraClass="pb-6"
                 required

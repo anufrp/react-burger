@@ -68,19 +68,19 @@ export default function App() {
                 </div>
               </div>
             </Route>
-            <Route path="/login" exact={true}>
+            <ProtectedRoute onlyForAuth={false} path="/login" exact={true}>
               <LoginPage />
-            </Route>
-            <Route path="/register" exact={true}>
+            </ProtectedRoute>
+            <ProtectedRoute onlyForAuth={false} path="/register" exact={true}>
               <RegisterPage />
-            </Route>
-            <Route path="/forgot-password" exact={true}>
+            </ProtectedRoute>
+            <ProtectedRoute onlyForAuth={false} path="/forgot-password" exact={true}>
               <ForgotPasswordPage />
-            </Route>
-            <Route path="/reset-password" exact={true}>
+            </ProtectedRoute>
+            <ProtectedRoute onlyForAuth={false} path="/reset-password" exact={true}>
               <ResetPasswordPage />
-            </Route>
-            <ProtectedRoute path="/profile" >
+            </ProtectedRoute>
+            <ProtectedRoute onlyForAuth={true} path="/profile" >
               <ProfilePage />
             </ProtectedRoute>
             <Route path="/ingredients/:id" exact={true}>
