@@ -9,6 +9,7 @@ import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
 import { useLocation } from 'react-router-dom';
+import { useForm } from '../../services/hooks/useForm';
 
 export default function ForgotPasswordPage() {
     const history = useHistory(); 
@@ -22,13 +23,13 @@ export default function ForgotPasswordPage() {
             forgotEmailCheckFailed: store.user.forgotEmailCheckFailed
         }));
 
-    const [email, setEmail] = useState('');
+    const {values, handleChange, setValues} = useForm({ email: '' });
     const emailRef = useRef(null);
 
     const formSubmit = (e) => {
         e.preventDefault();
         const request = {
-            "email": email
+            "email": values.email
         };
 
         dispatch(forgotPassword(request));
@@ -73,8 +74,8 @@ export default function ForgotPasswordPage() {
             <Input
                 type={'email'}
                 placeholder={'Укажите e-mail'}
-                onChange={e => setEmail(e.target.value)}
-                value={email || ""}
+                onChange={handleChange}
+                value={values.email || ""}
                 name={'email'}
                 ref={emailRef}
                 size={'default'}

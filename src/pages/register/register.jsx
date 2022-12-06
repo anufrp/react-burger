@@ -9,6 +9,7 @@ import ErrorMessage from '../../components/error-message/error-message';
 import Loader from '../../components/loader/loader';
 import { useSelector } from 'react-redux';
 import { DROP_REGISTER_ERROR } from '../../services/actions/user';
+import { useForm } from '../../services/hooks/useForm';
 
 export default function RegisterPage() {
 
@@ -21,12 +22,8 @@ export default function RegisterPage() {
             registerUserFailed: store.user.registerUserFailed
         }));
 
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [password, setPassword] = useState(null);
+    const {values, handleChange, setValues} = useForm({ email: '', name: '', password: null});
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const emailRef = useRef(null);
-    const passwordRef = useRef(null);
 
     const togglePasswordVisible = () => {
         setPasswordVisible(!passwordVisible);
@@ -34,11 +31,7 @@ export default function RegisterPage() {
 
     const formSubmit = (e) => {
         e.preventDefault();
-        const newUserData = {
-            "email": email, 
-            "password": password, 
-            "name": name 
-        };
+        const newUserData = values;
 
         dispatch(registerUser(newUserData));
     }
@@ -74,8 +67,8 @@ export default function RegisterPage() {
             <Input
                 type={'text'}
                 placeholder={'Имя'}
-                onChange={e => setName(e.target.value)}
-                value={name || ""}
+                onChange={handleChange}
+                value={values.name || ""}
                 name={'name'}
                 size={'default'}
                 extraClass="pb-6"
@@ -84,10 +77,9 @@ export default function RegisterPage() {
             <Input
                 type={'email'}
                 placeholder={'E-mail'}
-                onChange={e => setEmail(e.target.value)}
-                value={email || ""}
+                onChange={handleChange}
+                value={values.email || ""}
                 name={'email'}
-                ref={emailRef}
                 size={'default'}
                 extraClass="pb-6"
                 required
@@ -95,11 +87,10 @@ export default function RegisterPage() {
             <Input
                 type={passwordVisible ? 'text' : 'password'}
                 placeholder={'Пароль'}
-                onChange={e => setPassword(e.target.value)}
-                value={password || ""}
+                onChange={handleChange}
+                value={values.password || ""}
                 name={'password'}
                 icon={passwordVisible ? 'HideIcon' : 'ShowIcon'}
-                ref={passwordRef}
                 size={'default'}
                 extraClass="pb-6"
                 onIconClick={togglePasswordVisible}

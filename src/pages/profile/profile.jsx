@@ -12,6 +12,7 @@ import { DROP_LOGOUT_ERROR } from '../../services/actions/user';
 import { getCookie } from '../../utils/cookie';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import OrderHistory from '../order-history/order-history';
+import { useForm } from '../../services/hooks/useForm';
 
 export default function ProfilePage() {
 
@@ -41,26 +42,20 @@ export default function ProfilePage() {
         email: '',
         password: ''
     };
-    const [userProfile, setUserProfile] = useState(initialState);
-    // const [email, setEmail] = useState(null);
-    // const [password, setPassword] = useState('');
+    const {values, handleChange, setValues} = useForm(initialState);
     const [isEdit, setIsEdit] = useState(false);
 
     const formSubmit = (e) => {
         e.preventDefault();
         console.log('subm');
-        const data = {
-            name: userProfile.name,
-            email: userProfile.email,
-            password: userProfile.password
-        }
+        const data = values;
         dispatch(updateProfile(data));
         setIsEdit(false);
     }
 
     const formReset = (e) => {
         e.preventDefault();
-        setUserProfile({
+        setValues({
             ...user,
             password: ''
         });
@@ -70,7 +65,7 @@ export default function ProfilePage() {
     const logout = (e) => {
         e.preventDefault();
         dispatch(logoutUser());
-        setUserProfile(initialState);
+        setValues(initialState);
         console.log('logout is done');
     }
 
@@ -84,12 +79,12 @@ export default function ProfilePage() {
     useEffect(() => { 
         if(accessToken !== undefined) {
             dispatch(getProfile());
-            if(user.name) setUserProfile({...user, password: ''});
+            if(user.name) setValues({...user, password: ''});
         }        
     },[]);
 
     useEffect(() => {
-        setUserProfile(user);
+        setValues(user);
     },[user]);
     
   return (
@@ -107,39 +102,39 @@ export default function ProfilePage() {
                         <Input
                             type={'text'}
                             placeholder={'Имя'}
-                            onChange={e => setUserProfile({...userProfile, name: e.target.value})}
-                            value={userProfile.name || ""}
+                            onChange={handleChange}
+                            value={values.name || ""}
                             name={'name'}
                             size={'default'}
                             extraClass="pb-6"
                             icon={isEdit ? "CloseIcon" : "EditIcon"}
-                            onIconClick={() => isEdit ? setUserProfile({...userProfile, name: initialState.name}) : setIsEdit(true)}
+                            onIconClick={() => isEdit ? setValues({...values, name: initialState.name}) : setIsEdit(true)}
                             disabled={!isEdit}
                             required
                         />
                         <Input
                             type={'email'}
                             placeholder={'Логин'}
-                            onChange={e => setUserProfile({...userProfile, email: e.target.value})}
-                            value={userProfile.email || ""}
+                            onChange={handleChange}
+                            value={values.email || ""}
                             name={'email'}
                             size={'default'}
                             extraClass="pb-6"
                             icon={isEdit ? "CloseIcon" : "EditIcon"}
-                            onIconClick={() => isEdit ? setUserProfile({...userProfile, email: initialState.email}) : setIsEdit(true)}
+                            onIconClick={() => isEdit ? setValues({...values, email: initialState.email}) : setIsEdit(true)}
                             disabled={!isEdit}
                             required
                         />
                         <Input
                             type={'password'}
                             placeholder={'Пароль'}
-                            onChange={e => setUserProfile({...userProfile, password: e.target.value})}
-                            value={userProfile.password || ""}
+                            onChange={handleChange}
+                            value={values.password || ""}
                             name={'password'}
                             size={'default'}
                             extraClass="pb-6"
                             icon={isEdit ? "CloseIcon" : "EditIcon"}
-                            onIconClick={() => isEdit ? setUserProfile({...userProfile, password: initialState.password}) : setIsEdit(true)}
+                            onIconClick={() => isEdit ? setValues({...values, password: initialState.password}) : setIsEdit(true)}
                             disabled={!isEdit}
                             required
                         />

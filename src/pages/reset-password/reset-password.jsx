@@ -8,6 +8,7 @@ import { resetPassword } from '../../services/actions/user';
 import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
+import { useForm } from '../../services/hooks/useForm';
 
 export default function ResetPasswordPage() {
     const history = useHistory(); 
@@ -19,11 +20,9 @@ export default function ResetPasswordPage() {
             resetPasswordFailed: store.user.resetPasswordFailed,
             forgotEmailCheck: store.user.forgotEmailCheck
         }));
-
-    const [code, setCode] = useState(null);
-    const [password, setPassword] = useState(null);
+        
+    const {values, handleChange, setValues} = useForm({ code: null, password: null});
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const passwordRef = useRef(null);
 
     const togglePasswordVisible = () => {
         setPasswordVisible(!passwordVisible);
@@ -31,10 +30,7 @@ export default function ResetPasswordPage() {
 
     const formSubmit = (e) => {
         e.preventDefault();
-        const request = {
-            "password": password,
-            "token": code
-        };
+        const request = values;
 
         dispatch(resetPassword(request));
     }
@@ -81,11 +77,10 @@ export default function ResetPasswordPage() {
             <Input
                 type={passwordVisible ? 'text' : 'password'}
                 placeholder={'Введите новый пароль'}
-                onChange={e => setPassword(e.target.value)}
-                value={password || ""}
+                onChange={handleChange}
+                value={values.password || ""}
                 name={'password'}
                 icon={passwordVisible ? 'HideIcon' : 'ShowIcon'}
-                ref={passwordRef}
                 size={'default'}
                 extraClass="pb-6"
                 onIconClick={togglePasswordVisible}
@@ -94,8 +89,8 @@ export default function ResetPasswordPage() {
             <Input
                 type={'text'}
                 placeholder={'Введите код из письма'}
-                onChange={e => setCode(e.target.value)}
-                value={code || ""}
+                onChange={handleChange}
+                value={values.code || ""}
                 name={'code'}
                 size={'default'}
                 extraClass="pb-6"

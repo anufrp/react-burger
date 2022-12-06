@@ -9,6 +9,7 @@ import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
 import { useLocation } from 'react-router-dom';
+import { useForm } from '../../services/hooks/useForm';
 
 export default function LoginPage() {
 
@@ -22,8 +23,7 @@ export default function LoginPage() {
             loginFailed: store.user.loginFailed
         }));
 
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
+    const {values, handleChange, setValues} = useForm({ email: null, password: null});
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const togglePasswordVisible = () => {
@@ -32,10 +32,7 @@ export default function LoginPage() {
 
     const formSubmit = (e) => {
         e.preventDefault();
-        const request = {
-            "email": email, 
-            "password": password
-        };
+        const request = values;
 
         dispatch(loginUser(request));
     }
@@ -77,8 +74,8 @@ export default function LoginPage() {
             <Input
                 type={'email'}
                 placeholder={'E-mail'}
-                onChange={e => setEmail(e.target.value)}
-                value={email || ""}
+                onChange={handleChange}
+                value={values.email || ""}
                 name={'email'}
                 size={'default'}
                 extraClass="pb-6"
@@ -87,8 +84,8 @@ export default function LoginPage() {
             <Input
                 type={passwordVisible ? 'text' : 'password'}
                 placeholder={'Пароль'}
-                onChange={e => setPassword(e.target.value)}
-                value={password || ""}
+                onChange={handleChange}
+                value={values.password || ""}
                 name={'password'}
                 icon={passwordVisible ? 'HideIcon' : 'ShowIcon'}
                 size={'default'}
