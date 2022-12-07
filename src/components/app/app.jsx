@@ -28,7 +28,6 @@ import { getIngredients } from "../../services/actions/ingredients";
 
 export default function App() {
 
-    const body = document.querySelector("body");
     const [activeTabState, activeTabDispatcher] = useReducer(activeTabReducer, activeTabInitialState, undefined);
     const accessToken = getCookie('accessToken');
     const dispatch = useDispatch();
@@ -47,7 +46,6 @@ export default function App() {
         if(accessToken !== undefined) {
           dispatch(getProfile());
         }     
-          body.classList += styles.bodyScroll;
       }, []);
 
     return (
