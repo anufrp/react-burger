@@ -1,0 +1,38 @@
+.wrapper {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: fit-content;
+} 
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+
+.bottomLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+.buttonSecondary {
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+

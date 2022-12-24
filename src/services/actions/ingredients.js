@@ -12,19 +12,21 @@ export function getIngredients() {
         type: SET_INGREDIENTS_REQUEST
       });
 
-      getData(API_BASE + 'ingredients').then(res => {
+      getData(API_BASE + 'ingredients')
+      .then(res => {
         if (res && res.success) {
-
-            setTimeout(() => {
-                dispatch({
-                    type: SET_INGREDIENTS_SUCCESS,
-                    items: res.data
-                });
-            }, "1000") //имитация коннекшена
+          dispatch({
+              type: SET_INGREDIENTS_SUCCESS,
+              items: res.data
+          });
         } 
         else { 
-            dispatch({type: SET_INGREDIENTS_FAILED});
+          dispatch({type: SET_INGREDIENTS_FAILED});
         }
+      })
+      .catch((error) => {
+          console.error("Ошибка при выполнении запроса!", error); 
+          dispatch({type: SET_INGREDIENTS_FAILED});       
       });
     };
 }

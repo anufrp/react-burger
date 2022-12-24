@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./ingredient-details.module.css";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { SET_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
 
 export default function IngredientDetails() {
+
+    const dispatch = useDispatch();    
+    const { id } = useParams();
     
-    const { ingredientDetails } = useSelector(store => 
+    const { ingredients, ingredientDetails } = useSelector(store => 
         ({
+            ingredients: store.ingredients.ingredients, 
             ingredientDetails: store.ingredientDetails.ingredientDetails
         }));
+        
+    const findElement = (id) => {
+        return ingredients.find( item => item._id === id)
+    }
+
+    useEffect(() => {
+        if(ingredientDetails._id === undefined && ingredients.length > 0) { //получить элемент, если ингредиенты уже получены
+            const currentIngredient = findElement(id);
+            dispatch({type: SET_INGREDIENT_DETAILS, item: currentIngredient});
+        }
+    }, [ingredients])
 
     return (
     <> { ingredientDetails !== undefined &&

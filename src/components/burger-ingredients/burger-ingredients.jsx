@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useRef } from "react";
 import styles from './burger-ingredients.module.css';
 import Tabs from '../ingredients-tabs/ingredients-tabs'
 import IngredientSection from '../ingredient-section/ingredient-section'
@@ -7,13 +7,11 @@ import ErrorMessage from "../error-message/error-message";
 import Modal from "../modal/modal";
 import { activeTabContext } from "../../services/tabsContext";
 import { BUN, SAUCE, MAIN } from "../../services/constants";
-import { useSelector, useDispatch } from 'react-redux';
-import { getIngredients } from "../../services/actions/ingredients";
+import { useSelector } from 'react-redux';
 
 export default function BurgerIngredients() {
     
     const { activeTabState, activeTabDispatcher } = useContext(activeTabContext);
-    const dispatch = useDispatch();
     const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector(store => 
         ({
             ingredients: store.ingredients.ingredients, 
@@ -40,10 +38,6 @@ export default function BurgerIngredients() {
         if(activeNode !== activeTabState.activeTab)
             updateActiveTab(activeNode);        
     }
-
-    useEffect(() => {
-        dispatch(getIngredients());
-      },[dispatch])
 
     return (
         <div className={`${styles.main} mr-10`}>
