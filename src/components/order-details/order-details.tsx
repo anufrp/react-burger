@@ -1,9 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 import orderIsOk from "../../images/orderIsOk.png"
 import styles from "./order-details.module.css";
-import PropTypes from "prop-types";
 
-export default function OrderDetails({orderNumber}) {
+type TOrderDetailsProps = {
+    orderNumber: number
+}
+
+const OrderDetails: FC<TOrderDetailsProps> = ({orderNumber}) => {
 
     const [number, status, desc] = [orderNumber, 'Ваш заказ начали готовить', 'Дождитесь готовности на орбитальной станции'];
 
@@ -28,6 +31,4 @@ export default function OrderDetails({orderNumber}) {
     )
 }
 
-OrderDetails.propTypes = {
-    orderNumber: PropTypes.number.isRequired
-};
+export default OrderDetails;

@@ -1,5 +1,4 @@
-import React, { useContext, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useContext, useRef, useEffect, FC } from "react";
 import styles from './ingredient-section.module.css';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -10,18 +9,24 @@ import { useDispatch } from 'react-redux';
 import { SET_INGREDIENT_DETAILS, CLEAR_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
 import { v4 as uuidv4 } from 'uuid';
 import { useHistory, useLocation } from 'react-router-dom';
+import { TIngredient } from "../../utils/types";
 
-export default function IngredientSection({type, items}) {     
+type TIngredientSectionProps = {
+    type: string,
+    items: Array<TIngredient>
+}
+
+const IngredientSection: FC<TIngredientSectionProps> = ({type, items}) => {     
     
-    const { activeTabState, activeTabDispatcher } = useContext(activeTabContext);
-    const headerNode = useRef(null);
+    const { activeTabState, activeTabDispatcher } = useContext<any>(activeTabContext);
+    const headerNode = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
     const history = useHistory(); 
     const location = useLocation();
     
     const [showModal, setShowModal] = React.useState(false);
 
-    const selectIngredient = (id) => {
+    const selectIngredient = (id: string) => {
 
         const currentIngredient = findElement(id);
         //currentIngredient = {...currentIngredient, uid: uuidv4()}
@@ -50,7 +55,7 @@ export default function IngredientSection({type, items}) {
         dispatch({type: CLEAR_INGREDIENT_DETAILS});
     }
 
-    const findElement = (id) => {
+    const findElement = (id: string) => {
         return items.find( item => item._id === id)
     }
 
@@ -93,7 +98,4 @@ export default function IngredientSection({type, items}) {
     );
 }
 
-IngredientSection.propTypes = {
-    type: PropTypes.string.isRequired,
-    items: PropTypes.array.isRequired
-}
+export default IngredientSection;

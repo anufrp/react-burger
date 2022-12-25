@@ -1,8 +1,7 @@
-import { getCookie } from "../../utils/cookie";
 import {createOrder} from "../../utils/create-order";
 import { API_BASE } from "../constants";
 import { updateToken } from "./user";
-import { Redirect } from "react-router-dom";
+import { TIngredient } from "../../utils/types";
 
 export const SET_ORDER_DETAILS_REQUEST = 'SET_ORDER_DETAILS_REQUEST';
 export const SET_ORDER_DETAILS_SUCCESS = 'SET_ORDER_DETAILS_SUCCESS';
@@ -15,9 +14,9 @@ export const GOTO_LOGIN = 'GOTO_LOGIN'
 
 const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
 
-export function processingOrder(constructorItems, bun) {
+export function processingOrder(constructorItems: Array<TIngredient>, bun: TIngredient) {
     
-    return function(dispatch) { 
+    return function(dispatch: any) { 
 
         let orderIngredients = constructorItems.map(item => item._id); //ИДы ингредиентов в массив для получения номера заказа  
         orderIngredients = bun._id ? [bun._id, ...orderIngredients, bun._id] : orderIngredients; //добавить булку, если она есть

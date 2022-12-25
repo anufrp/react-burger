@@ -1,8 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from "./error-message.module.css";
-import PropTypes from "prop-types";
 
-export default function ErrorMessage(props) {
+type TErrorMessageProps = {
+    children: JSX.Element | string
+}
+
+const ErrorMessage: FC<TErrorMessageProps> = ({children}) => {
 
     return (
         <div className={styles.main}>
@@ -13,12 +16,10 @@ export default function ErrorMessage(props) {
                 Что-то пошло не так
             </span>
             <span className={'text text_type_main-default text_color_inactive mt-2 mb-30'}>
-                {props.children}
+                {children}
             </span>
         </div>
     )
 }
 
-ErrorMessage.propTypes = {
-    children: PropTypes.node.isRequired
-}
+export default ErrorMessage;

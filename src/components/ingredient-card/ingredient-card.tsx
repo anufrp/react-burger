@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDrag } from 'react-dnd'
-import PropTypes from "prop-types";
 import {CurrencyIcon, Counter} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './ingredient-card.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { SET_BUN, TOPUP_CONSTRUCTOR_LIST } from "../../services/actions/constructor";
 import { SET_COST } from "../../services/actions/constructor";
 import { v4 as uuidv4 } from 'uuid';
+import { TIngredient } from "../../utils/types";
 
-export default function IngredientCard({item, onClickFunc}) { 
+type TIngredientCardProps = {
+    item: TIngredient,
+    onClickFunc: (id: string) => void
+}
 
-    const[count, setCount] = useState();
+const IngredientCard: FC<TIngredientCardProps> = ({item, onClickFunc}) => { 
+
+    const[count, setCount] = useState<number>(0);
 
     const dispatch = useDispatch();
 
-    const {constructorItems, bun} = useSelector(store => 
+    const {constructorItems, bun} = useSelector((store: any) => 
         ({
             constructorItems: store.constructorItems.constructorItems,
             bun: store.constructorItems.bun
@@ -61,7 +66,7 @@ export default function IngredientCard({item, onClickFunc}) {
                 setCount(bun._id === item._id ? 2 : 0);
                 break;
             default:
-                setCount(constructorItems.filter((constrItem) => constrItem._id === item._id).length);
+                setCount(constructorItems.filter((constrItem: TIngredient) => constrItem._id === item._id).length);
                 break;
         }
     },[constructorItems, bun]) 
@@ -87,7 +92,4 @@ export default function IngredientCard({item, onClickFunc}) {
     );
 }
 
-IngredientCard.propTypes = {
-    item: PropTypes.object.isRequired,
-    onClickFunc: PropTypes.func.isRequired
-}
+export default IngredientCard;

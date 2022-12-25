@@ -23,17 +23,18 @@ import {
  } from "../../services/actions/constructor";
 import { getCookie } from "../../utils/cookie";
 import { useHistory } from "react-router-dom";
+import { TIngredient } from "../../utils/types";
 
 const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
 
 export default function BurgerConstructor() {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const history = useHistory(); 
     
     const [shouldUpdate, setShouldUpdate] = useState(true); //ререндер при добавлении компонентов, иначе не работает сортировка для последнего добавленного ингредиента :с
     
-    const {constructorItems, bun, orderRequest, orderFailed, orderModalMode, orderDetails, cost} = useSelector(store => 
+    const {constructorItems, bun, orderRequest, orderFailed, orderModalMode, orderDetails, cost} = useSelector((store: any) => 
         ({
             constructorItems: store.constructorItems.constructorItems,
             bun: store.constructorItems.bun,
@@ -65,7 +66,7 @@ export default function BurgerConstructor() {
         }
     }
 
-    const moveCard = (dragIndex, hoverIndex) => {
+    const moveCard = (dragIndex: number, hoverIndex: number) => {
         
         let newOrd = [...constructorItems];
         newOrd.splice(dragIndex, 1);
@@ -95,8 +96,8 @@ export default function BurgerConstructor() {
 
                 { constructorItems.length > 0 ? 
                     (<div id={"selectedIngredients"} className={`${styles.ingredients} pr-2`}>
-                        {constructorItems.map ((item, index) =>
-                            <OrderItem key={item.uid} item={item} index={index} type="regular" moveCard={moveCard} />
+                        {constructorItems.map ((item: TIngredient, index: number) =>
+                            <OrderItem key={item.uid} item={item} index={index} type={undefined} moveCard={moveCard} />
                         )}
                     </div>) : 
                     (<NoItem type="ingredient" />) }

@@ -3,20 +3,25 @@ import styles from "./ingredient-details.module.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { SET_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
+import { TIngredient } from "../../utils/types";
 
-export default function IngredientDetails() {
+type TParams = {
+    id: string;
+  };
+
+const IngredientDetails = () => {
 
     const dispatch = useDispatch();    
-    const { id } = useParams();
+    const { id } = useParams<TParams>();
     
-    const { ingredients, ingredientDetails } = useSelector(store => 
+    const { ingredients, ingredientDetails } = useSelector((store: any) => 
         ({
             ingredients: store.ingredients.ingredients, 
             ingredientDetails: store.ingredientDetails.ingredientDetails
         }));
         
-    const findElement = (id) => {
-        return ingredients.find( item => item._id === id)
+    const findElement = (id: string): TIngredient => {
+        return ingredients.find( (item: TIngredient) => item._id === id)
     }
 
     useEffect(() => {
@@ -80,3 +85,5 @@ export default function IngredientDetails() {
     }</>
     )
 }
+
+export default IngredientDetails;

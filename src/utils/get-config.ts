@@ -1,29 +1,43 @@
 import styles from '../components/order-item/order-item.module.css';
+import { TIngredient } from './types';
 
-export function getConstructorConfig(item, type) {
+type TConstructorConfigProps = {
+    isLocked: boolean,
+    text: string,
+    type?: 'top' | 'bottom' | undefined,
+    price: number,
+    thumbnail: string
+} 
+
+export type TConstructorConfig = {
+    className: string,
+    props: TConstructorConfigProps
+}
+
+export function getConstructorConfig(item: TIngredient, type: 'top' | 'bottom' | undefined): TConstructorConfig {
         
     switch(type) {          
-        case "top": 
+        case 'top': 
         return {
             className: `${styles.item} ${styles.top}`,
             props:               
                 {
                     isLocked: true,
                     text: item.name + ' (верх)',
-                    type: 'top',
+                    type: type,
                     price: item.price,
                     thumbnail: item.image
                 }
             }  
 
-        case "bottom": 
+        case 'bottom': 
         return {
             className: `${styles.item} ${styles.bottom}`,
             props:               
                 {
                     isLocked: true,
                     text: item.name + ' (низ)',
-                    type: 'bottom',
+                    type: type,
                     price: item.price,
                     thumbnail: item.image
                 }

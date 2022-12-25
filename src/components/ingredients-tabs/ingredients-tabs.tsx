@@ -6,8 +6,8 @@ import { activeTabContext } from "../../services/tabsContext";
 
 export default function Tabs() {
 
-    const { activeTabState, activeTabDispatcher } = useContext(activeTabContext);
-    const tabsNode = useRef(null);
+    const { activeTabState, activeTabDispatcher } = useContext<any>(activeTabContext);
+    const tabsNode = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         activeTabDispatcher({
@@ -16,7 +16,7 @@ export default function Tabs() {
         });
     }, [tabsNode]);
 
-    function scrollTo(value) {
+    function scrollTo(value: string) {
         activeTabDispatcher({type: "scroll_to", tab: value});
     }
 

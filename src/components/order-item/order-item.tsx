@@ -1,33 +1,46 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, FC } from "react";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getConstructorConfig } from "../../utils/get-config";
 import styles from "../order-item/order-item.module.css"
-import PropTypes from "prop-types";
 import { useDispatch } from 'react-redux';
-import { useDrag, useDrop } from 'react-dnd'
+import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 import { REJECT_CONSTRUCTOR_LIST } from "../../services/actions/constructor";
+import { TConstructorConfig } from "../../utils/get-config";
+import { TIngredient } from "../../utils/types";
+import { Identifier } from 'dnd-core'
 
-export default function OrderItem({ item, type, index, moveCard }) {
+type TOrderItemProps = {
+    item: TIngredient,
+    type: 'top' | 'bottom' | undefined,
+    index?: number,
+    moveCard: (dragIndex: number, hoverIndex: number) => void
+}
+
+type THandler = {
+    handlerId: Identifier | null;
+    };
+
+const OrderItem: FC<TOrderItemProps> = ({ item, type, index, moveCard }) => {
     
-    const [constructorConfig, setConstructorConfig] = useState();
+    const [constructorConfig, setConstructorConfig] = useState<TConstructorConfig>();
 
     const dispatch = useDispatch();
 
-    const rejectItem = (item) => {
+    const rejectItem = (item: TIngredient) => {
         dispatch({type: REJECT_CONSTRUCTOR_LIST, item: item});
     }
     
     //все для сортировки
-    const ref = useRef();  
+    const ref = useRef<HTMLDivElement | null>(null);  
     
-    const [{ handlerId }, drop] = useDrop({
+    const [{ handlerId }, drop] = useDrop<TIngredient, unknown, THandler>({
         accept: "card",
         collect(monitor) {
         return {
             handlerId: monitor.getHandlerId(),
         }
         },
-        hover(item, monitor) {
+        hover(item: TIngredient, monitor) {
         if (!ref.current) {
             return;
         }
@@ -44,20 +57,22 @@ export default function OrderItem({ item, type, index, moveCard }) {
         const hoverMiddleY =
             (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
-        const clientOffset = monitor.getClientOffset();
+        const clientOffset = monitor.getClientOffset() as any;
 
         const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-            return;
+        if(hoverIndex !== undefined && dragIndex !== undefined){
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return;
+            }
+            
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return;
+            }
+            moveCard(dragIndex, hoverIndex);
+            item.index = hoverIndex;
         }
         
-        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-            return;
-        }
-        
-        moveCard(dragIndex, hoverIndex);
-        item.index = hoverIndex;
         },
     })
     const [{ isDragging }, drag] = useDrag({
@@ -75,7 +90,7 @@ export default function OrderItem({ item, type, index, moveCard }) {
 
 
     //для булок не добавляем ref, так они не будут доступны для сортировки
-    const refProp = type === "regular" ? { ref: ref } : {};
+    const refProp = (type !== "top" && type !== "bottom") ? { ref: ref } : {};
     
     useEffect(() => {
         setConstructorConfig(getConstructorConfig(item, type));
@@ -89,18 +104,13 @@ export default function OrderItem({ item, type, index, moveCard }) {
     },[]);
 
 
-    return constructorConfig && (
+    return constructorConfig ? (
         <div style={{ opacity }} {...refProp} className={constructorConfig.className} data-handler-id={handlerId} >
-            {type === "regular" && (<div className={styles.dragIcon}><DragIcon /></div>)}
+            {type !== "top" && type !== "bottom" && (<div className={styles.dragIcon}><DragIcon type="primary" /></div>)}
             <ConstructorElement {...constructorConfig.props} handleClose = {() => rejectItem(item)} />
         </div>
-    )  
+    )  : (<></>)
 
 };
 
-OrderItem.propTypes = {
-    item: PropTypes.object.isRequired,
-    type: PropTypes.string.isRequired,
-    index: PropTypes.number,
-    moveCard: PropTypes.func
-};
+export default OrderItem;

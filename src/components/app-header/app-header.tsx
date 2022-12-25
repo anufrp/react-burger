@@ -7,10 +7,7 @@ import { useSelector } from 'react-redux';
 
 export default function AppHeader() {
     
-    const {userName} = useSelector(store => 
-        ({
-            userName: store.user.user.name
-        }));
+    const {userName} = useSelector((store: any) => ({userName: store.user.user.name}));
 
     const isConstructor = !!useRouteMatch({ path: "/", exact: true});
     const isFeed = !!useRouteMatch({ path: "/feed", exact: true});

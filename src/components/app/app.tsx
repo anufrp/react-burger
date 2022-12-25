@@ -24,15 +24,16 @@ import { useDispatch } from "react-redux";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getIngredients } from "../../services/actions/ingredients";
+import * as H from "history"
 
 
 export default function App() {
 
     const [activeTabState, activeTabDispatcher] = useReducer(activeTabReducer, activeTabInitialState, undefined);
     const accessToken = getCookie('accessToken');
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
 
-    const location = useLocation();
+    const location = useLocation<{background: H.Location}>();
     const history = useHistory();
     const background = location.state && location.state.background;
   

@@ -1,7 +1,12 @@
-import React from "react";
+import { string } from "prop-types";
+import React, { FC } from "react";
 import styles from "./no-item.module.css";
 
-export default function NoItem({type}) {
+type TNoItemProps = {
+    type: string
+}
+
+const NoItem: FC<TNoItemProps> = ({type}) => {
 
     let className, text;
 
@@ -29,3 +34,5 @@ export default function NoItem({type}) {
             </div>
     )
 }
+
+export default NoItem;

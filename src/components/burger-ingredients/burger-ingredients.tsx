@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { SyntheticEvent, useContext, useRef } from "react";
 import styles from './burger-ingredients.module.css';
 import Tabs from '../ingredients-tabs/ingredients-tabs'
 import IngredientSection from '../ingredient-section/ingredient-section'
@@ -11,8 +11,8 @@ import { useSelector } from 'react-redux';
 
 export default function BurgerIngredients() {
     
-    const { activeTabState, activeTabDispatcher } = useContext(activeTabContext);
-    const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector(store => 
+    const { activeTabState, activeTabDispatcher } = useContext<any>(activeTabContext);
+    const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector((store: any) => 
         ({
             ingredients: store.ingredients.ingredients, 
             ingredientsRequest: store.ingredients.ingredientsRequest,
@@ -20,19 +20,19 @@ export default function BurgerIngredients() {
         }));
     const ingredientsNode = useRef(null);
 
-    function updateActiveTab(tab) {
+    function updateActiveTab(tab: string) {
         activeTabDispatcher({type: 'setActive', activeTab: tab});
     }
     
-    const getNearestHeader = (e) => {
+    const getNearestHeader = (e: SyntheticEvent) => {
         e.stopPropagation();
 
         const bunDist = Math.abs(activeTabState.tabsNode.getBoundingClientRect().bottom - activeTabState.bunNode.getBoundingClientRect().top);
         const sauceDist = Math.abs(activeTabState.tabsNode.getBoundingClientRect().bottom - activeTabState.sauceNode.getBoundingClientRect().top);
         const mainDist = Math.abs(activeTabState.tabsNode.getBoundingClientRect().bottom - activeTabState.mainNode.getBoundingClientRect().top);
 
-        const activeNode = (bunDist < sauceDist & bunDist < mainDist) ? BUN 
-                                : (sauceDist < bunDist & sauceDist < mainDist) ? SAUCE 
+        const activeNode = (bunDist < sauceDist && bunDist < mainDist) ? BUN 
+                                : (sauceDist < bunDist && sauceDist < mainDist) ? SAUCE 
                                     : MAIN;
 
         if(activeNode !== activeTabState.activeTab)
