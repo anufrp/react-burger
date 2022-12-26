@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SyntheticEvent } from 'react';
 import styles from './profile.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useHistory, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser, getProfile, DROP_GET_PROFILE_ERROR, updateProfile } from '../../services/actions/user';
 import Modal from '../../components/modal/modal';
@@ -16,8 +16,7 @@ import { useForm } from '../../services/hooks/useForm';
 
 export default function ProfilePage() {
 
-    const history = useHistory(); 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const {
             user, 
             logoutRequest, 
@@ -26,7 +25,7 @@ export default function ProfilePage() {
             getProfileFailed,
             updateProfileRequest, 
             updateProfileFailed,
-        } = useSelector(store => 
+        } = useSelector((store: any) => 
         ({
             user: store.user.user,
             logoutRequest: store.user.logoutRequest,
@@ -45,7 +44,7 @@ export default function ProfilePage() {
     const {values, handleChange, setValues} = useForm(initialState);
     const [isEdit, setIsEdit] = useState(false);
 
-    const formSubmit = (e) => {
+    const formSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         console.log('subm');
         const data = values;
@@ -53,7 +52,7 @@ export default function ProfilePage() {
         setIsEdit(false);
     }
 
-    const formReset = (e) => {
+    const formReset = (e: SyntheticEvent) => {
         e.preventDefault();
         setValues({
             ...user,
@@ -62,7 +61,7 @@ export default function ProfilePage() {
         setIsEdit(false);
     }
 
-    const logout = (e) => {
+    const logout = (e: SyntheticEvent) => {
         e.preventDefault();
         dispatch(logoutUser());
         setValues(initialState);

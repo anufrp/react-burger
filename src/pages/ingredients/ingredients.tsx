@@ -7,19 +7,24 @@ import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
 import IngredientDetails from '../../components/ingredient-details/ingredient-details';
 import { SET_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
+import { TIngredient } from '../../utils/types';
+
+type TUseParams = {
+    id: string;
+}
 
 export default function Ingredients() { 
     const dispatch = useDispatch();
-    const { id } = useParams();
-    const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector(store => 
+    const { id } = useParams<TUseParams>();
+    const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector((store: any) => 
         ({
             ingredients: store.ingredients.ingredients, 
             ingredientsRequest: store.ingredients.ingredientsRequest,
             ingredientsFailed: store.ingredients.ingredientsFailed
         }));
 
-    const findElement = (id) => {
-        return ingredients.find( item => item._id === id)
+    const findElement = (id: string) => {
+        return ingredients.find( (item: TIngredient) => item._id === id)
     }
 
     useEffect(() => {

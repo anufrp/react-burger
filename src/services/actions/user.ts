@@ -1,7 +1,6 @@
 import { getData, sendData } from "../../utils/get-data";
 import { API_BASE } from "../constants";
 import { setCookie, getCookie, deleteCookie } from "../../utils/cookie";
-import { func } from "prop-types";
 
 export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
@@ -38,14 +37,20 @@ export const UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS';
 export const UPDATE_PROFILE_FAILED = 'UPDATE_PROFILE_FAILED';
 export const DROP_UPDATE_PROFILE_ERROR = 'UPDATE_GET_PROFILE_ERROR';
 
-export function registerUser(newUserData) {
-    return function(dispatch) { 
+type TResponseUser = {
+    success: boolean,
+    accessToken: string,
+    refreshToken: string
+}
+
+export function registerUser(newUserData: JSON) {
+    return function(dispatch: any) { 
 
         dispatch({
             type: REGISTER_USER_REQUEST
         });
 
-        sendData(API_BASE + 'auth/register', newUserData)
+        sendData<TResponseUser>(API_BASE + 'auth/register', newUserData)
         .then(res => {
             if (res && res.success) {
 
@@ -70,15 +75,14 @@ export function registerUser(newUserData) {
     };
 }
 
-
-export function forgotPassword(request) {
-    return function(dispatch) { 
+export function forgotPassword(request: JSON) {
+    return function(dispatch: any) { 
 
         dispatch({
             type: CHEK_EMAIL_REQUEST
         });
 
-        sendData(API_BASE + 'password-reset', request)
+        sendData<{success: boolean}>(API_BASE + 'password-reset', request)
         .then(res => {
             if (res && res.success) {
 
@@ -98,14 +102,14 @@ export function forgotPassword(request) {
     };
 }
 
-export function resetPassword(request) {
-    return function(dispatch) { 
+export function resetPassword(request: JSON) {
+    return function(dispatch: any) { 
 
         dispatch({
             type: RESET_PASSWORD_REQUEST
         });
 
-        sendData(API_BASE + 'password-reset/reset', request)
+        sendData<{success: boolean}>(API_BASE + 'password-reset/reset', request)
         .then(res => {
             if (res && res.success) {
 
@@ -125,14 +129,14 @@ export function resetPassword(request) {
     };
 }
 
-export function loginUser(request) {
-    return function(dispatch) { 
+export function loginUser(request: JSON) {
+    return function(dispatch: any) { 
 
         dispatch({
             type: LOGIN_REQUEST
         });
 
-        sendData(API_BASE + 'auth/login', request)
+        sendData<TResponseUser>(API_BASE + 'auth/login', request)
         .then(res => {
             if (res && res.success) {
 
@@ -161,13 +165,13 @@ export function logoutUser() {
     const request = {
         "token": getCookie('refreshToken')
     };
-    return function(dispatch) { 
+    return function(dispatch: any) { 
 
         dispatch({
             type: LOGOUT_REQUEST
         });
 
-        sendData(API_BASE + 'auth/logout', request)
+        sendData<{success: boolean}>(API_BASE + 'auth/logout', request as unknown as JSON)
         .then(res => {
             if (res && res.success) {
                 
@@ -191,7 +195,7 @@ export function logoutUser() {
 }
 
 export function getProfile() {
-    return function(dispatch) { 
+    return function(dispatch: any) { 
 
         dispatch({
             type: GET_PROFILE_REQUEST
@@ -205,7 +209,7 @@ export function getProfile() {
             }
         }
 
-        getData(API_BASE + 'auth/user', options)
+        getData<{success: boolean, message: string}>(API_BASE + 'auth/user', options)
         .then(res => {
             if (res && res.success) {
                 
@@ -230,8 +234,8 @@ export function getProfile() {
     };
 }
 
-export function updateProfile(data) {
-    return function(dispatch) { 
+export function updateProfile(data: JSON) {
+    return function(dispatch: any) { 
 
         dispatch({
             type: UPDATE_PROFILE_REQUEST
@@ -246,7 +250,7 @@ export function updateProfile(data) {
             }
         }
 
-        getData(API_BASE + 'auth/user', options)
+        getData<{success: boolean, message: string}>(API_BASE + 'auth/user', options)
         .then(res => {
             if (res && res.success) {
                 
@@ -271,8 +275,10 @@ export function updateProfile(data) {
     };
 }
 
-export function updateToken(callback, REQUEST_ACTION, FAILED_ACTION) {
-    return function(dispatch) { 
+type TCallBack = () => void;
+
+export function updateToken(callback: TCallBack, REQUEST_ACTION: string, FAILED_ACTION: string) {
+    return function(dispatch: any) { 
 
         dispatch({
             type: REQUEST_ACTION
@@ -282,7 +288,7 @@ export function updateToken(callback, REQUEST_ACTION, FAILED_ACTION) {
             "token": getCookie('refreshToken')
         } 
 
-        sendData(API_BASE + 'auth/token', options)
+        sendData<TResponseUser>(API_BASE + 'auth/token', options as unknown as JSON)
         .then(res => {
             if (res && res.success) {
 

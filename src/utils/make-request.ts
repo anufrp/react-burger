@@ -1,10 +1,9 @@
 import { checkResponse } from "./check-response"
 
-const request = <T>(url: string, options: any): Promise<T> => {
+const request = <TResponse>(url: string, options: RequestInit): Promise<TResponse> => {
 
   return fetch(url, options).then(checkResponse)
 
 }
 
-  export default request;
-
+export default request;

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, SyntheticEvent } from 'react';
 import styles from './register.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory } from 'react-router-dom';
@@ -14,8 +14,8 @@ import { useForm } from '../../services/hooks/useForm';
 export default function RegisterPage() {
 
     const history = useHistory(); 
-    const dispatch = useDispatch();
-    const {registerUserRequest, registerUserFailed} = useSelector(store => 
+    const dispatch = useDispatch<any>();
+    const {registerUserRequest, registerUserFailed} = useSelector((store: any) => 
         ({
             registerUserRequest: store.user.registerUserRequest,
             registerUserFailed: store.user.registerUserFailed
@@ -28,7 +28,7 @@ export default function RegisterPage() {
         setPasswordVisible(!passwordVisible);
     }
 
-    const formSubmit = (e) => {
+    const formSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         const newUserData = values;
 

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, SyntheticEvent } from 'react';
 import styles from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
@@ -13,8 +13,8 @@ import { useForm } from '../../services/hooks/useForm';
 export default function LoginPage() {
 
     const history = useHistory(); 
-    const dispatch = useDispatch();
-    const {loginRequest, loginFailed} = useSelector(store => 
+    const dispatch = useDispatch<any>();
+    const {loginRequest, loginFailed} = useSelector((store: any) => 
         ({
             loginRequest: store.user.loginRequest,
             loginFailed: store.user.loginFailed
@@ -27,7 +27,7 @@ export default function LoginPage() {
         setPasswordVisible(!passwordVisible);
     }
 
-    const formSubmit = (e) => {
+    const formSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         const request = values;
 

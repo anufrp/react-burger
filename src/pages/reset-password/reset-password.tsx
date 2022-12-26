@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, SyntheticEvent} from 'react';
 import styles from './reset-password.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
@@ -12,8 +12,8 @@ import { useForm } from '../../services/hooks/useForm';
 
 export default function ResetPasswordPage() {
     const history = useHistory(); 
-    const dispatch = useDispatch();   
-    const {passwordReseted, resetPasswordRequest, resetPasswordFailed, forgotEmailCheck} = useSelector(store => 
+    const dispatch = useDispatch<any>();   
+    const {passwordReseted, resetPasswordRequest, resetPasswordFailed, forgotEmailCheck} = useSelector((store: any) => 
         ({
             passwordReseted: store.user.passwordReseted,
             resetPasswordRequest: store.user.resetPasswordRequest,
@@ -28,7 +28,7 @@ export default function ResetPasswordPage() {
         setPasswordVisible(!passwordVisible);
     }
 
-    const formSubmit = (e) => {
+    const formSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         const request = values;
 

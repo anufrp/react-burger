@@ -14,6 +14,12 @@ export const GOTO_LOGIN = 'GOTO_LOGIN'
 
 const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
 
+type TResponseCreateOrder = {
+    success: boolean,
+    order: string,
+    message: string
+}
+
 export function processingOrder(constructorItems: Array<TIngredient>, bun: TIngredient) {
     
     return function(dispatch: any) { 
@@ -25,7 +31,7 @@ export function processingOrder(constructorItems: Array<TIngredient>, bun: TIngr
 
             dispatch({type: SET_ORDER_DETAILS_REQUEST});
 
-            createOrder(API_BASE + 'orders', orderIngredients)
+            createOrder<TResponseCreateOrder>(API_BASE + 'orders', orderIngredients)
             .then(res => {
                 if (res && res.success) {
         

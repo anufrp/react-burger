@@ -1,7 +1,8 @@
 import { getCookie } from "./cookie";
 import request from "./make-request";
 
-export function createOrder(url, ingredients) {
+
+export function createOrder<TResponse>(url: string, ingredients: Array<string>):Promise<TResponse> {
     const options = {
                 method: 'POST',
                 Authorization: 'Bearer ' + getCookie('accessToken'),
@@ -11,5 +12,5 @@ export function createOrder(url, ingredients) {
                 body: JSON.stringify({ingredients: ingredients})
                 }
 
-    return request(url, options)
+    return request<TResponse>(url, options)
 }
