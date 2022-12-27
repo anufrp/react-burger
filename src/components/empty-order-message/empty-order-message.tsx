@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from "./empty-order-message.module.css";
 
-export default function EmptyOrderMessage() {
+const EmptyOrderMessage: FC = () => {
 
     return (
         <div className={styles.main}>
@@ -14,3 +14,5 @@ export default function EmptyOrderMessage() {
         </div>
     )
 }
+
+export default EmptyOrderMessage;

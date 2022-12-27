@@ -1,15 +1,17 @@
-import { Redirect, Route, useLocation } from 'react-router-dom';
+import { Redirect, Route, RouteProps, useLocation } from 'react-router-dom';
 import { FC, useEffect, useState } from 'react';
 import { getCookie } from '../utils/cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from '../services/actions/user';
 
-type TProtectRouteProps = {
-  onlyForAuth: boolean,
-  children: JSX.Element,
-  path: string,
-  exact?: boolean
-}
+type TProtectRouteProps = RouteProps & {onlyForAuth: boolean}
+
+// {
+//   onlyForAuth: boolean,
+//   children: JSX.Element,
+//   path: string,
+//   exact?: boolean
+// }
 
 type TLocationState = {
   from: {

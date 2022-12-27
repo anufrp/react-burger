@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer} from "react";
+import React, { FC, useEffect, useReducer} from "react";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useLocation, useHistory } from 'react-router-dom';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -27,7 +27,7 @@ import { getIngredients } from "../../services/actions/ingredients";
 import * as H from "history"
 
 
-export default function App() {
+const App: FC = () => {
 
     const [activeTabState, activeTabDispatcher] = useReducer(activeTabReducer, activeTabInitialState, undefined);
     const accessToken = getCookie('accessToken');
@@ -104,3 +104,5 @@ export default function App() {
       </>
     )
 }
+
+export default App;

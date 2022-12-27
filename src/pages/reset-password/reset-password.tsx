@@ -1,4 +1,4 @@
-import React, {useState, useCallback, SyntheticEvent} from 'react';
+import React, {useState, useCallback, FormEvent, FC} from 'react';
 import styles from './reset-password.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
@@ -10,7 +10,7 @@ import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
 import { useForm } from '../../services/hooks/useForm';
 
-export default function ResetPasswordPage() {
+const ResetPasswordPage: FC = () => {
     const history = useHistory(); 
     const dispatch = useDispatch<any>();   
     const {passwordReseted, resetPasswordRequest, resetPasswordFailed, forgotEmailCheck} = useSelector((store: any) => 
@@ -28,7 +28,7 @@ export default function ResetPasswordPage() {
         setPasswordVisible(!passwordVisible);
     }
 
-    const formSubmit = (e: SyntheticEvent) => {
+    const formSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const request = values;
 
@@ -114,3 +114,5 @@ export default function ResetPasswordPage() {
     </div>
   );
 } 
+
+export default ResetPasswordPage;

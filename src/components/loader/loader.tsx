@@ -1,9 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from "./loader.module.css"
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { ColorRing } from  'react-loader-spinner'
 
-export default function Loader() {
+const Loader: FC = () => {
 
     return (
             <>
@@ -26,4 +26,4 @@ export default function Loader() {
     );
 }
 
-
+export default Loader;

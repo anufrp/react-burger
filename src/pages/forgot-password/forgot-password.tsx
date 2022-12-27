@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useCallback} from 'react';
+import React, { FC, FormEvent, useCallback} from 'react';
 import styles from './forgot-password.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
@@ -10,7 +10,7 @@ import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
 import { useForm } from '../../services/hooks/useForm';
 
-export default function ForgotPasswordPage() {
+const ForgotPasswordPage: FC = () => {
     const history = useHistory(); 
     const dispatch = useDispatch<any>();   
     const {forgotEmailCheck, forgotEmailCheckRequest, forgotEmailCheckFailed} = useSelector((store: any) => 
@@ -22,7 +22,7 @@ export default function ForgotPasswordPage() {
 
     const {values, handleChange, setValues} = useForm({ email: '' });
 
-    const formSubmit = (e: SyntheticEvent) => {
+    const formSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const request = {
             "email": values.email
@@ -87,3 +87,5 @@ export default function ForgotPasswordPage() {
     </div>
   );
 } 
+
+export default ForgotPasswordPage;

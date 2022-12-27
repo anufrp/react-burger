@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { FC, useContext, useEffect, useRef } from "react";
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './ingredients-tabs.module.css';
 import { BUN, SAUCE, MAIN } from "../../services/constants";
 import { activeTabContext } from "../../services/tabsContext";
 
-export default function Tabs() {
+const Tabs: FC = () => {
 
     const { activeTabState, activeTabDispatcher } = useContext<any>(activeTabContext);
     const tabsNode = useRef<HTMLDivElement>(null);
@@ -34,3 +34,5 @@ export default function Tabs() {
         </div>
     )
 }
+
+export default Tabs;

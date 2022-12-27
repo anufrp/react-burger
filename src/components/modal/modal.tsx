@@ -17,7 +17,7 @@ const Modal: FC<TModalProps> = ({title, closeFunc, children}) => {
 
     const body = document.querySelector("body") as HTMLBodyElement;
 
-    const esc = useCallback((event: any) => {
+    const esc = useCallback((event: KeyboardEvent) => {
         if(event.key === "Escape") {
             closeFunc();
         }

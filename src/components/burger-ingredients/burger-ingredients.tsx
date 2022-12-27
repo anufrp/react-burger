@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useContext, useRef } from "react";
+import React, { FC, useContext, useRef } from "react";
 import styles from './burger-ingredients.module.css';
 import Tabs from '../ingredients-tabs/ingredients-tabs'
 import IngredientSection from '../ingredient-section/ingredient-section'
@@ -9,7 +9,7 @@ import { activeTabContext } from "../../services/tabsContext";
 import { BUN, SAUCE, MAIN } from "../../services/constants";
 import { useSelector } from 'react-redux';
 
-export default function BurgerIngredients() {
+const BurgerIngredients: FC = () => {
     
     const { activeTabState, activeTabDispatcher } = useContext<any>(activeTabContext);
     const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector((store: any) => 
@@ -24,7 +24,7 @@ export default function BurgerIngredients() {
         activeTabDispatcher({type: 'setActive', activeTab: tab});
     }
     
-    const getNearestHeader = (e: SyntheticEvent) => {
+    const getNearestHeader = (e: React.UIEvent<HTMLDivElement>) => {
         e.stopPropagation();
 
         const bunDist = Math.abs(activeTabState.tabsNode.getBoundingClientRect().bottom - activeTabState.bunNode.getBoundingClientRect().top);
@@ -68,3 +68,5 @@ export default function BurgerIngredients() {
         </div>
     )
 }
+
+export default BurgerIngredients;

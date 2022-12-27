@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react';
+import React, { useState, useEffect, FormEvent, FC } from 'react';
 import styles from './profile.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import OrderHistory from '../order-history/order-history';
 import { useForm } from '../../services/hooks/useForm';
 
-export default function ProfilePage() {
+const ProfilePage: FC = () => {
 
     const dispatch = useDispatch<any>();
     const {
@@ -44,7 +44,7 @@ export default function ProfilePage() {
     const {values, handleChange, setValues} = useForm(initialState);
     const [isEdit, setIsEdit] = useState(false);
 
-    const formSubmit = (e: SyntheticEvent) => {
+    const formSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log('subm');
         const data = values;
@@ -52,7 +52,7 @@ export default function ProfilePage() {
         setIsEdit(false);
     }
 
-    const formReset = (e: SyntheticEvent) => {
+    const formReset = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setValues({
             ...user,
@@ -61,7 +61,7 @@ export default function ProfilePage() {
         setIsEdit(false);
     }
 
-    const logout = (e: SyntheticEvent) => {
+    const logout = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         dispatch(logoutUser());
         setValues(initialState);
@@ -165,3 +165,5 @@ export default function ProfilePage() {
     </div>
   );
 } 
+
+export default ProfilePage;

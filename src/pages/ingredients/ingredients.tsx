@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { FC, useEffect} from 'react';
 import styles from './ingredients.module.css';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ type TUseParams = {
     id: string;
 }
 
-export default function Ingredients() { 
+const Ingredients: FC = () => { 
     const dispatch = useDispatch();
     const { id } = useParams<TUseParams>();
     const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector((store: any) => 
@@ -50,3 +50,5 @@ export default function Ingredients() {
         </div>
     );
 } 
+
+export default Ingredients;

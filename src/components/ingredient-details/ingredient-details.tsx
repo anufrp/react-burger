@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import styles from "./ingredient-details.module.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ type TParams = {
     id: string;
   };
 
-const IngredientDetails = () => {
+const IngredientDetails: FC = () => {
 
     const dispatch = useDispatch();    
     const { id } = useParams<TParams>();

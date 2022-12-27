@@ -1,6 +1,7 @@
+import { FC } from 'react';
 import styles from './order-history.module.css';
 
-export default function OrderHistory() {
+const OrderHistory: FC = () => {
 
     
     
@@ -15,3 +16,4 @@ export default function OrderHistory() {
   );
 } 
 
+export default OrderHistory;

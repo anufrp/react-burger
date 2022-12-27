@@ -1,11 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from "./app-header.module.css"
 import {Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, NavLink, useRouteMatch } from "react-router-dom"
 import { useSelector } from 'react-redux';
 
 
-export default function AppHeader() {
+const AppHeader: FC = () => {
     
     const {userName} = useSelector((store: any) => ({userName: store.user.user.name}));
 
@@ -38,4 +38,4 @@ export default function AppHeader() {
     );
 }
 
-
+export default AppHeader;

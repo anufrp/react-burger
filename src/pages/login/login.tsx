@@ -1,4 +1,4 @@
-import React, { useState, useCallback, SyntheticEvent } from 'react';
+import React, { useState, useCallback, FormEvent, FC } from 'react';
 import styles from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
@@ -10,7 +10,7 @@ import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
 import { useForm } from '../../services/hooks/useForm';
 
-export default function LoginPage() {
+const LoginPage: FC = () => {
 
     const history = useHistory(); 
     const dispatch = useDispatch<any>();
@@ -27,7 +27,7 @@ export default function LoginPage() {
         setPasswordVisible(!passwordVisible);
     }
 
-    const formSubmit = (e: SyntheticEvent) => {
+    const formSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const request = values;
 
@@ -103,3 +103,5 @@ export default function LoginPage() {
     </div>
   );
 } 
+
+export default LoginPage;

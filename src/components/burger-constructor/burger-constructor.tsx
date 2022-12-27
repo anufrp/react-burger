@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDrop } from 'react-dnd'
 import styles from './burger-constructor.module.css';
 import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
@@ -27,7 +27,7 @@ import { TIngredient } from "../../utils/types";
 
 const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
 
-export default function BurgerConstructor() {
+const BurgerConstructor: FC = () => {
 
     const dispatch = useDispatch<any>();
     const history = useHistory(); 
@@ -135,3 +135,5 @@ export default function BurgerConstructor() {
         </div>
     );
 };
+
+export default BurgerConstructor;

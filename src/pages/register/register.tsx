@@ -1,4 +1,4 @@
-import React, { useState, useCallback, SyntheticEvent } from 'react';
+import React, { useState, useCallback, FormEvent, FC } from 'react';
 import styles from './register.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { DROP_REGISTER_ERROR } from '../../services/actions/user';
 import { useForm } from '../../services/hooks/useForm';
 
-export default function RegisterPage() {
+const RegisterPage: FC = () => {
 
     const history = useHistory(); 
     const dispatch = useDispatch<any>();
@@ -28,7 +28,7 @@ export default function RegisterPage() {
         setPasswordVisible(!passwordVisible);
     }
 
-    const formSubmit = (e: SyntheticEvent) => {
+    const formSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const newUserData = values;
 
@@ -103,3 +103,5 @@ export default function RegisterPage() {
     </div>
   );
 } 
+
+export default RegisterPage;
