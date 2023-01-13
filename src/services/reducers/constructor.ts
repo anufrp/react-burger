@@ -1,3 +1,5 @@
+import { TIngredient } from '../../utils/types';
+import { TConstructorActions } from '../actions/constructor';
 import { 
     SET_BUN,
     CLEAR_BUN,
@@ -12,13 +14,19 @@ import {
     CLEAR_COST
 } from '../actions/constructor';
 
-const initialState = {  
-    bun: {},
+type TConstructorState = {
+    bun: TIngredient | null,
+    constructorItems: Array<TIngredient>,
+    cost: Number
+}
+
+const initialState: TConstructorState = {  
+    bun: null,
     constructorItems: [],
     cost: 0
   };
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (state = initialState, action: TConstructorActions): TConstructorState => {
   switch (action.type) {
     case SET_BUN:
         return { ...state, bun: action.item }
@@ -39,7 +47,10 @@ export const constructorReducer = (state = initialState, action) => {
         return { ...state, constructorItems: action.items }
 
     case SET_COST:
-        return { ...state, cost: state.constructorItems.reduce((sum, item) => sum + item.price, 0) + (state.bun._id ? state.bun.price * 2 : 0) }
+        if(state.bun !== null)
+            return { ...state, cost: state.constructorItems.reduce((sum, item) => sum + item.price, 0) + (state.bun._id ? state.bun.price * 2 : 0) }
+        else
+            return { ...state, cost: state.constructorItems.reduce((sum, item) => sum + item.price, 0) }
 
     case CLEAR_COST:
         return { ...state, cost: initialState.cost }
