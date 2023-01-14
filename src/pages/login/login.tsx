@@ -3,7 +3,7 @@ import styles from './login.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
 import { DROP_LOGIN_ERROR } from '../../services/actions/user';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../../hooks";
 import { loginUser } from '../../services/actions/user';
 import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
@@ -13,7 +13,7 @@ import { useForm } from '../../services/hooks/useForm';
 const LoginPage: FC = () => {
 
     const history = useHistory(); 
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch();
     const {loginRequest, loginFailed} = useSelector((store: any) => 
         ({
             loginRequest: store.user.loginRequest,

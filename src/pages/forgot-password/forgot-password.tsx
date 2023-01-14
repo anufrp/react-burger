@@ -3,7 +3,7 @@ import styles from './forgot-password.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
 import { DROP_CHEK_EMAIL_ERROR } from '../../services/actions/user';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../../hooks";
 import { forgotPassword } from '../../services/actions/user';
 import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
@@ -12,7 +12,7 @@ import { useForm } from '../../services/hooks/useForm';
 
 const ForgotPasswordPage: FC = () => {
     const history = useHistory(); 
-    const dispatch = useDispatch<any>();   
+    const dispatch = useDispatch();   
     const {forgotEmailCheck, forgotEmailCheckRequest, forgotEmailCheckFailed} = useSelector((store: any) => 
         ({
             forgotEmailCheck: store.user.forgotEmailCheck,

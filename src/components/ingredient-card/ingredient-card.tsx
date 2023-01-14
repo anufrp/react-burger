@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { useDrag } from 'react-dnd'
 import {CurrencyIcon, Counter} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './ingredient-card.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "../../hooks";
 import { SET_BUN, TOPUP_CONSTRUCTOR_LIST } from "../../services/actions/constructor";
 import { SET_COST } from "../../services/actions/constructor";
 import { v4 as uuidv4 } from 'uuid';
@@ -61,7 +61,7 @@ const IngredientCard: FC<TIngredientCardProps> = ({item, onClickFunc}) => {
         const opacity = isDragging ? 0.4 : 1
     
     useEffect(() => {
-        switch (item.type) {
+        if(bun)  switch (item.type) {
             case 'bun': 
                 setCount(bun._id === item._id ? 2 : 0);
                 break;

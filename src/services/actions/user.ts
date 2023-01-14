@@ -42,7 +42,7 @@ export type TRegisterUserAction = {
     readonly type: typeof REGISTER_USER_REQUEST;
 }
 
-type TResponseUser = {
+export type TResponseUser = {
     success: boolean,
     accessToken: string,
     refreshToken: string,
@@ -284,8 +284,8 @@ export const resetPassword: AppThunk = (request: JSON) => (dispatch: AppDispatch
         if (res && res.success) {
 
             dispatch({
-                type: RESET_PASSWORD_SUCCESS,
-                data: res
+                type: RESET_PASSWORD_SUCCESS//,
+                //data: res
             });            
         } 
         else { 
@@ -348,8 +348,8 @@ export const logoutUser: AppThunk = () => (dispatch: AppDispatch) => {
             deleteCookie("refreshToken");
 
             dispatch({
-                type: LOGOUT_SUCCESS,
-                data: res
+                type: LOGOUT_SUCCESS//,
+                //data: res
             });            
         } 
         else { 
@@ -389,7 +389,7 @@ export const getProfile: AppThunk = () => (dispatch: AppDispatch) => {
         else { console.log('res', res);
             if(res.message === "jwt expired"){
                 //обновить токен
-                dispatch<any>(updateToken(getProfile, GET_PROFILE_REQUEST, GET_PROFILE_FAILED));
+                //dispatch(updateToken(getProfile, GET_PROFILE_REQUEST, GET_PROFILE_FAILED));
             }
             else
                 dispatch({type: GET_PROFILE_FAILED});
@@ -401,50 +401,49 @@ export const getProfile: AppThunk = () => (dispatch: AppDispatch) => {
     })
 };
 
-export function updateProfile(data: JSON) {
-    return function(dispatch: any) { 
+export const updateProfile: AppThunk = (data: JSON) => (dispatch: AppDispatch) => { 
 
-        dispatch({
-            type: UPDATE_PROFILE_REQUEST
-        });
+    dispatch({
+        type: UPDATE_PROFILE_REQUEST
+    });
 
-        const options = {
-            method: 'PATCH',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + getCookie('accessToken')
-            }
+    const options = {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + getCookie('accessToken')
         }
+    }
 
-        getData<{success: boolean, message: string}>(API_BASE + 'auth/user', options)
-        .then(res => {
-            if (res && res.success) {
-                
-                dispatch({
-                    type: UPDATE_PROFILE_SUCCESS,
-                    data: res
-                });
-            } 
-            else { console.log('res', res);
-                if(res.message === "jwt expired"){
-                    //обновить токен
-                    dispatch(updateToken(() => updateProfile(data), UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILED));
-                }
-                else
-                    dispatch({type: UPDATE_PROFILE_FAILED});
+    getData<TResponseUser>(API_BASE + 'auth/user', options)
+    .then(res => {
+        if (res && res.success) {
+            
+            dispatch({
+                type: UPDATE_PROFILE_SUCCESS,
+                data: res
+            });
+        } 
+        else { console.log('res', res);
+            if(res.message === "jwt expired"){
+                //обновить токен
+                //dispatch(updateToken(() => updateProfile(data), UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_FAILED));
             }
-        })
-        .catch((error) => {
-            console.error("Ошибка при выполнении запроса!", error); 
-            dispatch({type: UPDATE_PROFILE_FAILED});       
-        });;
-    };
-}
+            else
+                dispatch({type: UPDATE_PROFILE_FAILED});
+        }
+    })
+    .catch((error) => {
+        console.error("Ошибка при выполнении запроса!", error); 
+        dispatch({type: UPDATE_PROFILE_FAILED});       
+    });
+};
+
 
 type TCallBack = () => void;
 
-export const updateToken: AppThunk = (callback: TCallBack, REQUEST_ACTION: any, FAILED_ACTION: any) => (dispatch: AppDispatch) => { 
+const updateToken: AppThunk = (callback: any, REQUEST_ACTION: any, FAILED_ACTION: any) => (dispatch: AppDispatch) => { 
 
     dispatch({
         type: REQUEST_ACTION
@@ -462,7 +461,7 @@ export const updateToken: AppThunk = (callback: TCallBack, REQUEST_ACTION: any, 
             setCookie("accessToken", accessToken);            
             setCookie("refreshToken", res.refreshToken);
             
-            dispatch<any>(callback());
+            dispatch(callback());
         } 
         else { 
             dispatch({type: FAILED_ACTION});

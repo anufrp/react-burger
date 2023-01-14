@@ -15,12 +15,13 @@ import { TOrderDetailsActions } from './services/actions/order-details';
 import { TUserActions } from './services/actions/user';
 
 import { ThunkAction } from 'redux-thunk';
+//import { configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { Action, ActionCreator } from 'redux';
-import {
-  TypedUseSelectorHook,
-  useDispatch as dispatchHook,
-  useSelector as selectorHook
-} from 'react-redux';
+import { TOrderDetailsState } from './services/reducers/order-details';
+import { TIngrediensState } from './services/reducers/ingredients';
+import { TConstructorState } from './services/reducers/constructor';
+import { TIngredientDetailsState } from './services/reducers/ingredient-details';
+import { TUserState } from './services/reducers/user';
 
 
 
@@ -41,6 +42,14 @@ const enhancer = composeEnhancers(applyMiddleware(thunk));
 
 const store = createStore(rootReducer, enhancer);
 
+export type TStore = {
+  orderDetails: TOrderDetailsState,
+  ingredients: TIngrediensState,
+  constructorItems: TConstructorState,
+  ingredientDetails: TIngredientDetailsState,
+  user: TUserState
+}
+
 export type RootState = ReturnType<typeof store.getState>; 
 
 export type TApplicationActions =  | TConstructorActions
@@ -54,12 +63,9 @@ export type AppThunk<TReturn = void> = ActionCreator<
   ThunkAction<TReturn, Action, RootState, TApplicationActions>
 >; 
 
-// Типизация метода dispatch для проверки на валидность отправляемого экшена
-export type AppDispatch = typeof store.dispatch; 
-
-export const useSelector: TypedUseSelectorHook<RootState> = selectorHook; 
-export const useDispatch = () => dispatchHook<AppDispatch | AppThunk>(); 
-//export const useDispatch: () => AppDispatch | AppThunk = dispatchHook;
+export type AppDispatch<TReturnType = void> = (
+  action: TApplicationActions | AppThunk<TReturnType>
+) => TReturnType;
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

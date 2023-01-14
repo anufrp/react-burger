@@ -14,7 +14,7 @@ import {
     CLEAR_COST
 } from '../actions/constructor';
 
-type TConstructorState = {
+export type TConstructorState = {
     bun: TIngredient | null,
     constructorItems: Array<TIngredient>,
     cost: Number
@@ -24,7 +24,7 @@ const initialState: TConstructorState = {
     bun: null,
     constructorItems: [],
     cost: 0
-  };
+};
 
 export const constructorReducer = (state = initialState, action: TConstructorActions): TConstructorState => {
   switch (action.type) {

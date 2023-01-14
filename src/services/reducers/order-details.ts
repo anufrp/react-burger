@@ -8,7 +8,7 @@ import {
     RESET_ORDER_MODAL_MODE
 } from "../actions/order-details"
 
-type TOrderDetailsState = {
+export type TOrderDetailsState = {
     orderDetails: TOrder,
     orderRequest: boolean,
     orderFailed: boolean,

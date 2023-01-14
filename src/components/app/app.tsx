@@ -20,18 +20,19 @@ import Ingredients from "../../pages/ingredients/ingredients";
 import { ProtectedRoute } from "../protected-route";
 import { getCookie } from "../../utils/cookie";
 import { getProfile } from "../../services/actions/user";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getIngredients } from "../../services/actions/ingredients";
 import * as H from "history"
+import { useDispatch } from "../../hooks";
 
 
 const App: FC = () => {
 
     const [activeTabState, activeTabDispatcher] = useReducer(activeTabReducer, activeTabInitialState, undefined);
     const accessToken = getCookie('accessToken');
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch();
 
     const location = useLocation<{background: H.Location}>();
     const history = useHistory();

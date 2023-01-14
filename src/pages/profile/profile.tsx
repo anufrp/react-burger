@@ -2,12 +2,12 @@ import React, { useState, useEffect, FormEvent, FC } from 'react';
 import styles from './profile.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "../../hooks";
 import { logoutUser, getProfile, DROP_GET_PROFILE_ERROR, updateProfile } from '../../services/actions/user';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
 import Loader from '../../components/loader/loader';
-import { useSelector } from 'react-redux';
+import { useSelector } from "../../hooks";
 import { DROP_LOGOUT_ERROR } from '../../services/actions/user';
 import { getCookie } from '../../utils/cookie';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { useForm } from '../../services/hooks/useForm';
 
 const ProfilePage: FC = () => {
 
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch();
     const {
             user, 
             logoutRequest, 

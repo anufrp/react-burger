@@ -41,8 +41,8 @@ type TUser = {
         name: string
 }
 
-type TUserState = {  
-    user: TUser | null,
+export type TUserState = {  
+    user: TUser,// | null,
     registerUserRequest: boolean,
     registerUserFailed: boolean,
 
@@ -68,7 +68,10 @@ type TUserState = {
   };
 
   const initialState: TUserState = {  
-      user: null,
+      user: {
+        email: '',
+        name: ''
+        },
       registerUserRequest: false,
       registerUserFailed: false,
   

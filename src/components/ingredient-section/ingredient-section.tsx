@@ -5,7 +5,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { BUN, SAUCE, MAIN } from "../../services/constants";
 import { activeTabContext } from "../../services/tabsContext";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "../../hooks";
 import { SET_INGREDIENT_DETAILS, CLEAR_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
 import { v4 as uuidv4 } from 'uuid';
 import { useHistory, useLocation } from 'react-router-dom';

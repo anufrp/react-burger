@@ -6,7 +6,7 @@ import {
     SET_INGREDIENTS_FAILED,
 } from "../actions/ingredients"
 
-type TIngrediensState = {
+export type TIngrediensState = {
   ingredients: Array<TIngredient>,
   ingredientsRequest: boolean,
   ingredientsFailed: boolean

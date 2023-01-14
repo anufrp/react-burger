@@ -7,7 +7,8 @@ import ErrorMessage from "../error-message/error-message";
 import Modal from "../modal/modal";
 import { activeTabContext } from "../../services/tabsContext";
 import { BUN, SAUCE, MAIN } from "../../services/constants";
-import { useSelector } from 'react-redux';
+import { useSelector } from "../../hooks";
+//import { useSelector } from 'react-redux';
 
 const BurgerIngredients: FC = () => {
     

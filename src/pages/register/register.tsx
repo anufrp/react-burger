@@ -2,19 +2,18 @@ import React, { useState, useCallback, FormEvent, FC } from 'react';
 import styles from './register.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "../../hooks";
 import { registerUser } from '../../services/actions/user';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
 import Loader from '../../components/loader/loader';
-import { useSelector } from 'react-redux';
 import { DROP_REGISTER_ERROR } from '../../services/actions/user';
 import { useForm } from '../../services/hooks/useForm';
 
 const RegisterPage: FC = () => {
 
     const history = useHistory(); 
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch();
     const {registerUserRequest, registerUserFailed} = useSelector((store: any) => 
         ({
             registerUserRequest: store.user.registerUserRequest,

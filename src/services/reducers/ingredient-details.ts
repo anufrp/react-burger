@@ -5,15 +5,15 @@ import {
     CLEAR_INGREDIENT_DETAILS
 } from "../actions/ingredient-details"
 
-type TIngredientDetails = {
+export type TIngredientDetailsState = {
   ingredientDetails: TIngredient | null
 }
 
-const initialState: TIngredientDetails = {  
+const initialState: TIngredientDetailsState = {  
     ingredientDetails: null
   };
 
-export const ingredientDetailsReducer = (state = initialState, action: TIngredientDetailsActions): TIngredientDetails => {
+export const ingredientDetailsReducer = (state = initialState, action: TIngredientDetailsActions): TIngredientDetailsState => {
   switch (action.type) {
     case SET_INGREDIENT_DETAILS:
         return { ...state, ingredientDetails: action.item }

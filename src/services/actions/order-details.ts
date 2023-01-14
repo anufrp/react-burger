@@ -1,6 +1,5 @@
 import {createOrder} from "../../utils/create-order";
 import { API_BASE } from "../constants";
-import { updateToken } from "./user";
 import { TIngredient } from "../../utils/types";
 import { AppDispatch, AppThunk } from "../..";
 
@@ -73,7 +72,7 @@ type TResponseCreateOrder = {
 export const processingOrder: AppThunk = (constructorItems: Array<TIngredient>, bun: TIngredient) => (dispatch: AppDispatch) => { 
 
     let orderIngredients = constructorItems.map(item => item._id); //ИДы ингредиентов в массив для получения номера заказа  
-    orderIngredients = bun._id ? [bun._id, ...orderIngredients, bun._id] : orderIngredients; //добавить булку, если она есть
+    orderIngredients = bun ? [bun._id, ...orderIngredients, bun._id] : orderIngredients; //добавить булку, если она есть
     
     if(orderIngredients.length > 0) {
 
@@ -93,7 +92,7 @@ export const processingOrder: AppThunk = (constructorItems: Array<TIngredient>, 
             else { 
                 if(res.message === "jwt expired") {
                     //обновить токен
-                    dispatch<any>(updateToken(() => processingOrder(constructorItems, bun), SET_ORDER_DETAILS_REQUEST, SET_ORDER_DETAILS_FAILED));
+                    //dispatch(updateToken(() => processingOrder(constructorItems, bun), SET_ORDER_DETAILS_REQUEST, SET_ORDER_DETAILS_FAILED));
                 }
                 else {
                     dispatch({type: SET_ORDER_DETAILS_FAILED});

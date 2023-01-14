@@ -1,7 +1,7 @@
 import React, { FC, useEffect} from 'react';
 import styles from './ingredients.module.css';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../../hooks";
 import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
 import ErrorMessage from '../../components/error-message/error-message';
