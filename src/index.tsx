@@ -15,13 +15,25 @@ import { TOrderDetailsActions } from './services/actions/order-details';
 import { TUserActions } from './services/actions/user';
 
 import { ThunkAction } from 'redux-thunk';
-//import { configureStore, ThunkAction } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { Action, ActionCreator } from 'redux';
 import { TOrderDetailsState } from './services/reducers/order-details';
 import { TIngrediensState } from './services/reducers/ingredients';
 import { TConstructorState } from './services/reducers/constructor';
 import { TIngredientDetailsState } from './services/reducers/ingredient-details';
 import { TUserState } from './services/reducers/user';
+import { TFeedStore } from './services/reducers/feed';
+import { socketMiddleware } from './services/middleware/socketMiddleware';
+
+import { 
+  connect as FeedWsConnect,
+  disconnect as FeedWsDisconnect,
+  wsOpen as FeedWsOpen,
+  wsClose as FeedWsClose,
+  wsMessage as FeedWsMessage,
+  wsError as FeedWsError,
+  wsConnecting as FeedWsConnecting
+ } from './services/actions/feed'
 
 
 
@@ -38,16 +50,34 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 //     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
 //     : compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+const feedMiddleware:any = socketMiddleware({
+  wsConnect: FeedWsConnect,
+  wsDisonnect: FeedWsDisconnect,
+  wsConnecting: FeedWsConnecting,
+  onOpen: FeedWsOpen,
+  onClose: FeedWsClose,
+  onError: FeedWsError,
+  onMessage: FeedWsMessage
+})
+
+const enhancer = composeEnhancers(applyMiddleware(thunk, feedMiddleware));
 
 const store = createStore(rootReducer, enhancer);
+
+// const store = configureStore({
+//   reducer: rootReducer,
+//   middleware: (getDefaultMiddleware) => {
+//     return getDefaultMiddleware().concat(feedMiddleware);
+//   }
+// });
 
 export type TStore = {
   orderDetails: TOrderDetailsState,
   ingredients: TIngrediensState,
   constructorItems: TConstructorState,
   ingredientDetails: TIngredientDetailsState,
-  user: TUserState
+  user: TUserState,
+  feed: TFeedStore
 }
 
 export type RootState = ReturnType<typeof store.getState>; 

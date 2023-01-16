@@ -26,6 +26,7 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getIngredients } from "../../services/actions/ingredients";
 import * as H from "history"
 import { useDispatch } from "../../hooks";
+import Feed from "../../pages/feed/feed";
 
 
 const App: FC = () => {
@@ -83,6 +84,9 @@ const App: FC = () => {
             <ProtectedRoute onlyForAuth={true} path="/profile" >
               <ProfilePage />
             </ProtectedRoute>
+            <Route path="/feed" exact={true}>
+              <Feed />
+            </Route>
             <Route path="/ingredients/:id" exact={true}>
               <Ingredients />
             </Route>

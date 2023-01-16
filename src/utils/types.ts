@@ -14,3 +14,51 @@ export type TIngredient = {
     uid?: string,
     index?: number
 }
+
+export enum WebsocketStatus {
+    CONNECTING  = "CONNECTING...",
+    ONLINE = "ONLINE",
+    OFFLINE = "OFFLINE"
+}
+
+export type TOrder = {
+    "_id": string,
+    "ingredients": Array<string>,
+    "status": string,
+    "name": string,
+    "createdAt": string,
+    "updatedAt": string,
+    "number": number
+}
+
+export type TFeed = {
+    "success": boolean,
+    "orders": Array<TOrder>,
+    "total": number,
+    "totalToday": number
+};
+
+export type TOrdersStatus = {
+    created: Array<number>,
+    pending: Array<number>,
+    done: Array<number>
+} 
+
+// export enum FeedActionType {
+//     DATA = 'data',
+//     UPDATE = 'update'
+// }
+
+// export type Data = {
+//     type: FeedActionType.DATA,
+//     data: Feed
+// }
+
+// export type Update = {
+//     type: FeedActionType.UPDATE,
+//     data: Feed
+// }
+
+// type FeedAction = Data | Update;
+
+// export type FeedActions = Array<FeedAction>;

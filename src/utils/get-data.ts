@@ -5,10 +5,12 @@ import request from "./make-request";
 
 export function getData<TResponse>(url: string, options?: RequestInit):Promise<TResponse> {
     try {
-        const res = request<TResponse & {message?: string}>(url, options as RequestInit);
-        const msg = res.then(res => {
-            if(res.message === "jwt expired")
-                updateToken(url, options);
+        let res = request<TResponse & {message?: string}>(url, options as RequestInit);
+
+        res.then(res => {
+            if(res.message === "jwt expired") {              
+                return updateToken(url, options);
+            }
         })
         //console.log('get data>', res.then(res => res));
         return res;
@@ -35,30 +37,37 @@ export function sendData<TResponse>(url: string, data: JSON):Promise<TResponse> 
     
 };
 
-function updateToken(parentUrl: string, parentOptions: any):void {
+function updateToken<TResponse>(parentUrl: string, parentOptions: any):Promise<TResponse> {
 
     const options = {
         "token": getCookie('refreshToken')
     } 
 
     sendData<TResponseUser>(API_BASE + 'auth/token', options as unknown as JSON)
-    .then(res => {
-        if (res && res.success) {
+    .then(value => {
+        if (value && value.success) {
 
-            const accessToken = res.accessToken.split('Bearer ')[1];                
+            const accessToken = value.accessToken.split('Bearer ')[1];                
             setCookie("accessToken", accessToken);            
-            setCookie("refreshToken", res.refreshToken);
+            setCookie("refreshToken", value.refreshToken);
 
-            parentOptions.headers.authorization = res.accessToken;
-            getData(parentUrl, parentOptions);
+            parentOptions.headers.authorization = value.accessToken;
+            //getData(parentUrl, parentOptions);
+                        
+            return request<TResponse & {message?: string}>(parentUrl, parentOptions as RequestInit);
+
             
         } 
         else { 
-            Promise.reject(`Ошибка ${res}`);
+            Promise.reject(`Ошибка ${value}`);
+            return ;
         }
     })
     .catch((error) => {
         console.error("Ошибка при выполнении запроса!", error); 
         Promise.reject(`Ошибка ${error}`);
+        
     });
+
+    return Promise.reject(`Ошибка`);
 };
