@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './components/app/app';
 import reportWebVitals from './reportWebVitals';
-import { compose, createStore, applyMiddleware } from 'redux';
+import { compose, createStore, applyMiddleware, Middleware } from 'redux';
 import { Provider } from 'react-redux';
 import { rootReducer } from './services/reducers/reducers';
 import thunk from 'redux-thunk';
@@ -35,6 +35,16 @@ import {
   wsConnecting as FeedWsConnecting
  } from './services/actions/feed'
 
+ import { 
+  connect as HistoryWsConnect,
+  disconnect as HistoryWsDisconnect,
+  wsOpen as HistoryWsOpen,
+  wsClose as HistoryWsClose,
+  wsMessage as HistoryWsMessage,
+  wsError as HistoryWsError,
+  wsConnecting as HistoryWsConnecting
+ } from './services/actions/order-history'
+import { THistoryStore } from './services/reducers/order-history';
 
 
 declare global {
@@ -50,7 +60,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 //     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
 //     : compose;
 
-const feedMiddleware:any = socketMiddleware({
+const feedMiddleware: Middleware = socketMiddleware({
   wsConnect: FeedWsConnect,
   wsDisonnect: FeedWsDisconnect,
   wsConnecting: FeedWsConnecting,
@@ -60,7 +70,17 @@ const feedMiddleware:any = socketMiddleware({
   onMessage: FeedWsMessage
 })
 
-const enhancer = composeEnhancers(applyMiddleware(thunk, feedMiddleware));
+const orderHistoryMiddleware: Middleware = socketMiddleware({
+  wsConnect: HistoryWsConnect,
+  wsDisonnect: HistoryWsDisconnect,
+  wsConnecting: HistoryWsConnecting,
+  onOpen: HistoryWsOpen,
+  onClose: HistoryWsClose,
+  onError: HistoryWsError,
+  onMessage: HistoryWsMessage
+})
+
+const enhancer = composeEnhancers(applyMiddleware(thunk, feedMiddleware, orderHistoryMiddleware));
 
 const store = createStore(rootReducer, enhancer);
 
@@ -77,7 +97,8 @@ export type TStore = {
   constructorItems: TConstructorState,
   ingredientDetails: TIngredientDetailsState,
   user: TUserState,
-  feed: TFeedStore
+  feed: TFeedStore,
+  orderHistory: THistoryStore
 }
 
 export type RootState = ReturnType<typeof store.getState>; 

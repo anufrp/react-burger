@@ -22,6 +22,12 @@ export const wsMessage = createAction<TFeed, "FEED_WS_MESSAGE">(
 export const wsError = createAction<string, "FEED_WS_ERROR">(
     "FEED_WS_ERROR"
 );
+export const showModal = createAction(
+    "SHOW_ORDER_MODAL"
+);
+export const hideModal = createAction(
+    "HIDE_ORDER_MODAL"
+);
 
 export type TFeedActions =  
     | ReturnType<typeof connect>
@@ -30,4 +36,6 @@ export type TFeedActions =
     | ReturnType<typeof wsOpen>
     | ReturnType<typeof wsClose>
     | ReturnType<typeof wsMessage>
-    | ReturnType<typeof wsError>;
+    | ReturnType<typeof wsError>
+    | ReturnType<typeof showModal>
+    | ReturnType<typeof hideModal>;

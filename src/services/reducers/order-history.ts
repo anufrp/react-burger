@@ -1,23 +1,21 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { feedUpdate } from "../../utils/feed-update";
 import { TFeed, WebsocketStatus } from "../../utils/types"
-import { wsClose, wsConnecting, wsError, wsMessage, wsOpen, showModal, hideModal } from "../actions/feed";
+import { wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "../actions/order-history";
 
-export type TFeedStore = {
+export type THistoryStore = {
   status: WebsocketStatus,
   feed: TFeed | null,
-  connectionError: string,
-  showOrderModal: boolean
+  connectionError: string
 }
 
-const initialState: TFeedStore = {
+const initialState: THistoryStore = {
   status: WebsocketStatus.OFFLINE,
   feed: null,
-  connectionError: '',
-  showOrderModal: false
+  connectionError: ''
 };
 
-export const feedReducer = createReducer(initialState, builder => {
+export const historyReducer = createReducer(initialState, builder => {
   builder
     .addCase(wsConnecting, state => {
       state.status = WebsocketStatus.CONNECTING;
@@ -36,11 +34,5 @@ export const feedReducer = createReducer(initialState, builder => {
       if(action.payload.success) {
         state.feed = feedUpdate(action.payload);
       };
-    })
-    .addCase(showModal, (state, action) => {
-      state.showOrderModal = true;
-    })
-    .addCase(hideModal, (state, action) => {
-      state.showOrderModal = false;
     });
 });

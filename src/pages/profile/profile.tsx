@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FormEvent, FC } from 'react';
 import styles from './profile.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useRouteMatch } from 'react-router-dom';
 import { useDispatch } from "../../hooks";
 import { logoutUser, getProfile, DROP_GET_PROFILE_ERROR, updateProfile } from '../../services/actions/user';
 import Modal from '../../components/modal/modal';
@@ -15,6 +15,8 @@ import OrderHistory from '../order-history/order-history';
 import { useForm } from '../../services/hooks/useForm';
 
 const ProfilePage: FC = () => {
+
+    const isProfile = !!useRouteMatch({ path: "/profile", exact: true});
 
     const dispatch = useDispatch();
     const {
@@ -93,7 +95,7 @@ const ProfilePage: FC = () => {
                 <NavLink to={"/profile"} exact={true} className={`${styles.lnk} text text_type_main-medium text_color_inactive`} activeClassName={`${styles.active}`}>Профиль</NavLink>
                 <NavLink to={"/profile/orders"} exact={true} className={`${styles.lnk} text text_type_main-medium text_color_inactive`} activeClassName={`${styles.active}`}>История заказов</NavLink>
                 <a href={"/"} onClick={logout} className={`${styles.lnk} text text_type_main-medium text_color_inactive`}>Выход</a>    
-                <p className={`${styles.hint} text text_type_main-default mt-20`}>В этом разделе вы можете <br/>изменить свои персональные данные</p>            
+                {isProfile && (<p className={`${styles.hint} text text_type_main-default mt-20`}>В этом разделе вы можете <br/>изменить свои персональные данные</p>)}          
             </nav>
             <Switch>
                 <Route path='/profile' exact={true}>

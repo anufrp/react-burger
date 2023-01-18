@@ -43,22 +43,3 @@ export type TOrdersStatus = {
     pending: Array<number>,
     done: Array<number>
 } 
-
-// export enum FeedActionType {
-//     DATA = 'data',
-//     UPDATE = 'update'
-// }
-
-// export type Data = {
-//     type: FeedActionType.DATA,
-//     data: Feed
-// }
-
-// export type Update = {
-//     type: FeedActionType.UPDATE,
-//     data: Feed
-// }
-
-// type FeedAction = Data | Update;
-
-// export type FeedActions = Array<FeedAction>;

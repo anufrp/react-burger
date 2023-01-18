@@ -27,6 +27,7 @@ import { getIngredients } from "../../services/actions/ingredients";
 import * as H from "history"
 import { useDispatch } from "../../hooks";
 import Feed from "../../pages/feed/feed";
+import Order from "../orders-info/order/order";
 
 
 const App: FC = () => {
@@ -81,7 +82,10 @@ const App: FC = () => {
             <ProtectedRoute onlyForAuth={false} path="/reset-password" exact={true}>
               <ResetPasswordPage />
             </ProtectedRoute>
-            <ProtectedRoute onlyForAuth={true} path="/profile" >
+            <ProtectedRoute onlyForAuth={true} path="/profile" exact={true} >
+              <ProfilePage />
+            </ProtectedRoute>
+            <ProtectedRoute onlyForAuth={true} path="/profile/orders" exact={true} >
               <ProfilePage />
             </ProtectedRoute>
             <Route path="/feed" exact={true}>
@@ -90,22 +94,33 @@ const App: FC = () => {
             <Route path="/ingredients/:id" exact={true}>
               <Ingredients />
             </Route>
+            <Route path="/feed/:id" children={
+                <Modal title="Детали заказа" closeFunc={handleModalClose}>
+                    <Order />
+                </Modal>
+              } 
+            />
+            <Route path="/profile/orders/:id" children={
+                <Modal title="Детали заказа" closeFunc={handleModalClose}>
+                    <Order />
+                </Modal>
+              } 
+            />
             <Route>
               <NotFound />
             </Route>
           </Switch>
 
-          {background && (
-        <Route
-          path='/ingredients/:id'
-          children={
-            <Modal title="Детали ингредиента" closeFunc={handleModalClose}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-      )}
-
+          {background && (<>
+            <Route
+              path='/ingredients/:id'
+              children={
+                <Modal title="Детали ингредиента" closeFunc={handleModalClose}>
+                  <IngredientDetails />
+                </Modal>
+              }
+            />
+          </>)}        
       </>
     )
 }
