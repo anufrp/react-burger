@@ -1,3 +1,4 @@
+import { TUserActions } from "../actions/user"
 import { 
     REGISTER_USER_REQUEST,
     REGISTER_USER_SUCCESS,
@@ -35,38 +36,73 @@ import {
     DROP_UPDATE_PROFILE_ERROR
 } from "../actions/user"
 
-const initialState = {  
-    user: {},
-    registerUserRequest: false,
-    registerUserFailed: false,
+type TUser = {
+        email: string,
+        name: string
+}
 
-    forgotEmailCheck: false,
-    forgotEmailCheckRequest: false,
-    forgotEmailCheckFailed: false,
+export type TUserState = {  
+    user: TUser,// | null,
+    registerUserRequest: boolean,
+    registerUserFailed: boolean,
 
-    passwordReseted: false,
-    resetPasswordRequest: false,
-    resetPasswordFailed: false,
+    forgotEmailCheck: boolean,
+    forgotEmailCheckRequest: boolean,
+    forgotEmailCheckFailed: boolean,
 
-    loginRequest: false,
-    loginFailed: false,
+    passwordReseted: boolean,
+    resetPasswordRequest: boolean,
+    resetPasswordFailed: boolean,
 
-    logoutRequest: false,
-    logoutFailed: false,
+    loginRequest: boolean,
+    loginFailed: boolean,
 
-    getProfileRequest: false,
-    getProfileFailed: false,
+    logoutRequest: boolean,
+    logoutFailed: boolean,
 
-    updateProfileRequest: false,
-    updateProfileFailed: false
+    getProfileRequest: boolean,
+    getProfileFailed: boolean,
+
+    updateProfileRequest: boolean,
+    updateProfileFailed: boolean
   };
 
-export const userReducer = (state = initialState, action) => {
+  const initialState: TUserState = {  
+      user: {
+        email: '',
+        name: ''
+        },
+      registerUserRequest: false,
+      registerUserFailed: false,
+  
+      forgotEmailCheck: false,
+      forgotEmailCheckRequest: false,
+      forgotEmailCheckFailed: false,
+  
+      passwordReseted: false,
+      resetPasswordRequest: false,
+      resetPasswordFailed: false,
+  
+      loginRequest: false,
+      loginFailed: false,
+  
+      logoutRequest: false,
+      logoutFailed: false,
+  
+      getProfileRequest: false,
+      getProfileFailed: false,
+  
+      updateProfileRequest: false,
+      updateProfileFailed: false
+    };
+
+export const userReducer = (state = initialState, action: TUserActions): TUserState => {
   switch (action.type) {
     case REGISTER_USER_REQUEST: {
         return {...state, registerUserRequest: true};
     }
     case REGISTER_USER_SUCCESS: {
+        //if(user !== null)
         return { ...state, registerUserFailed: false, user: action.data.user, registerUserRequest: false };
     }
     case REGISTER_USER_FAILED: {

@@ -1,3 +1,4 @@
+import { TOrder, TOrderDetailsActions } from "../actions/order-details";
 import { 
     SET_ORDER_DETAILS_REQUEST,
     SET_ORDER_DETAILS_SUCCESS,
@@ -7,7 +8,17 @@ import {
     RESET_ORDER_MODAL_MODE
 } from "../actions/order-details"
 
-const initialState = {  
+export type TOrderDetailsState = {
+    orderDetails: TOrder,
+    orderRequest: boolean,
+    orderFailed: boolean,
+
+    orderModalMode: string | null,
+
+    loginRequired: boolean
+}
+
+const initialState: TOrderDetailsState = {  
     orderDetails: {
         number: null
     },
@@ -19,7 +30,7 @@ const initialState = {
     loginRequired: false
   };
 
-export const orderDetailsReducer = (state = initialState, action) => {
+export const orderDetailsReducer = (state = initialState, action: TOrderDetailsActions): TOrderDetailsState => {
   switch (action.type) {
 
     case SET_ORDER_DETAILS_REQUEST: 

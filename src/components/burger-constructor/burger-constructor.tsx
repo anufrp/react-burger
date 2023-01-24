@@ -9,7 +9,7 @@ import EmptyOrderMessage from "../empty-order-message/empty-order-message";
 import NoItem from "../no-item/no-item";
 import Modal from '../modal/modal';
 import Loader from "../loader/loader";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "../../hooks";
 import { 
     processingOrder, 
     RESET_ORDER_MODAL_MODE,
@@ -24,17 +24,18 @@ import {
 import { getCookie } from "../../utils/cookie";
 import { useHistory } from "react-router-dom";
 import { TIngredient } from "../../utils/types";
+import { TStore } from "../..";
 
 const [SUCCESS, FAILED, EMPTY] = ['success', 'failed', 'empty'];
 
 const BurgerConstructor: FC = () => {
 
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch();
     const history = useHistory(); 
     
     const [shouldUpdate, setShouldUpdate] = useState(true); //ререндер при добавлении компонентов, иначе не работает сортировка для последнего добавленного ингредиента :с
     
-    const {constructorItems, bun, orderRequest, orderFailed, orderModalMode, orderDetails, cost} = useSelector((store: any) => 
+    const {constructorItems, bun, orderRequest, orderFailed, orderModalMode, orderDetails, cost} = useSelector((store: TStore) => 
         ({
             constructorItems: store.constructorItems.constructorItems,
             bun: store.constructorItems.bun,
@@ -92,7 +93,7 @@ const BurgerConstructor: FC = () => {
         <div className={`${styles.main} mt-25`}>
             <div ref={drop} className={styles.order}>
 
-                { bun._id ? (<OrderItem item={bun} type="top" moveCard={()=>{}} />) : (<NoItem type="topbun" />) }
+                { bun ? (<OrderItem item={bun} type="top" moveCard={()=>{}} />) : (<NoItem type="topbun" />) }
 
                 { constructorItems.length > 0 ? 
                     (<div id={"selectedIngredients"} className={`${styles.ingredients} pr-2`}>
@@ -102,14 +103,14 @@ const BurgerConstructor: FC = () => {
                     </div>) : 
                     (<NoItem type="ingredient" />) }
 
-                { bun._id ? (<OrderItem item={bun} type="bottom" moveCard={()=>{}} />) : (<NoItem type="bottombun" />) }
+                { bun ? (<OrderItem item={bun} type="bottom" moveCard={()=>{}} />) : (<NoItem type="bottombun" />) }
 
             </div>
 
             <div className={`${styles.summary} mr-7`}>
 
                 <div className={`${styles.price} text text_type_digits-medium mr-10`}>
-                    <span> {cost} </span> <CurrencyIcon type="primary" />
+                    <span> <>{cost}</> </span> <CurrencyIcon type="primary" />
                 </div>
 
                 <div className='text text_type_main-medium'>

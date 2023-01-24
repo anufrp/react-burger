@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import styles from "./ingredient-details.module.css";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "../../hooks";
 import { useParams } from 'react-router-dom';
 import { SET_INGREDIENT_DETAILS } from "../../services/actions/ingredient-details";
 import { TIngredient } from "../../utils/types";

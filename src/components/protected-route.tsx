@@ -1,7 +1,7 @@
 import { Redirect, Route, RouteProps, useLocation } from 'react-router-dom';
 import { FC, useEffect, useState } from 'react';
 import { getCookie } from '../utils/cookie';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../hooks";
 import { getProfile } from '../services/actions/user';
 
 type TProtectRouteProps = RouteProps & {onlyForAuth: boolean}
@@ -23,7 +23,7 @@ export const ProtectedRoute: FC<TProtectRouteProps> = ({ onlyForAuth, children, 
 
     const location = useLocation<TLocationState>();
     const accessToken = getCookie('accessToken');
-    const dispatch = useDispatch<any>();    
+    const dispatch = useDispatch();    
     const { user } = useSelector((store: any) => ({ user: store.user.user }));  
     const [isUserLoaded, setUserLoaded] = useState(false);
 

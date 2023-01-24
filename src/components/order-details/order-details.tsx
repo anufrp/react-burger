@@ -3,7 +3,7 @@ import orderIsOk from "../../images/orderIsOk.png"
 import styles from "./order-details.module.css";
 
 type TOrderDetailsProps = {
-    orderNumber: number
+    orderNumber: number | null
 }
 
 const OrderDetails: FC<TOrderDetailsProps> = ({orderNumber}) => {

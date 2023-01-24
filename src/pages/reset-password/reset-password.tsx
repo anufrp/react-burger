@@ -3,7 +3,7 @@ import styles from './reset-password.module.css';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, Redirect } from 'react-router-dom';
 import { DROP_RESET_PASSWORD_ERROR } from '../../services/actions/user';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "../../hooks";
 import { resetPassword } from '../../services/actions/user';
 import Loader from '../../components/loader/loader';
 import Modal from '../../components/modal/modal';
@@ -12,7 +12,7 @@ import { useForm } from '../../services/hooks/useForm';
 
 const ResetPasswordPage: FC = () => {
     const history = useHistory(); 
-    const dispatch = useDispatch<any>();   
+    const dispatch = useDispatch();   
     const {passwordReseted, resetPasswordRequest, resetPasswordFailed, forgotEmailCheck} = useSelector((store: any) => 
         ({
             passwordReseted: store.user.passwordReseted,

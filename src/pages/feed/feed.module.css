@@ -1,0 +1,46 @@
+.wrapper {
+    position: absolute;
+    top: 127px;
+    height: 100%;
+    width: 100%;
+}
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 60px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+} 
+
+.header {
+    width: 630px;
+}
+
+.orders {    
+    width: 650px;
+    height: 770px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+
+.orders::-webkit-scrollbar {
+    width: 8px;
+}
+
+.orders::-webkit-scrollbar-thumb {
+    background-color: rgb(132, 132, 173)
+}
+
+.orders::-webkit-scrollbar-track {
+    background: rgb(47, 47, 55);
+    margin-top: 0px; 
+    margin-bottom: 10px; 
+}

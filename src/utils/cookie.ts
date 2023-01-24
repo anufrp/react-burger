@@ -18,6 +18,7 @@ export function getCookie(name: string): string | undefined {
     }
     if(value !== null) value = encodeURIComponent(value);
     let updatedCookie = name + '=' + value;
+    updatedCookie += '; path=/'
     for (const propName in props) {
       updatedCookie += '; ' + propName;
       const propValue = props[propName];

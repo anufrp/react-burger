@@ -20,18 +20,21 @@ import Ingredients from "../../pages/ingredients/ingredients";
 import { ProtectedRoute } from "../protected-route";
 import { getCookie } from "../../utils/cookie";
 import { getProfile } from "../../services/actions/user";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getIngredients } from "../../services/actions/ingredients";
 import * as H from "history"
+import { useDispatch } from "../../hooks";
+import Feed from "../../pages/feed/feed";
+import Order from "../orders-info/order/order";
 
 
 const App: FC = () => {
 
     const [activeTabState, activeTabDispatcher] = useReducer(activeTabReducer, activeTabInitialState, undefined);
     const accessToken = getCookie('accessToken');
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch();
 
     const location = useLocation<{background: H.Location}>();
     const history = useHistory();
@@ -79,28 +82,45 @@ const App: FC = () => {
             <ProtectedRoute onlyForAuth={false} path="/reset-password" exact={true}>
               <ResetPasswordPage />
             </ProtectedRoute>
-            <ProtectedRoute onlyForAuth={true} path="/profile" >
+            <ProtectedRoute onlyForAuth={true} path="/profile" exact={true} >
               <ProfilePage />
             </ProtectedRoute>
+            <ProtectedRoute onlyForAuth={true} path="/profile/orders" exact={true} >
+              <ProfilePage />
+            </ProtectedRoute>
+            <Route path="/feed" exact={true}>
+              <Feed />
+            </Route>
             <Route path="/ingredients/:id" exact={true}>
               <Ingredients />
             </Route>
+            <Route path="/feed/:id" children={
+                <Modal title="Детали заказа" closeFunc={handleModalClose}>
+                    <Order />
+                </Modal>
+              } 
+            />
+            <Route path="/profile/orders/:id" children={
+                <Modal title="Детали заказа" closeFunc={handleModalClose}>
+                    <Order />
+                </Modal>
+              } 
+            />
             <Route>
               <NotFound />
             </Route>
           </Switch>
 
-          {background && (
-        <Route
-          path='/ingredients/:id'
-          children={
-            <Modal title="Детали ингредиента" closeFunc={handleModalClose}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-      )}
-
+          {background && (<>
+            <Route
+              path='/ingredients/:id'
+              children={
+                <Modal title="Детали ингредиента" closeFunc={handleModalClose}>
+                  <IngredientDetails />
+                </Modal>
+              }
+            />
+          </>)}        
       </>
     )
 }

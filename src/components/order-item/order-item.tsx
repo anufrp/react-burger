@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, FC } from "react";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getConstructorConfig } from "../../utils/get-config";
 import styles from "../order-item/order-item.module.css"
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "../../hooks";
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 import { REJECT_CONSTRUCTOR_LIST } from "../../services/actions/constructor";
 import { TConstructorConfig } from "../../utils/get-config";

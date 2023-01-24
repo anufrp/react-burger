@@ -2,12 +2,12 @@ import React, { FC } from "react";
 import styles from "./app-header.module.css"
 import {Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, NavLink, useRouteMatch } from "react-router-dom"
-import { useSelector } from 'react-redux';
-
+import { useSelector } from "../../hooks";
+import { TStore } from "../..";
 
 const AppHeader: FC = () => {
     
-    const {userName} = useSelector((store: any) => ({userName: store.user.user.name}));
+    const {userName} = useSelector((store: TStore) => ({userName: store.user.user.name}));
 
     const isConstructor = !!useRouteMatch({ path: "/", exact: true});
     const isFeed = !!useRouteMatch({ path: "/feed", exact: true});
