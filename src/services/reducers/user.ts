@@ -67,7 +67,7 @@ export type TUserState = {
     updateProfileFailed: boolean
   };
 
-  const initialState: TUserState = {  
+  export const initialState: TUserState = {  
       user: {
         email: '',
         name: ''

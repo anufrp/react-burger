@@ -18,7 +18,7 @@ export type TOrderDetailsState = {
     loginRequired: boolean
 }
 
-const initialState: TOrderDetailsState = {  
+export const initialState: TOrderDetailsState = {  
     orderDetails: {
         number: null
     },
