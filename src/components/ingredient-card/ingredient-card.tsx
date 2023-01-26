@@ -72,7 +72,7 @@ const IngredientCard: FC<TIngredientCardProps> = ({item, onClickFunc}) => {
     },[constructorItems, bun]) 
 
     return (
-    <div  ref={drag} style={{ opacity }} className={`${styles.card} mb-8`} onClick={()=>onClickFunc(item._id)}>
+    <div ref={drag} style={{ opacity }} className={`${styles.card} mb-8`} onClick={()=>onClickFunc(item._id)} data-testid="ingredient_card">
 
         {count!==0 && (<Counter count={count} size="default" />)}
 
