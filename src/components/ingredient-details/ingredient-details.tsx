@@ -24,15 +24,15 @@ const IngredientDetails: FC = () => {
         return ingredients.find( (item: TIngredient) => item._id === id)
     }
 
-    useEffect(() => {
-        if(ingredientDetails._id === undefined && ingredients.length > 0) { //получить элемент, если ингредиенты уже получены
+    useEffect(() => { 
+        if(ingredients.length > 0) { //получить элемент, если ингредиенты уже получены
             const currentIngredient = findElement(id);
             dispatch({type: SET_INGREDIENT_DETAILS, item: currentIngredient});
         }
     }, [ingredients])
-
+    
     return (
-    <> { ingredientDetails !== undefined &&
+    <> { ingredientDetails &&
         <div className={styles.main}>
             <div>
                 <img alt={ingredientDetails.name} src={ingredientDetails.image_large}/>

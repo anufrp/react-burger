@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useReducer} from "react";
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import { useLocation, useHistory } from 'react-router-dom';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
@@ -91,7 +91,7 @@ const App: FC = () => {
             <Route path="/feed" exact={true}>
               <Feed />
             </Route>
-            <Route path="/ingredients/:id" exact={true}>
+            <Route path="/ingredients/:id">
               <Ingredients />
             </Route>
             <Route path="/feed/:id" children={
