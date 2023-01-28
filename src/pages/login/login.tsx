@@ -14,7 +14,7 @@ const LoginPage: FC = () => {
 
     const history = useHistory(); 
     const dispatch = useDispatch();
-    const {loginRequest, loginFailed} = useSelector((store: any) => 
+    const {loginRequest, loginFailed} = useSelector((store) => 
         ({
             loginRequest: store.user.loginRequest,
             loginFailed: store.user.loginFailed

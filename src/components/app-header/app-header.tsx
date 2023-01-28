@@ -10,7 +10,7 @@ const AppHeader: FC = () => {
     const {userName} = useSelector((store: TStore) => ({userName: store.user.user.name}));
 
     const isConstructor = !!useRouteMatch({ path: "/", exact: true});
-    const isFeed = !!useRouteMatch({ path: "/feed", exact: true});
+    const isFeed = !!useRouteMatch({ path: "/feed" });
     const isProfile = !!useRouteMatch({ path: "/profile" });
 
     return(

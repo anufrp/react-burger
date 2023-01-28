@@ -27,7 +27,7 @@ const ProfilePage: FC = () => {
             getProfileFailed,
             updateProfileRequest, 
             updateProfileFailed,
-        } = useSelector((store: any) => 
+        } = useSelector((store) => 
         ({
             user: store.user.user,
             logoutRequest: store.user.logoutRequest,

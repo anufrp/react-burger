@@ -19,7 +19,7 @@ const IngredientCard: FC<TIngredientCardProps> = ({item, onClickFunc}) => {
 
     const dispatch = useDispatch();
 
-    const {constructorItems, bun} = useSelector((store: any) => 
+    const {constructorItems, bun} = useSelector((store) => 
         ({
             constructorItems: store.constructorItems.constructorItems,
             bun: store.constructorItems.bun

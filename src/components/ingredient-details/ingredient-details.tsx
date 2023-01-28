@@ -14,13 +14,13 @@ const IngredientDetails: FC = () => {
     const dispatch = useDispatch();    
     const { id } = useParams<TParams>();
     
-    const { ingredients, ingredientDetails } = useSelector((store: any) => 
+    const { ingredients, ingredientDetails } = useSelector((store) => 
         ({
             ingredients: store.ingredients.ingredients, 
             ingredientDetails: store.ingredientDetails.ingredientDetails
         }));
         
-    const findElement = (id: string): TIngredient => {
+    const findElement = (id: string): TIngredient|undefined => {
         return ingredients.find( (item: TIngredient) => item._id === id)
     }
 

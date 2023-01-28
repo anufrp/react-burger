@@ -25,14 +25,23 @@ export const Order: FC<{orderId?: number}> = ({orderId}) => {
     let cost = 0;
     let orderItems: Array<IOrderItem> = [];
 
-    useEffect(() => {
-        path.indexOf('feed') !== -1
-            ? dispatch(connectFeed(FEED_SERVER_URL))
-            : dispatch(connectHistory(HISTORY_URL))
-        return () => {
+    const showModal = useSelector(store => store.feed.showOrderModal);
+    const connectStatus = useSelector(
+        store => (path.indexOf('feed') === -1) ? store.orderHistory.status : store.feed.status
+    );
+
+    useEffect(() => { console.log(path.indexOf('feed'), connectStatus);
+        if(connectStatus === WebsocketStatus.OFFLINE)
             path.indexOf('feed') !== -1
-                ? dispatch(disconnectFeed())
-                : dispatch(disconnectHistory())
+                ? dispatch(connectFeed(FEED_SERVER_URL))
+                : dispatch(connectHistory(HISTORY_URL))
+
+        return () => {
+            if(showModal === false) { 
+                path.indexOf('feed') !== -1 
+                    ? dispatch(disconnectFeed())
+                    : dispatch(disconnectHistory())
+            }
         };
     }, [dispatch]);
 
@@ -42,9 +51,6 @@ export const Order: FC<{orderId?: number}> = ({orderId}) => {
         store => (path.indexOf('feed') === -1) ? store.orderHistory.feed?.orders : store.feed.feed?.orders
     );
 
-    const connectStatus = useSelector(
-        store => (path.indexOf('feed') === -1) ? store.orderHistory.status : store.feed.status
-    );
     const isDisconnected = connectStatus === WebsocketStatus.OFFLINE;    
 
     const items = useSelector(store => store.ingredients.ingredients);

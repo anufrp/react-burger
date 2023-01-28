@@ -29,24 +29,12 @@ const IngredientSection: FC<TIngredientSectionProps> = ({type, items}) => {
     const selectIngredient = (id: string) => {
 
         const currentIngredient = findElement(id);
-        //currentIngredient = {...currentIngredient, uid: uuidv4()}
-
-        //Добавлять выбранный ингредиент в конструктор по клику
-        // switch (currentIngredient.type){
-        //     case 'bun': 
-        //         dispatch({type: SET_BUN, item: currentIngredient});
-        //         break;
-        //     default:
-        //         dispatch({type: TOPUP_CONSTRUCTOR_LIST, item: currentIngredient});
-        //         break;
-        // }
         history.push({ 
             pathname: '/ingredients/' + id,
             state: { background: location }
          });
 
         dispatch({type: SET_INGREDIENT_DETAILS, item: currentIngredient});
-        //setShowModal(true);
 
     }
 

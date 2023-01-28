@@ -247,7 +247,7 @@ export const registerUser: AppThunk = (newUserData: JSON) => (dispatch: AppDispa
 };
 
 
-export const forgotPassword: AppThunk = (request: JSON) => (dispatch: any) => { 
+export const forgotPassword: AppThunk = (request: JSON) => (dispatch) => { 
 
     dispatch({
         type: CHEK_EMAIL_REQUEST
@@ -439,37 +439,3 @@ export const updateProfile: AppThunk = (data: JSON) => (dispatch: AppDispatch) =
         dispatch({type: UPDATE_PROFILE_FAILED});       
     });
 };
-
-
-type TCallBack = () => void;
-
-const updateToken: AppThunk = (callback: any, REQUEST_ACTION: any, FAILED_ACTION: any) => (dispatch: AppDispatch) => { 
-
-    dispatch({
-        type: REQUEST_ACTION
-    });
-
-    const options = {
-        "token": getCookie('refreshToken')
-    } 
-
-    sendData<TResponseUser>(API_BASE + 'auth/token', options as unknown as JSON)
-    .then(res => {
-        if (res && res.success) {
-
-            const accessToken = res.accessToken.split('Bearer ')[1];                
-            setCookie("accessToken", accessToken);            
-            setCookie("refreshToken", res.refreshToken);
-            
-            dispatch(callback());
-        } 
-        else { 
-            dispatch({type: FAILED_ACTION});
-        }
-    })
-    .catch((error) => {
-        console.error("Ошибка при выполнении запроса!", error); 
-        dispatch({type: FAILED_ACTION});       
-    });
-};
-
