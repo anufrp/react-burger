@@ -13,7 +13,7 @@ import { useForm } from '../../services/hooks/useForm';
 const ForgotPasswordPage: FC = () => {
     const history = useHistory(); 
     const dispatch = useDispatch();   
-    const {forgotEmailCheck, forgotEmailCheckRequest, forgotEmailCheckFailed} = useSelector((store: any) => 
+    const {forgotEmailCheck, forgotEmailCheckRequest, forgotEmailCheckFailed} = useSelector((store) => 
         ({
             forgotEmailCheck: store.user.forgotEmailCheck,
             forgotEmailCheckRequest: store.user.forgotEmailCheckRequest,

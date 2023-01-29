@@ -9,8 +9,11 @@ import { TOrder } from '../../utils/types';
 import Modal from '../../components/modal/modal';
 import Order from '../../components/orders-info/order/order';
 import { getCookie } from '../../utils/cookie';
+import { useHistory, useLocation } from "react-router-dom";
 
 const OrderHistory: FC = () => {
+    const history = useHistory();
+    let location = useLocation();
   
   const dispatch = useDispatch();
   const [orderNumber, setOrderNumber] = useState(0);
@@ -25,18 +28,26 @@ const OrderHistory: FC = () => {
   const openModal = (number: number) => {
       setOrderNumber(number);
       dispatch(showModal());
-      window.history.pushState(null,'','/profile/orders/' + number);
+      history.push({ 
+          pathname: '/profile/orders/' + number,
+          state: { background: location }
+       });
   }
       
   const closeModal = () => {
-    window.history.pushState(null,'','/profile/orders');
+    history.push({ 
+        pathname: '/profile/orders/',
+        state: { background: location }
+     });
     dispatch(hideModal())
   }
 
   useEffect(() => {
     dispatch(connectHistory(API_URL));
     return () => {
-        dispatch(disconnectHistory());
+        if(showOrderModal === false) { 
+          dispatch(disconnectHistory());
+        }
     };
   }, [dispatch]);
 

@@ -15,8 +15,9 @@
 }
 
 .ingredients {
-    height: 200px;
-    max-height: 400px;
+    /* height: 200px; */
+    height: auto;
+    max-height: 350px;
     padding-left: 0;
     margin-left: 0;
     list-style-type: none;

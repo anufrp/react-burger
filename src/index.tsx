@@ -7,7 +7,7 @@ import { compose, createStore, applyMiddleware, Middleware } from 'redux';
 import { Provider } from 'react-redux';
 import { rootReducer } from './services/reducers/reducers';
 import thunk from 'redux-thunk';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import { TConstructorActions } from './services/actions/constructor';
 import { TIngredientDetailsActions } from './services/actions/ingredient-details';
 import { TIngredientsActions } from './services/actions/ingredients';

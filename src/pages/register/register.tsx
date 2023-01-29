@@ -14,7 +14,7 @@ const RegisterPage: FC = () => {
 
     const history = useHistory(); 
     const dispatch = useDispatch();
-    const {registerUserRequest, registerUserFailed} = useSelector((store: any) => 
+    const {registerUserRequest, registerUserFailed} = useSelector((store) => 
         ({
             registerUserRequest: store.user.registerUserRequest,
             registerUserFailed: store.user.registerUserFailed

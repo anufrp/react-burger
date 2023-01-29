@@ -8,8 +8,11 @@ import Modal from '../../components/modal/modal';
 import OrderCard from '../../components/order-card/order-card';
 import OrdersInfo from '../../components/orders-info/orders-info';
 import Order from '../../components/orders-info/order/order';
+import { useHistory, useLocation } from "react-router-dom";
 
 const Feed: FC = () => {
+    const history = useHistory();
+    let location = useLocation()
 
     const dispatch = useDispatch();
     const { feed, status, showOrderModal } = useSelector(state => state.feed);
@@ -41,18 +44,25 @@ const Feed: FC = () => {
     const showOrder = (number: number) => {
         setOrderNumber(number);
         dispatch(showModal());
-        window.history.pushState(null,'','/feed/' + number);
+        
+        history.push({ 
+            pathname: '/feed/' + number,
+            state: { background: location }
+         });
     }
     
     const closeModal = () => {
-        window.history.pushState(null,'','/feed');
+        history.push({ 
+            pathname: '/feed',
+            state: { background: location }
+         });
         dispatch(hideModal())
     }
-
-    useEffect(() => {
-        connect();
+    
+    useEffect(() => { 
+        if(status === WebsocketStatus.OFFLINE) connect();
         return(() => {
-            disconnect(); 
+            if(showOrderModal === false) disconnect(); 
         })
     }, [dispatch])
 

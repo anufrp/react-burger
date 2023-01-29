@@ -1,0 +1,9 @@
+{
+    "success": true,
+    "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzODhlYWY0OWI1MThhMDAxYmI4YzBhMCIsImlhdCI6MTY3NDc2NDI3NSwiZXhwIjoxNjc0NzY1NDc1fQ._7uNUyYHDKlm83QD-ouWF0GBrA15q69CwReDNzShAYr",
+    "refreshToken": "13cc807b6d4585267a2be4e6558dfd66cbe8baf3353a9b5ba408c97948cd23eb31f4af828ae6bb93",
+    "user": {
+        "email": "email@email.ru",
+        "name": "Some User"
+    }
+}

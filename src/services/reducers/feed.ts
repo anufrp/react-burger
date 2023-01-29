@@ -10,7 +10,7 @@ export type TFeedStore = {
   showOrderModal: boolean
 }
 
-const initialState: TFeedStore = {
+export const initialState: TFeedStore = {
   status: WebsocketStatus.OFFLINE,
   feed: null,
   connectionError: '',

@@ -9,7 +9,7 @@ export type THistoryStore = {
   connectionError: string
 }
 
-const initialState: THistoryStore = {
+export const initialState: THistoryStore = {
   status: WebsocketStatus.OFFLINE,
   feed: null,
   connectionError: ''

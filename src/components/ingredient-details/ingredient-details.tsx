@@ -14,25 +14,25 @@ const IngredientDetails: FC = () => {
     const dispatch = useDispatch();    
     const { id } = useParams<TParams>();
     
-    const { ingredients, ingredientDetails } = useSelector((store: any) => 
+    const { ingredients, ingredientDetails } = useSelector((store) => 
         ({
             ingredients: store.ingredients.ingredients, 
             ingredientDetails: store.ingredientDetails.ingredientDetails
         }));
         
-    const findElement = (id: string): TIngredient => {
+    const findElement = (id: string): TIngredient|undefined => {
         return ingredients.find( (item: TIngredient) => item._id === id)
     }
 
-    useEffect(() => {
-        if(ingredientDetails._id === undefined && ingredients.length > 0) { //получить элемент, если ингредиенты уже получены
+    useEffect(() => { 
+        if(ingredients.length > 0) { //получить элемент, если ингредиенты уже получены
             const currentIngredient = findElement(id);
             dispatch({type: SET_INGREDIENT_DETAILS, item: currentIngredient});
         }
     }, [ingredients])
-
+    
     return (
-    <> { ingredientDetails !== undefined &&
+    <> { ingredientDetails &&
         <div className={styles.main}>
             <div>
                 <img alt={ingredientDetails.name} src={ingredientDetails.image_large}/>

@@ -50,7 +50,7 @@ export type TClearCostAction = {
     readonly type: typeof CLEAR_COST;
 }
 
-export type TConstructorActions = 
+export type TConstructorActions =
     | TSetBunAction
     | TClearBunAction
     | TTopUpConstructorAction

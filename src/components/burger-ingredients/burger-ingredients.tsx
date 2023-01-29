@@ -13,7 +13,7 @@ import { useSelector } from "../../hooks";
 const BurgerIngredients: FC = () => {
     
     const { activeTabState, activeTabDispatcher } = useContext<any>(activeTabContext);
-    const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector((store: any) => 
+    const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector((store) => 
         ({
             ingredients: store.ingredients.ingredients, 
             ingredientsRequest: store.ingredients.ingredientsRequest,

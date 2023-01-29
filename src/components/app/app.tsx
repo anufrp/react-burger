@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useReducer} from "react";
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import { useLocation, useHistory } from 'react-router-dom';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
@@ -28,6 +28,7 @@ import * as H from "history"
 import { useDispatch } from "../../hooks";
 import Feed from "../../pages/feed/feed";
 import Order from "../orders-info/order/order";
+import OrderPage from "../../pages/order-page/order-page";
 
 
 const App: FC = () => {
@@ -91,19 +92,15 @@ const App: FC = () => {
             <Route path="/feed" exact={true}>
               <Feed />
             </Route>
-            <Route path="/ingredients/:id" exact={true}>
+            <Route path="/ingredients/:id">
               <Ingredients />
             </Route>
             <Route path="/feed/:id" children={
-                <Modal title="Детали заказа" closeFunc={handleModalClose}>
-                    <Order />
-                </Modal>
+                <OrderPage />
               } 
             />
             <Route path="/profile/orders/:id" children={
-                <Modal title="Детали заказа" closeFunc={handleModalClose}>
-                    <Order />
-                </Modal>
+                <OrderPage />
               } 
             />
             <Route>

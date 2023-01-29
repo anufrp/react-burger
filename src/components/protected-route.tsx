@@ -24,7 +24,7 @@ export const ProtectedRoute: FC<TProtectRouteProps> = ({ onlyForAuth, children, 
     const location = useLocation<TLocationState>();
     const accessToken = getCookie('accessToken');
     const dispatch = useDispatch();    
-    const { user } = useSelector((store: any) => ({ user: store.user.user }));  
+    const { user } = useSelector((store) => ({ user: store.user.user }));  
     const [isUserLoaded, setUserLoaded] = useState(false);
 
     useEffect(() => { 

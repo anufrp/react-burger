@@ -13,7 +13,7 @@ import { useForm } from '../../services/hooks/useForm';
 const ResetPasswordPage: FC = () => {
     const history = useHistory(); 
     const dispatch = useDispatch();   
-    const {passwordReseted, resetPasswordRequest, resetPasswordFailed, forgotEmailCheck} = useSelector((store: any) => 
+    const {passwordReseted, resetPasswordRequest, resetPasswordFailed, forgotEmailCheck} = useSelector((store) => 
         ({
             passwordReseted: store.user.passwordReseted,
             resetPasswordRequest: store.user.resetPasswordRequest,
